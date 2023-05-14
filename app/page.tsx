@@ -8,20 +8,23 @@ import {muiDarkTheme, theme} from "@/app/styles/themes";
 import CssBaseline from "@mui/material/CssBaseline";
 import {ThemeProvider} from "styled-components";
 import * as S from "@/app/styles/global.styled";
+import {EditorOutputProvider} from "@/app/context/EditorOutputContext";
 
 function Home() {
 
   return (
     <EditorSectionProvider>
       <EditorSettingsProvider>
-        <MuiThemeProvider theme={muiDarkTheme}>
-          <CssBaseline/>
-          <ThemeProvider theme={theme}>
-            <S.Main>
-              <Editor/>
-            </S.Main>
-          </ThemeProvider>
-        </MuiThemeProvider>
+        <EditorOutputProvider>
+          <MuiThemeProvider theme={muiDarkTheme}>
+            <CssBaseline/>
+            <ThemeProvider theme={theme}>
+              <S.Main>
+                <Editor/>
+              </S.Main>
+            </ThemeProvider>
+          </MuiThemeProvider>
+        </EditorOutputProvider>
       </EditorSettingsProvider>
     </EditorSectionProvider>
   );

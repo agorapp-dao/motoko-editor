@@ -13,6 +13,7 @@ import {EEditorSectionType} from "@/app/constants/editor";
 import {ControlPanel} from "@/app/Editor/ControlPanel/ControlPanel";
 import {SectionCode} from "@/app/Editor/Section/Code/SectionCode";
 import {SectionLesson} from "@/app/Editor/Section/Lesson/SectionLesson";
+import {BottomPanel} from "@/app/Editor/Panel/BottomPanel/BottomPanel";
 
 export default function Editor() {
 
@@ -69,7 +70,7 @@ export default function Editor() {
                 <ControlPanel/>
               </S.Code>
             </Pane>
-            <Pane></Pane>
+            <BottomPanel />
           </SplitPane>
         </S.RightPane>
       </SplitPane>
