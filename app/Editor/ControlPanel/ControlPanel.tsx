@@ -7,6 +7,7 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import {EditorOutputContext} from "@/app/context/EditorOutputContext";
 import {EditorInstanceContext} from "@/app/context/EditorInstanceContext";
+import mo from 'motoko/lib/versions/interpreter';
 
 export const ControlPanel = () => {
 
@@ -14,7 +15,14 @@ export const ControlPanel = () => {
   const {instance} = useContext(EditorInstanceContext);
 
   const runCode = () => {
-    setOutput(`Hello World! ${instance?.getValue()}`);
+      if (!instance) {
+          return;
+      }
+
+      mo.write('Main.mo', instance.getValue());
+      const res = mo.run('Main.mo');
+
+      setOutput(res.stdout + res.stderr);
   };
 
   return (

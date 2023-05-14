@@ -1,9 +1,24 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {editor as monacoEditor} from "monaco-editor";
+import * as monaco from "monaco-editor";
+import { configure } from "motoko/contrib/monaco";
 import * as S from './SectionCode.styled';
 import {Box, Tab, Tabs} from "@mui/material";
 import {EditorSettingsContext} from "@/app/context/EditorSettingsContext";
 import {EditorInstanceContext} from "@/app/context/EditorInstanceContext";
+
+configure(monaco);
+
+const SAMPLE_CODE = `
+
+var count = 0;
+
+func increment(n: Nat): Nat {
+  count := count + n;
+  count;
+};
+
+increment(5);
+`;
 
 export const SectionCode = () => {
 
@@ -12,7 +27,7 @@ export const SectionCode = () => {
   const {fontSize} = useContext(EditorSettingsContext);
   const {instance, setInstance} = useContext(EditorInstanceContext);
   const [tabs, setTabs] = useState([
-    { name: 'Tab 1', content: '1' },
+    { name: 'Tab 1', content: SAMPLE_CODE },
     { name: 'Tab 2', content: '2' },
     { name: 'Tab 3', content: '3' },
   ]);
@@ -34,11 +49,11 @@ export const SectionCode = () => {
   }
 
   useEffect(() => {
-    let editorCreate: monacoEditor.IStandaloneCodeEditor;
+    let editorCreate: monaco.editor.IStandaloneCodeEditor;
     if (divEl.current) {
-      editorCreate = monacoEditor.create(divEl.current, {
+      editorCreate = monaco.editor.create(divEl.current, {
         value: tabs[activeTab].content,
-        language: 'solidity',
+        language: 'motoko',
         theme: 'editorTheme',
         automaticLayout: true,
         fontSize: fontSize,
