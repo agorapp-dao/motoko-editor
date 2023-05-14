@@ -3,13 +3,14 @@ import {editor as monacoEditor} from "monaco-editor";
 import * as S from './SectionCode.styled';
 import {Box, Tab, Tabs} from "@mui/material";
 import {EditorSettingsContext} from "@/app/context/EditorSettingsContext";
+import {EditorInstanceContext} from "@/app/context/EditorInstanceContext";
 
 export const SectionCode = () => {
 
   const divEl = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState(0);
-  const [editor, setEditor] = useState<monacoEditor.IStandaloneCodeEditor>();
   const {fontSize} = useContext(EditorSettingsContext);
+  const {instance, setInstance} = useContext(EditorInstanceContext);
   const [tabs, setTabs] = useState([
     { name: 'Tab 1', content: '1' },
     { name: 'Tab 2', content: '2' },
@@ -17,12 +18,12 @@ export const SectionCode = () => {
   ]);
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
-    if (editor) {
-      handleEditorChange(editor.getValue());
+    if (instance) {
+      handleEditorChange(instance.getValue());
     }
     setActiveTab(newValue);
-    if (editor) {
-      handleEditorChange(editor.getValue());
+    if (instance) {
+      handleEditorChange(instance.getValue());
     }
   };
 
@@ -48,7 +49,7 @@ export const SectionCode = () => {
         handleEditorChange(editorCreate.getValue());
       }
 
-      setEditor(editorCreate);
+      setInstance(editorCreate);
     }
 
     return () => {
@@ -57,8 +58,8 @@ export const SectionCode = () => {
   }, [activeTab]);
 
   useEffect(() => {
-    if (editor && fontSize) {
-      editor.updateOptions({
+    if (instance && fontSize) {
+      instance.updateOptions({
         fontSize: fontSize,
       })
     }

@@ -6,13 +6,15 @@ import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import {EditorOutputContext} from "@/app/context/EditorOutputContext";
+import {EditorInstanceContext} from "@/app/context/EditorInstanceContext";
 
 export const ControlPanel = () => {
 
   const {setOutput} = useContext(EditorOutputContext);
+  const {instance} = useContext(EditorInstanceContext);
 
   const runCode = () => {
-    setOutput('Hello World!');
+    setOutput(`Hello World! ${instance?.getValue()}`);
   };
 
   return (
