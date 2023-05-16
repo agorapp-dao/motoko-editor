@@ -1,7 +1,7 @@
 "use client"
 
 import * as S from "./Editor.styled";
-import SplitPane, {Pane} from 'split-pane-react';
+import SplitPane, {Pane, SashContent} from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css'
 import React, {useEffect, useState} from "react";
 import {Fade} from "@mui/material";
@@ -38,6 +38,7 @@ export default function Editor() {
         split="vertical"
         sizes={panelSizeHorizontal}
         onChange={(sizes: number[]) => setPanelSizeHorizontal(sizes.map((s) => s.toString()))}
+        sashRender={(_, active) => <SashContent active={active} type='vscode'/>}
       >
         <Pane minSize={50} maxSize='50%'>
           <S.Section>
@@ -63,6 +64,7 @@ export default function Editor() {
             split="horizontal"
             sizes={panelSizeVertical}
             onChange={(sizes: number[]) => setPanelSizeVertical(sizes.map((s) => s.toString()))}
+            sashRender={(_, active) => <SashContent active={active} type='vscode'/>}
           >
             <Pane>
               <S.Code>
