@@ -37,9 +37,10 @@ export default function Editor() {
       <SplitPane
         split="vertical"
         sizes={panelSizeHorizontal}
-        onChange={(sizes: number[]) => setPanelSizeHorizontal(sizes.map((s) => s.toString()))}
+        onChange={setPanelSizeHorizontal}
         sashRender={(_, active) => <SashContent active={active} type='vscode'/>}
       >
+        {/*{(sizes: number[]) => setPanelSizeHorizontal(sizes.map((s) => s.toString()))}*/}
         <Pane minSize={50} maxSize='50%'>
           <S.Section>
             <LessonHeader handleClick={toggleListOfContents}/>
@@ -63,9 +64,10 @@ export default function Editor() {
           <SplitPane
             split="horizontal"
             sizes={panelSizeVertical}
-            onChange={(sizes: number[]) => setPanelSizeVertical(sizes.map((s) => s.toString()))}
+            onChange={setPanelSizeVertical}
             sashRender={(_, active) => <SashContent active={active} type='vscode'/>}
           >
+            {/*{(sizes: number[]) => setPanelSizeVertical(sizes.map((s) => s.toString()))}*/}
             <Pane>
               <S.Code>
                 <SectionCode/>
