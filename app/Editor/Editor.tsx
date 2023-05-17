@@ -20,8 +20,8 @@ export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
   const {currentSection} = React.useContext(EditorSectionContext);
 
-  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState(['400px', 'auto']);
-  const [panelSizeVertical, setPanelSizeVertical] = useState(['auto', '250px']);
+  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([400, Infinity]);
+  const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
 
   useEffect(() => {
     setShowListOfContents(false);
@@ -40,7 +40,6 @@ export default function Editor() {
         onChange={setPanelSizeHorizontal}
         sashRender={(_, active) => <SashContent active={active} type='vscode'/>}
       >
-        {/*{(sizes: number[]) => setPanelSizeHorizontal(sizes.map((s) => s.toString()))}*/}
         <Pane minSize={50} maxSize='50%'>
           <S.Section>
             <LessonHeader handleClick={toggleListOfContents}/>
@@ -67,7 +66,6 @@ export default function Editor() {
             onChange={setPanelSizeVertical}
             sashRender={(_, active) => <SashContent active={active} type='vscode'/>}
           >
-            {/*{(sizes: number[]) => setPanelSizeVertical(sizes.map((s) => s.toString()))}*/}
             <Pane>
               <S.Code>
                 <SectionCode/>
