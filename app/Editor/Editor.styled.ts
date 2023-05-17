@@ -14,7 +14,9 @@ export const SectionContent = styled.div`
   position: relative;
   display: flex; 
   flex-direction: column;
-  flex: 1 1 auto;
+  //flex: 1 1 auto;
+  height: 100%;
+  overflow: scroll;
 `;
 
 export const Section = styled.div`

@@ -12,6 +12,12 @@ export const SettingsDialog: React.FC<TProps> = ({open, handleClose}: TProps) =>
 
   return (
     <Dialog
+      PaperProps={{
+        style: {
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+        },
+      }}
       open={open}
       onClose={handleClose}
     >

@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Box, Tab, Tabs} from "@mui/material";
+import {Markdown} from "@/app/Editor/Markdown/Markdown";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -27,10 +28,26 @@ function TabPanel(props: TabPanelProps) {
 export const SectionLesson = () => {
 
   const [lessonTab, setLessonTab] = useState(0);
+  const [markdown, setMarkdown] = useState('');
 
   const changeTab = (event: React.SyntheticEvent, newValue: number) => {
     setLessonTab(newValue);
   };
+
+  // TODO - this is called twice on page load
+  useEffect(() => {
+    // TODO - take markdown from lesson
+    fetch('/markdown.md').then((response) => {
+      if (!response.ok) {
+        throw new Error(`Markdown download failed! status: ${response.status}`);
+      }
+      return response.text();
+    }).then((text) => {
+      setMarkdown(text);
+    }).catch((err) => {
+      console.error(err);
+    });
+  }, []);
 
   return (
     <div style={{margin: '1.5rem'}}>
@@ -42,15 +59,7 @@ export const SectionLesson = () => {
           </Tabs>
         </Box>
         <TabPanel value={lessonTab} index={0}>
-          <p>On the Internet Computer, programs communicate with each other by sending asynchronous
-            messages.
-            Motoko makes asynchronous programming easy with the async..await syntax you might be familiar
-            with from other languages.
-            To define the asynchronous function, add the async keyword to the function return type:</p>
-
-          <div style={{background: '#24232E', borderRadius: '5px', margin: '1rem 0', padding: '1rem'}}>
-            func getBalance() : async Nat ()
-          </div>
+          <Markdown>{markdown}</Markdown>
         </TabPanel>
         <TabPanel value={lessonTab} index={1}>
           Item Two
