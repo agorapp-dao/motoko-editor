@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Link from "next/link";
+import Link from 'next/link';
 
 export const Code = styled.div`
   display: flex;

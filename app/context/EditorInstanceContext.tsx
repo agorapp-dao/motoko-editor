@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import {useState, createContext} from 'react';
-import {editor as monacoEditor} from "monaco-editor";
+import { useState, createContext } from 'react';
+import type { editor as monacoEditor } from 'monaco-editor';
 
 export type TEditorInstanceContext = {
   instance: monacoEditor.IStandaloneCodeEditor | undefined;
@@ -22,10 +22,10 @@ type TProps = {
 const EditorInstanceProvider = ({ children }: TProps) => {
   const [instance, setInstance] = useState(initialState.instance);
   return (
-    <EditorInstanceContext.Provider value={{instance, setInstance}}>
+    <EditorInstanceContext.Provider value={{ instance, setInstance }}>
       {children}
     </EditorInstanceContext.Provider>
   );
 };
 
-export {EditorInstanceContext, EditorInstanceProvider};
+export { EditorInstanceContext, EditorInstanceProvider };

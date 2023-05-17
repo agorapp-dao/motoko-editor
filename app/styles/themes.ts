@@ -1,6 +1,6 @@
-import {createTheme} from "@mui/material";
+import { createTheme } from '@mui/material';
 import rgba from 'polished/lib/color/rgba';
-import {editor as monacoEditor} from "monaco-editor";
+import { monacoDefineTheme } from '@/app/Editor/Monaco/Monaco';
 
 const palette = {
   darkBg: '#191820',
@@ -54,7 +54,7 @@ export const muiDarkTheme = createTheme({
   },
 });
 
-const editorTheme: monacoEditor.IStandaloneThemeData = {
+monacoDefineTheme({
   base: 'vs-dark',
   inherit: true,
   // TODO polish color scheme
@@ -67,6 +67,5 @@ const editorTheme: monacoEditor.IStandaloneThemeData = {
   colors: {
     'editor.foreground': '#FFFFFF',
     'editor.background': theme.background,
-  }
-};
-monacoEditor.defineTheme('editorTheme', editorTheme);
+  },
+});
