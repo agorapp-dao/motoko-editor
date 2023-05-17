@@ -1,9 +1,8 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { getMonaco } from '@/app/Editor/Monaco/Monaco';
-import { EditorSettingsContext } from '@/app/context/EditorSettingsContext';
 import type { editor } from 'monaco-editor';
-import { EditorInstanceContext } from '@/app/context/EditorInstanceContext';
 import * as S from './MonacoEditor.styled';
+import {EditorContext} from "@/app/context/EditorContext";
 
 export interface MonacoEditorProps {
   value?: string;
@@ -12,8 +11,7 @@ export interface MonacoEditorProps {
 
 export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
   const divEl = useRef<HTMLDivElement>(null);
-  const { fontSize } = useContext(EditorSettingsContext);
-  const { instance, setInstance } = useContext(EditorInstanceContext);
+  const { fontSize, setInstance } = useContext(EditorContext);
 
   useEffect(() => {
     let isMounted = true;

@@ -1,7 +1,6 @@
-import * as S from './SettingsDialog.styled';
 import React, {useContext} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
-import {EditorSettingsContext} from "@/app/context/EditorSettingsContext";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {EditorContext} from "@/app/context/EditorContext";
 
 type TProps = {
   open: boolean;
@@ -9,9 +8,7 @@ type TProps = {
 };
 
 export const SettingsDialog: React.FC<TProps> = ({open, handleClose}: TProps) => {
-  const {fontSize, setFontSize} = useContext(EditorSettingsContext);
-
-
+  const {fontSize, setFontSize} = useContext(EditorContext);
 
   return (
     <Dialog

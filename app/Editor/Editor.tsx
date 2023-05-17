@@ -8,17 +8,17 @@ import {Fade} from "@mui/material";
 import {ListOfContents} from "@/app/Editor/ListOfContents/ListOfContents";
 import {SectionTabs} from "@/app/Editor/SectionTabs/SectionTabs";
 import {LessonHeader} from "@/app/Editor/LessonHeader/LessonHeader";
-import {EditorSectionContext} from "@/app/context/EditorSectionContext";
 import {EEditorSectionType} from "@/app/constants/editor";
 import {ControlPanel} from "@/app/Editor/ControlPanel/ControlPanel";
 import {SectionCode} from "@/app/Editor/Section/Code/SectionCode";
 import {SectionLesson} from "@/app/Editor/Section/Lesson/SectionLesson";
 import {BottomPanel} from "@/app/Editor/Panel/BottomPanel/BottomPanel";
+import {EditorContext} from "@/app/context/EditorContext";
 
 export default function Editor() {
 
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const {currentSection} = React.useContext(EditorSectionContext);
+  const {currentSection} = React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([400, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
-import { EditorInstanceContext } from '@/app/context/EditorInstanceContext';
 import { MonacoEditor } from '@/app/Editor/Monaco/MonacoEditor';
+import {EditorContext} from "@/app/context/EditorContext";
 
 const SAMPLE_CODE = `
 
@@ -17,7 +17,7 @@ increment(5);
 
 export const SectionCode = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { instance } = useContext(EditorInstanceContext);
+  const { instance } = useContext(EditorContext);
   const [tabs, setTabs] = useState([
     { name: 'Tab 1', content: SAMPLE_CODE },
     { name: 'Tab 2', content: '2' },

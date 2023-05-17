@@ -5,14 +5,12 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
-import {EditorOutputContext} from "@/app/context/EditorOutputContext";
-import {EditorInstanceContext} from "@/app/context/EditorInstanceContext";
 import mo from 'motoko/lib/versions/interpreter';
+import {EditorContext} from "@/app/context/EditorContext";
 
 export const ControlPanel = () => {
 
-  const {setOutput} = useContext(EditorOutputContext);
-  const {instance} = useContext(EditorInstanceContext);
+  const {instance, setOutput} = useContext(EditorContext);
 
   const runCode = () => {
       if (!instance) {

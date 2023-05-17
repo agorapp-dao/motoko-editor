@@ -5,11 +5,11 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import BackupIcon from '@mui/icons-material/Backup';
 import {styled} from '@mui/material/styles';
-import {EditorSectionContext} from "@/app/context/EditorSectionContext";
 import {EEditorSectionType} from "@/app/constants/editor";
 import * as S from './SectionTabs.styled';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import {SettingsDialog} from "@/app/Editor/SettingsDialog/SettingsDialog";
+import {EditorContext} from "@/app/context/EditorContext";
 
 interface StyledTabProps {
   icon?: string | React.ReactElement;
@@ -42,7 +42,7 @@ const AntTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} /
 
 export const SectionTabs = () => {
 
-  const {currentSection, setCurrentSection} = useContext(EditorSectionContext);
+  const {currentSection, setCurrentSection} = useContext(EditorContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const changeSection = (event: React.SyntheticEvent, section: EEditorSectionType) => {
