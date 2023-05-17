@@ -14,6 +14,7 @@ import {SectionCode} from "@/app/Editor/Section/Code/SectionCode";
 import {SectionLesson} from "@/app/Editor/Section/Lesson/SectionLesson";
 import {BottomPanel} from "@/app/Editor/Panel/BottomPanel/BottomPanel";
 import {EditorContext} from "@/app/context/EditorContext";
+import {SectionTree} from "@/app/Editor/Section/Tree/SectionTree";
 
 export default function Editor() {
 
@@ -51,7 +52,7 @@ export default function Editor() {
                 <SectionLesson/>
               )}
               {currentSection === EEditorSectionType.TREE && (
-                <>TREE</>
+                <SectionTree/>
               )}
               {currentSection === EEditorSectionType.SHARE && (
                 <>SHARE</>
