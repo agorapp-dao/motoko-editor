@@ -1,18 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { MonacoEditor } from '@/app/Editor/Monaco/MonacoEditor';
-import {EditorContext} from "@/app/context/EditorContext";
+import { EditorContext } from '@/app/context/EditorContext';
 
-const SAMPLE_CODE = `
+const SAMPLE_CODE = `import D "mo:base/Debug";
 
-var count = 0;
-
-func increment(n: Nat): Nat {
-  count := count + n;
-  count;
-};
-
-increment(5);
+D.print(debug_show(("hello", 42, "world")));
 `;
 
 export const SectionCode = () => {
