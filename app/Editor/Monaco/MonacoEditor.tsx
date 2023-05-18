@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { getMonaco } from '@/app/Editor/Monaco/Monaco';
 import type { editor } from 'monaco-editor';
 import * as S from './MonacoEditor.styled';
-import {EditorContext} from "@/app/context/EditorContext";
+import { EditorContext } from '@/app/context/EditorContext';
 
 export interface MonacoEditorProps {
   value?: string;
@@ -25,6 +25,9 @@ export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
           theme: 'editorTheme',
           automaticLayout: true,
           fontSize: fontSize,
+          minimap: {
+            enabled: false,
+          },
         });
         setInstance(editor);
       }
