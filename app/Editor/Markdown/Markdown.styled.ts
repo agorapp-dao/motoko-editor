@@ -15,10 +15,16 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const CenteredText = styled.span`
+export const H2 = styled.h2`
   width: 100%;
   display: block;
-  text-align: center;
   padding-top: 1rem;
+  font-size: 1.3rem;
   color: ${p => p.theme.intenseText};
+`;
+
+export const P = styled.p`
+  width: 100%;
+  display: block;
+  padding-top: 1rem;
 `;

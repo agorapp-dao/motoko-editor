@@ -6,15 +6,16 @@ import React from 'react';
 
 type TProps = {
   handleClick: () => void;
+  title: string;
 };
 
-export const LessonHeader: React.FC<TProps> = ({ handleClick }) => {
+export const LessonHeader: React.FC<TProps> = ({ handleClick, title }) => {
   return (
     <S.Wrapper>
       <Button variant="text" onClick={handleClick}>
         <S.ButtonContent>
           <FormatListBulletedIcon sx={{ fontSize: 30 }} />
-          <span>Motoko Tutorial</span>
+          <span>{title}</span>
           <ExpandMoreIcon />
         </S.ButtonContent>
       </Button>

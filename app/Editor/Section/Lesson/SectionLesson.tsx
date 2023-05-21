@@ -73,10 +73,6 @@ export const SectionLesson = () => {
 
   return (
     <div style={{ margin: '1.5rem' }}>
-      <S.LessonTitle>
-        <h2>{activeLesson?.name}</h2>
-        {/*<span>1/2</span>*/}
-      </S.LessonTitle>
       <Box sx={{ width: '100%', flex: '1 1 auto' }}>
         {activeLesson?.content && activeLesson?.content.length > 1 && (
           <>

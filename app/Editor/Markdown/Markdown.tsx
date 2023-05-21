@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import * as S from './Markdown.styled';
-import { Underline } from '@/app/Editor/Markdown/Underline/Underline';
 import { MonacoCodeSnippet } from '@/app/Editor/Monaco/MonacoCodeSnippet';
 
 type TProps = {
@@ -23,12 +22,18 @@ export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
             />
           );
         },
-        h6({ node, className, children, ...props }) {
+        h2({ children }) {
           return (
-            <>
-              <S.CenteredText>{children}</S.CenteredText>
-              <Underline />
-            </>
+            <S.H2>
+              {children}
+            </S.H2>
+          );
+        },
+        p({ children }) {
+          return (
+            <S.P>
+              {children}
+            </S.P>
           );
         },
         // a({ href, children }) {

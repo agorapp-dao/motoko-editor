@@ -20,7 +20,7 @@ import findLessonRecursively from '@/app/utils/findLesson';
 
 export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const { currentSection, setActiveLessonSlug, setActiveLesson, activeLessonSlug } =
+  const { currentSection, setActiveLessonSlug, setActiveLesson, activeLesson } =
     React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([500, Infinity]);
@@ -59,7 +59,7 @@ export default function Editor() {
       >
         <Pane minSize={500} maxSize='50%'>
           <S.Section>
-            <LessonHeader handleClick={toggleListOfContents} />
+            {activeLesson && <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />}
             <S.SectionContent>
               <Fade in={showListOfContents} timeout={500}>
                 <S.OverlayBox>

@@ -14,8 +14,8 @@ export const Inline = styled.code`
   position: relative;
   background: #24232e;
   border-radius: 5px;
-  margin: 1rem 0;
-  padding: 0.1rem 0.2rem;
+  padding: 0.1rem 0.3rem;
+  display: inline-block;
 `;
 
 export const CopyToClipBoard = styled.span`
