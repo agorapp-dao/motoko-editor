@@ -1,3 +1,11 @@
+To define an immutable variable you can use the `let` keyword:
+
+```motoko
+let x = 10;
+```
+
+
+
 To define a variable you can use the `var` keyword:
 
 ```motoko

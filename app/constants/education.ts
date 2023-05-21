@@ -4,8 +4,8 @@ export const DEMO_COURSE: TLesson[] = [
   {
     name: 'Introduction',
     slug: 'introduction',
-    content: [{ tab: 'Theory', markdown: '/01-introduction/theory.md' }],
-    files: [{ path: '/01-introduction/main.mo', language: 'motoko' }],
+    content: [{ tab: 'Theory', markdown: '/motoko-tutorial/01-introduction/theory.md' }],
+    files: [{ path: '/motoko-tutorial/01-introduction/main.mo', language: 'motoko' }],
   },
   {
     name: 'Basics',
@@ -14,16 +14,31 @@ export const DEMO_COURSE: TLesson[] = [
       {
         name: 'Printing values',
         slug: 'printing-values',
-        content: [{ tab: 'Theory', markdown: '/02-print-values/theory.md' }],
-        files: [{ path: '/02-print-values/main.mo', language: 'motoko' }],
-        solution: { markdown: '/02-print-values/solution.md' },
+        content: [{ tab: 'Theory', markdown: '/motoko-tutorial/02-basics/print-values/theory.md' }],
+        files: [{ path: '/motoko-tutorial/02-basics/print-values/main.mo', language: 'motoko' }],
+        solution: { markdown: '/motoko-tutorial/02-basics/print-values/solution.md' },
       },
       {
-        name: 'Variables',
-        slug: 'variables',
-        content: [{ tab: 'Theory', markdown: '/03-variables.md/theory.md' }],
-        files: [{ path: '/03-variables/main.mo', language: 'motoko' }],
-        solution: { markdown: '/03-variables/solution.md' },
+        name: 'Mutable variables',
+        slug: 'mutable-variables',
+        content: [
+          { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/mutable-variables/theory.md' },
+        ],
+        files: [
+          { path: '/motoko-tutorial/02-basics/mutable-variables/main.mo', language: 'motoko' },
+        ],
+        solution: { markdown: '/motoko-tutorial/02-basics/mutable-variables/solution.md' },
+      },
+      {
+        name: 'Immutable variables',
+        slug: 'immutable-variables',
+        content: [
+          { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/immutable-variables/theory.md' },
+        ],
+        files: [
+          { path: '/motoko-tutorial/02-basics/immutable-variables/main.mo', language: 'motoko' },
+        ],
+        solution: { markdown: '/motoko-tutorial/02-basics/immutable-variables/solution.md' },
       },
     ],
   },
