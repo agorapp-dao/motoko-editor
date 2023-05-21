@@ -15,5 +15,5 @@ export const Inline = styled.code`
   background: #24232e;
   border-radius: 5px;
   margin: 1rem 0;
-  padding: 1rem;
+  padding: 0.1rem 0.2rem;
 `;
