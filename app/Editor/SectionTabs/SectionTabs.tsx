@@ -71,7 +71,7 @@ export const SectionTabs = () => {
             sx={{borderRight: 0}}
           >
             <AntTab icon={<ImportContactsIcon/>} value={EEditorSectionType.LESSON}/>
-            <AntTab icon={<FolderOpenIcon/>} value={EEditorSectionType.TREE}/>
+            {/*<AntTab icon={<FolderOpenIcon/>} value={EEditorSectionType.TREE}/>*/}
             <AntTab icon={<BackupIcon/>} value={EEditorSectionType.SHARE}/>
           </Tabs>
         </Box>

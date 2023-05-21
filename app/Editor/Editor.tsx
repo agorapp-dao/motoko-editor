@@ -73,7 +73,7 @@ export default function Editor() {
                 </S.OverlayBox>
               </Fade>
               {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
-              {currentSection === EEditorSectionType.TREE && <SectionTree />}
+              {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
               {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
             </S.SectionContent>
           </S.Section>
