@@ -1,7 +1,7 @@
 
 export interface TLessonContent {
   tab: string;
-  text: string;
+  markdown: string;
 }
 
 
@@ -11,3 +11,6 @@ export interface TLesson {
   content?: TLessonContent[];
   children?: TLesson[];
 };
+
+
+// main.mo, "code asdsadsa", type: ""

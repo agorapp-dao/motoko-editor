@@ -3,6 +3,7 @@
 import {useState, createContext} from 'react';
 import type {editor as monacoEditor} from 'monaco-editor';
 import {EEditorSectionType} from "@/app/constants/editor";
+import {TLesson} from "@/app/types/education";
 
 export type TEditorContext = {
   instance: monacoEditor.IStandaloneCodeEditor | undefined;
@@ -13,6 +14,10 @@ export type TEditorContext = {
   setCurrentSection: (section: EEditorSectionType) => void;
   fontSize: number;
   setFontSize: (size: number) => void;
+  activeLessonSlug: string | undefined
+  setActiveLessonSlug: (slug: string) => void;
+  activeLesson: TLesson | undefined
+  setActiveLesson: (lesson: TLesson) => void;
 };
 
 const initialState: TEditorContext = {
@@ -23,8 +28,11 @@ const initialState: TEditorContext = {
   currentSection: EEditorSectionType.LESSON,
   setCurrentSection: (section: EEditorSectionType) => {},
   fontSize: 14,
-  setFontSize: (size: number) => {
-  },
+  setFontSize: (size: number) => {},
+  activeLessonSlug: undefined,
+  setActiveLessonSlug: (slug: string) => {},
+  activeLesson: undefined,
+  setActiveLesson: (lesson: TLesson) => {},
 };
 
 const EditorContext = createContext<TEditorContext>(initialState);
@@ -38,6 +46,8 @@ const EditorProvider = ({children}: TProps) => {
   const [output, setOutput] = useState(initialState.output);
   const [currentSection, setCurrentSection] = useState(initialState.currentSection);
   const [fontSize, setFontSize] = useState(initialState.fontSize);
+  const [activeLessonSlug, setActiveLessonSlug] = useState(initialState.activeLessonSlug);
+  const [activeLesson, setActiveLesson] = useState(initialState.activeLesson);
 
   return (
     <EditorContext.Provider
@@ -50,6 +60,10 @@ const EditorProvider = ({children}: TProps) => {
         setCurrentSection,
         fontSize,
         setFontSize,
+        activeLessonSlug,
+        setActiveLessonSlug,
+        activeLesson,
+        setActiveLesson,
       }}
     >
       {children}

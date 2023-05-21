@@ -5,7 +5,6 @@ import SplitPane, {Pane, SashContent} from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css'
 import React, {useEffect, useState} from "react";
 import {Fade} from "@mui/material";
-import {ListOfContents} from "@/app/Editor/ListOfContents/ListOfContents";
 import {SectionTabs} from "@/app/Editor/SectionTabs/SectionTabs";
 import {LessonHeader} from "@/app/Editor/LessonHeader/LessonHeader";
 import {EEditorSectionType} from "@/app/constants/editor";
@@ -15,11 +14,14 @@ import {SectionLesson} from "@/app/Editor/Section/Lesson/SectionLesson";
 import {BottomPanel} from "@/app/Editor/Panel/BottomPanel/BottomPanel";
 import {EditorContext} from "@/app/context/EditorContext";
 import {SectionTree} from "@/app/Editor/Section/Tree/SectionTree";
+import {ContentItem} from "@/app/Editor/ContentItem/ContentItem";
+import {DEMO_COURSE} from "@/app/constants/education";
+import findLessonRecursively from "@/app/utils/findLesson";
 
 export default function Editor() {
 
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const {currentSection} = React.useContext(EditorContext);
+  const {currentSection, setActiveLessonSlug, setActiveLesson, activeLessonSlug} = React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([400, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
@@ -31,6 +33,20 @@ export default function Editor() {
   const toggleListOfContents = () => {
     setShowListOfContents((prev) => !prev);
   };
+
+  const handleSelectLesson = (slug: string) => {
+    setActiveLessonSlug(slug);
+    const lesson = findLessonRecursively(DEMO_COURSE, slug);
+    if (lesson) {
+      setActiveLesson(lesson);
+    }
+    setShowListOfContents(false);
+  };
+
+  useEffect(() => {
+    // TODO - load data on server side at first load
+    handleSelectLesson("basics");
+  }, []);
 
   return (
     <>
@@ -46,7 +62,11 @@ export default function Editor() {
             <LessonHeader handleClick={toggleListOfContents}/>
             <S.SectionContent>
               <Fade in={showListOfContents} timeout={500}>
-                <S.OverlayBox><ListOfContents/></S.OverlayBox>
+                <S.OverlayBox>
+                  <S.ListOfContents>
+                    <ContentItem lessons={DEMO_COURSE} level={1} handleSelectLesson={handleSelectLesson} />
+                  </S.ListOfContents>
+                </S.OverlayBox>
               </Fade>
               {currentSection === EEditorSectionType.LESSON && (
                 <SectionLesson/>

@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Box, Tab, Tabs} from "@mui/material";
 import {Markdown} from "@/app/Editor/Markdown/Markdown";
+import {EditorContext} from "@/app/context/EditorContext";
+import * as S from './SectionLesson.styled';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,6 +31,7 @@ export const SectionLesson = () => {
 
   const [lessonTab, setLessonTab] = useState(0);
   const [markdown, setMarkdown] = useState('');
+  const {activeLessonSlug, activeLesson} = useContext(EditorContext);
 
   const changeTab = (event: React.SyntheticEvent, newValue: number) => {
     setLessonTab(newValue);
@@ -36,21 +39,29 @@ export const SectionLesson = () => {
 
   // TODO - this is called twice on page load
   useEffect(() => {
-    // TODO - take markdown from lesson
-    fetch('/markdown.md').then((response) => {
-      if (!response.ok) {
-        throw new Error(`Markdown download failed! status: ${response.status}`);
-      }
-      return response.text();
-    }).then((text) => {
-      setMarkdown(text);
-    }).catch((err) => {
-      console.error(err);
-    });
-  }, []);
+    if (activeLesson?.content) {
+      // TODO - use SWR, cache, etc. (or load outside of this component)
+      fetch(activeLesson.content[0].markdown).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Markdown download failed! status: ${response.status}`);
+        }
+        return response.text();
+      }).then((text) => {
+        setMarkdown(text);
+      }).catch((err) => {
+        console.error(err);
+      });
+    }
+  }, [activeLessonSlug]);
+
+  // TODO - add loading state
 
   return (
     <div style={{margin: '1.5rem'}}>
+      <S.LessonTitle>
+        <h2>{activeLesson?.name}</h2>
+        {/*<span>1/2</span>*/}
+      </S.LessonTitle>
       <Box sx={{width: '100%', flex: '1 1 auto'}}>
         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
           <Tabs value={lessonTab} onChange={changeTab} centered>

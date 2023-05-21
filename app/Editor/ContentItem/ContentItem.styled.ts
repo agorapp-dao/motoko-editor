@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 import Link from "next/link";
 
-export const Wrapper = styled.div`
+type TProps = {
+  level: number;
+};
+
+export const Wrapper = styled.div<TProps>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding-left: ${(p) => p.level * 0.3}rem;
 `;
 
 export const Row = styled.div`
@@ -13,7 +18,13 @@ export const Row = styled.div`
   color: ${(p) => p.theme.intenseText};
 `;
 
-export const ActiveLink = styled(Link)`
+export const ActiveLink = styled.button`
+
+  border: 0;
+  background: transparent;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
 
   strong {
     font-weight: 300;
@@ -29,8 +40,9 @@ export const ActiveLink = styled(Link)`
 
 export const Number = styled.div`
   width: 2rem;
+  text-align: left;
 `;
 
-export const Name = styled.div`
+export const Name = styled.div<TProps>`
   
 `;

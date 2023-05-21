@@ -40,3 +40,9 @@ export const Code = styled.div`
   border-bottom: ${p => p.theme.panelSeparator};
   overflow: hidden;
 `;
+
+export const ListOfContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;

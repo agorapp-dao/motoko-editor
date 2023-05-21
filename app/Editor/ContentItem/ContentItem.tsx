@@ -1,14 +1,16 @@
 import * as S from './ContentItem.styled';
-import React from "react";
+import React, {useContext} from "react";
 import {TLesson} from "@/app/types/education";
+import {EditorContext} from "@/app/context/EditorContext";
 
 interface TProps {
   lessons: TLesson[];
   level: number;
   baseIndex?: string;
+  handleSelectLesson: (slug: string) => void;
 };
 
-export const ContentItem: React.FC<TProps> = ({lessons, level, baseIndex}: TProps) => {
+export const ContentItem: React.FC<TProps> = ({lessons, level, baseIndex, handleSelectLesson}: TProps) => {
 
   function createIndex(index: number, baseIndex?: string) {
     return (baseIndex ? `${baseIndex}.` : '') + index;
@@ -19,7 +21,7 @@ export const ContentItem: React.FC<TProps> = ({lessons, level, baseIndex}: TProp
       {lessons.map((item, index) => (
         <div key={item.name}>
 
-          <S.ActiveLink href={`/lesson`}>
+          <S.ActiveLink onClick={() => handleSelectLesson(item.slug)}>
             <S.Row>
               <S.Number>{createIndex(index + 1, baseIndex)}</S.Number>
               <S.Name level={level}>{item.name}</S.Name>
@@ -32,6 +34,7 @@ export const ContentItem: React.FC<TProps> = ({lessons, level, baseIndex}: TProp
                 lessons={item.children}
                 level={level + 1}
                 baseIndex={createIndex(index + 1, baseIndex)}
+                handleSelectLesson={handleSelectLesson}
               />
             </div>
           )}

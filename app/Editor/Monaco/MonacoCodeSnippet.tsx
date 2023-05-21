@@ -35,8 +35,9 @@ export const MonacoCodeSnippet = ({ code, language, inline }: MonacoCodeSnippetP
     );
   } else {
     return (
-      <S.Block ref={preEl} data-lang={language}>
-        {code}
+      <S.Block>
+        {/*<S.CopyToClipBoard>CLIP</S.CopyToClipBoard>*/}
+        <code ref={preEl} data-lang={language}>{code}</code>
       </S.Block>
     );
   }
