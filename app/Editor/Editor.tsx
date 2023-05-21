@@ -23,7 +23,7 @@ export default function Editor() {
   const { currentSection, setActiveLessonSlug, setActiveLesson, activeLessonSlug } =
     React.useContext(EditorContext);
 
-  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([400, Infinity]);
+  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([500, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function Editor() {
         onChange={setPanelSizeHorizontal}
         sashRender={(_, active) => <SashContent active={active} type="vscode" />}
       >
-        <Pane minSize={50} maxSize="50%">
+        <Pane minSize={500} maxSize='50%'>
           <S.Section>
             <LessonHeader handleClick={toggleListOfContents} />
             <S.SectionContent>
