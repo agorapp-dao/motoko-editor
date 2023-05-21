@@ -8,6 +8,10 @@ export interface TLessonFile {
   language: string;
 }
 
+export interface TLessonHint {
+  markdown: string;
+}
+
 export interface TLesson {
   name: string;
   slug: string;
@@ -16,6 +20,8 @@ export interface TLesson {
 
   content?: TLessonContent[];
   files?: TLessonFile[];
+  solution?: TLessonHint;
+  hints?: TLessonHint[];
 }
 
 // main.mo, "code asdsadsa", type: ""

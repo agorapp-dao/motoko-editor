@@ -3,6 +3,7 @@ import { Box, Tab, Tabs } from '@mui/material';
 import { Markdown } from '@/app/Editor/Markdown/Markdown';
 import { EditorContext } from '@/app/context/EditorContext';
 import * as S from './SectionLesson.styled';
+import { Solution } from '@/app/Editor/Solution/Solution';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -23,6 +24,7 @@ function TabPanel(props: TabPanelProps) {
 export const SectionLesson = () => {
   const [lessonTab, setLessonTab] = useState(0);
   const [markdown, setMarkdown] = useState('');
+  const [solution, setSolution] = useState('');
   const { activeLessonSlug, activeLesson } = useContext(EditorContext);
 
   const changeTab = (event: React.SyntheticEvent, newValue: number) => {
@@ -42,6 +44,24 @@ export const SectionLesson = () => {
         })
         .then(text => {
           setMarkdown(text);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+
+    if (activeLesson?.solution) {
+      fetch(activeLesson.solution.markdown)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch ${activeLesson.solution?.markdown}, status: ${response.status}`,
+            );
+          }
+          return response.text();
+        })
+        .then(text => {
+          setSolution(text);
         })
         .catch(err => {
           console.error(err);
@@ -77,6 +97,7 @@ export const SectionLesson = () => {
         {activeLesson?.content && activeLesson?.content.length === 1 && (
           <Markdown>{markdown}</Markdown>
         )}
+        {solution && <Solution content={solution} />}
       </Box>
     </div>
   );
