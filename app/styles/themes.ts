@@ -18,6 +18,7 @@ export const theme = {
   intenseText: palette.white,
   linkHover: palette.primary,
   blockBg: palette.darkLighterBg,
+  lessonLinkHover: rgba(palette.secondary, 0.7),
 };
 
 export const muiDarkTheme = createTheme({

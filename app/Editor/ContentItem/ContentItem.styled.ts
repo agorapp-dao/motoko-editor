@@ -25,7 +25,12 @@ export const ActiveLink = styled.button`
   font-size: 1rem;
   width: 100%;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+
+  &:hover {
+    background: ${(p) => p.theme.lessonLinkHover};
+  }
 
   strong {
     font-weight: 300;
