@@ -8,6 +8,7 @@ export const Block = styled.div`
   border-radius: 5px;
   margin: 1rem 0;
   padding: 1rem;
+  overflow-y: scroll;
 `;
 
 export const Inline = styled.code`
