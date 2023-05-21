@@ -63,18 +63,25 @@ export const SectionLesson = () => {
         {/*<span>1/2</span>*/}
       </S.LessonTitle>
       <Box sx={{width: '100%', flex: '1 1 auto'}}>
-        <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-          <Tabs value={lessonTab} onChange={changeTab} centered>
-            <Tab label="Theory"/>
-            <Tab label="Exercise"/>
-          </Tabs>
-        </Box>
-        <TabPanel value={lessonTab} index={0}>
+        {activeLesson?.content && activeLesson?.content.length > 1 && (
+          <>
+            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+              <Tabs value={lessonTab} onChange={changeTab} centered>
+                {activeLesson.content.map((item) => (
+                  <Tab key={item.tab} label={item.tab} />
+                ))}
+              </Tabs>
+            </Box>
+            {activeLesson.content.map((item, index) => (
+              <TabPanel value={lessonTab} index={index} key={index}>
+                <Markdown>{markdown}</Markdown>
+              </TabPanel>
+            ))}
+          </>
+        )}
+        {activeLesson?.content && activeLesson?.content.length === 1 && (
           <Markdown>{markdown}</Markdown>
-        </TabPanel>
-        <TabPanel value={lessonTab} index={1}>
-          Item Two
-        </TabPanel>
+        )}
       </Box>
     </div>
   );

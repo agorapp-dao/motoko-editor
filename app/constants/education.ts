@@ -4,7 +4,7 @@ export const DEMO_COURSE: TLesson[] = [
   {
     name: 'Basics',
     slug: 'basics',
-    content: [{tab: 'Theory', markdown: '/markdown1.md'}],
+    content: [{tab: 'Theory', markdown: '/markdown1.md'}, {tab: 'Theory2', markdown: '/markdown1.md'}],
     children: [{
       name: 'Printing values',
       slug: 'printing-values',

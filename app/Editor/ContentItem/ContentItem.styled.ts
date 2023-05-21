@@ -25,6 +25,7 @@ export const ActiveLink = styled.button`
   font-size: 1rem;
   width: 100%;
   cursor: pointer;
+  padding: 0.5rem;
 
   strong {
     font-weight: 300;
