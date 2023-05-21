@@ -1,21 +1,48 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { MonacoEditor } from '@/app/Editor/Monaco/MonacoEditor';
 import { EditorContext } from '@/app/context/EditorContext';
 
-const SAMPLE_CODE = `import D "mo:base/Debug";
-
-D.print(debug_show(("hello", 42, "world")));
-`;
+interface TEditorFile {
+  name: string;
+  content: string;
+  language: string;
+}
 
 export const SectionCode = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { instance } = useContext(EditorContext);
-  const [tabs, setTabs] = useState([
-    { name: 'Tab 1', content: SAMPLE_CODE },
-    { name: 'Tab 2', content: '2' },
-    { name: 'Tab 3', content: '3' },
-  ]);
+  const { instance, activeLessonSlug, activeLesson } = useContext(EditorContext);
+  const [tabs, setTabs] = useState<TEditorFile[]>([]);
+
+  useEffect(() => {
+    if (activeLesson?.files?.length) {
+      // TODO - use SWR, cache, etc. (or load outside of this component)
+      Promise.all(
+        activeLesson.files.map(file =>
+          fetch(file.path)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`Failed to fetch ${file.path}, status: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(content => {
+              const tabName = file.path.split('/').pop();
+              const tab: TEditorFile = {
+                name: tabName || '',
+                language: file.language,
+                content,
+              };
+              return tab;
+            }),
+        ),
+      )
+        .then(tabs => {
+          setTabs(tabs);
+        })
+        .catch(err => console.error(err));
+    }
+  }, [activeLessonSlug]);
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
     if (instance) {
@@ -44,7 +71,7 @@ export const SectionCode = () => {
           </Tabs>
         </Box>
       </Box>
-      <MonacoEditor language="motoko" value={tabs[activeTab].content} />
+      <MonacoEditor language={tabs[activeTab]?.language} value={tabs[activeTab]?.content} />
     </>
   );
 };
