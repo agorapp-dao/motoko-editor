@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Link from "next/link";
 
 type TProps = {
   level: number;
@@ -15,6 +14,7 @@ export const Wrapper = styled.div<TProps>`
 export const Row = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   color: ${(p) => p.theme.intenseText};
 `;
 
@@ -50,5 +50,7 @@ export const Number = styled.div`
 `;
 
 export const Name = styled.div<TProps>`
+  flex: 1 1 auto;
+  text-align: left;
   
 `;

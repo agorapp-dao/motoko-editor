@@ -17,6 +17,7 @@ import { SectionTree } from '@/app/Editor/Section/Tree/SectionTree';
 import { ContentItem } from '@/app/Editor/ContentItem/ContentItem';
 import { DEMO_COURSE } from '@/app/constants/education';
 import findLessonRecursively from '@/app/utils/findLesson';
+import {ContentLevel} from "@/app/Editor/ContentItem/ContentLevel";
 
 export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
@@ -64,7 +65,7 @@ export default function Editor() {
               <Fade in={showListOfContents} timeout={500}>
                 <S.OverlayBox>
                   <S.ListOfContents>
-                    <ContentItem
+                    <ContentLevel
                       lessons={DEMO_COURSE}
                       level={1}
                       handleSelectLesson={handleSelectLesson}
