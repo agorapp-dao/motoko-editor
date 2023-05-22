@@ -3,7 +3,7 @@ language and how to use it to build programs on the Internet Computer.
 
 ## What is Internet Computer?
 
-The Internet Computer is a decentralized blockchain project developed by the DFINITY Foundation. The
+Internet Computer is a decentralized blockchain project developed by the DFINITY Foundation. The
 goal of the project is to provide a platform that hosts smart contracts and data in a decentralized
 way. What's unique about the Internet Computer is that the whole application, UI included, is hosted
 on the chain.
@@ -14,16 +14,15 @@ Motoko is a programming language designed specifically for the Internet Computer
 language with all the usual features you would expect from a modern programming language, such as
 strong typing, automatic memory management, generics, type inference and others.
 
-Motoko uses the **actor model**: a computational model for concurrent and distributed systems. Each
+For concurrency Motoko uses the **actor model**: a computational model for concurrent and distributed systems. Each
 actor is an autonomous entity which encapsulates state and behavior, and communicates with other
 actors exclusively through asynchronous message passing. You will learn more about actors later in
 the tutorial.
 
-Motoko is compiled into WebAssembly, that is then executed by the Internet Computer's virtual machine.
+Motoko is compiled into WebAssembly, which is then executed by the Internet Computer's virtual machine.
 This means that Motoko is not the only language that can be used to write smart contracts for the
-Internet Computer. However, Motoko has been designed with the specific requirements of the Internet
-Computer environment in mind, and as such is the recommended language for writing smart contracts
-on the platform.
+Internet Computer. However, Motoko has been designed with the specific requirements of the platform 
+in mind, making it the recommended language for writing smart contracts.
 
 ## How to use this tutorial
 

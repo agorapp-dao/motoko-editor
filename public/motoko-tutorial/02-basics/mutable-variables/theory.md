@@ -7,7 +7,7 @@ var x: Nat = 10;
 Here we have defined a variable `x` of type `Nat` (natural number) with an
 initial value of `10`.
 
-This variable is mutable, which means its value can be changed at any time. To change its value you can use `:=` operator:
+This variable is mutable, which means its value can be changed at any time. To change its value use the `:=` operator:
 
 ```motoko
 x := 20;

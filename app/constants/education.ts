@@ -42,21 +42,4 @@ export const DEMO_COURSE: TLesson[] = [
       },
     ],
   },
-  {
-    name: 'Types',
-    slug: 'types',
-    content: [{ tab: 'Theory', markdown: '/markdown.md' }],
-    children: [
-      {
-        name: 'Primitive types',
-        slug: 'primitive-types',
-        content: [{ tab: 'Theory', markdown: '/markdown.md' }],
-      },
-      {
-        name: 'Unit type',
-        slug: 'unit-type',
-        content: [{ tab: 'Theory', markdown: '/markdown.md' }],
-      },
-    ],
-  },
 ];
