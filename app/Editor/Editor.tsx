@@ -61,7 +61,7 @@ export default function Editor() {
         <Pane minSize={500} maxSize='50%'>
           <S.Section>
             {activeLesson && <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />}
-            <S.SectionContent>
+            <S.SectionContent style={{'overflow': showListOfContents ? 'hidden' : 'scroll'}}>
               <Fade in={showListOfContents} timeout={500}>
                 <S.OverlayBox>
                   <S.ListOfContents>
