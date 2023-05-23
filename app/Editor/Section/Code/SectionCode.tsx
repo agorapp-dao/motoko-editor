@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Tabs } from '@mui/material';
 import { MonacoEditor } from '@/app/Editor/Monaco/MonacoEditor';
 import { EditorContext } from '@/app/context/EditorContext';
+import {PanelTab} from "@/components/PanelTab/PanelTab";
 
 interface TEditorFile {
   name: string;
@@ -66,7 +67,7 @@ export const SectionCode = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={changeActiveTab}>
             {tabs.map((tab, index) => (
-              <Tab label={tab.name} key={index} value={index} />
+              <PanelTab label={tab.name} key={index} value={index} />
             ))}
           </Tabs>
         </Box>
