@@ -36,19 +36,19 @@ export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
             </S.P>
           );
         },
-        // a({ href, children }) {
-        //   return (
-        //     // eslint-disable-next-line react/jsx-no-useless-fragment
-        //     <>
-        //       {href
-        //       && (
-        //       <ExternalLink href={href}>
-        //         {String(children)}
-        //       </ExternalLink>
-        //       ) }
-        //     </>
-        //   );
-        // },
+        a({ href, children }) {
+          return (
+            // TODO - convert to component
+            <>
+              {href
+              && (
+              <S.HrefLink href={href} target="_blank">
+                {String(children)}
+              </S.HrefLink>
+              ) }
+            </>
+          );
+        },
       }}
     >
       {children}

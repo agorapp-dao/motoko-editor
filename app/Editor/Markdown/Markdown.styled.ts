@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from "next/link";
 
 
 export const Wrapper = styled.div`
@@ -27,4 +28,8 @@ export const P = styled.p`
   width: 100%;
   display: block;
   padding-top: 1rem;
+`;
+
+export const HrefLink = styled(Link)`
+  color: ${(p) => p.theme.link};
 `;

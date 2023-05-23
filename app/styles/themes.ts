@@ -19,6 +19,7 @@ export const theme = {
   linkHover: palette.primary,
   blockBg: palette.darkLighterBg,
   lessonLinkHover: rgba(palette.secondary, 0.7),
+  link: palette.primary,
 };
 
 export const muiDarkTheme = createTheme({
