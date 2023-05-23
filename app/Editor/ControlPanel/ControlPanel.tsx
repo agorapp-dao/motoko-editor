@@ -1,6 +1,6 @@
 import * as S from './ControlPanel.styled';
-import React, {useContext, useEffect, useState} from 'react';
-import {Button, CircularProgress, IconButton} from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, CircularProgress, IconButton } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
@@ -8,13 +8,14 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import mo from 'motoko/lib/versions/interpreter';
 import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { EditorContext } from '@/app/context/EditorContext';
-import {sleep} from "@/app/utils/sleep";
-import nextLesson from "@/app/utils/nextLesson";
-import {DEMO_COURSE} from "@/app/constants/education";
-import {TLesson} from "@/app/types/education";
+import { sleep } from '@/app/utils/sleep';
+import nextLesson from '@/app/utils/nextLesson';
+import { DEMO_COURSE } from '@/app/constants/education';
+import { TLesson } from '@/app/types/education';
 
 export const ControlPanel = () => {
-  const { instance, setOutput, activeLessonSlug, setActiveLessonSlug, setActiveLesson } = useContext(EditorContext);
+  const { instance, setOutput, activeLessonSlug, setActiveLessonSlug, setActiveLesson } =
+    useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextActive, setNextActive] = useState<TLesson | undefined>(undefined);
 
@@ -22,7 +23,6 @@ export const ControlPanel = () => {
     // TODO - reject running code
     setNextActive(undefined);
   }, [activeLessonSlug]);
-
 
   const handleRunCode = async () => {
     if (!instance) {
@@ -35,9 +35,6 @@ export const ControlPanel = () => {
     mo.loadPackage(motokoBasePackage);
     mo.write('Main.mo', instance.getValue());
     const res = mo.run('Main.mo');
-
-    // TODO remove sleep - only for demonstration purpose to show spinner
-    await sleep(2000);
 
     setRunning(false);
 
@@ -61,9 +58,9 @@ export const ControlPanel = () => {
       <Button
         onClick={handleRunCode}
         variant="contained"
-        startIcon={running
-          ? <CircularProgress color="secondary" size={14} />
-          : <PlayArrowRoundedIcon />}
+        startIcon={
+          running ? <CircularProgress color="secondary" size={14} /> : <PlayArrowRoundedIcon />
+        }
         sx={{ borderRadius: '1.6rem' }}
       >
         RUN
