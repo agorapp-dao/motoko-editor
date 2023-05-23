@@ -1,7 +1,7 @@
 To define a variable use the `var` keyword:
 
 ```motoko
-var x: Nat = 10;
+var x = 10;
 ```
 
 Here we have defined a variable `x` of type `Nat` (natural number) with an
