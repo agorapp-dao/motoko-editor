@@ -17,7 +17,7 @@ import { SectionTree } from '@/app/Editor/Section/Tree/SectionTree';
 import { ContentItem } from '@/app/Editor/ContentItem/ContentItem';
 import { DEMO_COURSE } from '@/app/constants/education';
 import findLessonRecursively from '@/app/utils/findLesson';
-import {ContentLevel} from "@/app/Editor/ContentItem/ContentLevel";
+import { ContentLevel } from '@/app/Editor/ContentItem/ContentLevel';
 
 export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
@@ -58,11 +58,13 @@ export default function Editor() {
         onChange={setPanelSizeHorizontal}
         sashRender={(_, active) => <SashContent active={active} type="vscode" />}
       >
-        <Pane minSize={500} maxSize='50%'>
+        <Pane minSize={500} maxSize="50%">
           <S.Section>
-            {activeLesson && <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />}
-            <S.SectionContent style={{'overflow': showListOfContents ? 'hidden' : 'scroll'}}>
-              <Fade in={showListOfContents} timeout={500}>
+            {activeLesson && (
+              <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />
+            )}
+            <S.SectionContent style={{ overflow: showListOfContents ? 'hidden' : 'scroll' }}>
+              <Fade in={showListOfContents} timeout={500} style={{ overflow: 'scroll' }}>
                 <S.OverlayBox>
                   <S.ListOfContents>
                     <ContentLevel
