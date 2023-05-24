@@ -20,6 +20,8 @@ export const theme = {
   blockBg: palette.darkLighterBg,
   lessonLinkHover: rgba(palette.secondary, 0.7),
   link: palette.primary,
+  // TODO:
+  mutedText: '#888',
 };
 
 export const muiDarkTheme = createTheme({

@@ -8,18 +8,21 @@ export const Wrapper = styled.div<TProps>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-left: ${(p) => p.level * 0.3}rem;
+  padding-left: ${p => p.level * 0.3}rem;
 `;
 
-export const Row = styled.div`
+interface RowProps {
+  noContent?: boolean;
+}
+
+export const Row = styled.div<RowProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: ${(p) => p.theme.intenseText};
+  color: ${p => (p.noContent ? p.theme.mutedText : p.theme.intenseText)};
 `;
 
 export const ActiveLink = styled.button`
-
   border: 0;
   background: transparent;
   font-size: 1rem;
@@ -29,19 +32,18 @@ export const ActiveLink = styled.button`
   border-radius: 0.5rem;
 
   &:hover {
-    background: ${(p) => p.theme.lessonLinkHover};
+    background: ${p => p.theme.lessonLinkHover};
   }
 
   strong {
     font-weight: 300;
   }
-  
+
   :hover {
     strong {
-      color: ${(p) => p.theme.linkHover};
+      color: ${p => p.theme.linkHover};
     }
   }
-  
 `;
 
 export const Number = styled.div`
@@ -52,5 +54,4 @@ export const Number = styled.div`
 export const Name = styled.div<TProps>`
   flex: 1 1 auto;
   text-align: left;
-  
 `;
