@@ -32,10 +32,12 @@ export const ContentItem: React.FC<TProps> = ({
 
   return (
     <>
-      <S.ActiveLink onClick={() => handleClick(item)}>
+      <S.ActiveLink>
         <S.Row noContent={noContent}>
           <S.Number>{baseIndex}</S.Number>
-          <S.Name level={level}>{item.name}</S.Name>
+          <S.Name level={level} href={`/editor2/demo/${item.slug}`}>
+            {item.name}
+          </S.Name>
           {item.children?.length && (
             <ExpandMoreIcon
               style={{

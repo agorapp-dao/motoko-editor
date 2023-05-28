@@ -1,4 +1,4 @@
-import { TLesson } from '@/app/types/education';
+import { TCourse, TLesson } from '@/app/types/education';
 
 export const DEMO_COURSE: TLesson[] = [
   {
@@ -179,3 +179,9 @@ export const DEMO_COURSE: TLesson[] = [
     ],
   },
 ];
+
+// TODO:
+export const DEMO_COURSE2: TCourse = {
+  slug: 'demo',
+  lessons: DEMO_COURSE,
+};

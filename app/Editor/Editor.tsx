@@ -35,52 +35,36 @@ export default function Editor() {
     setShowListOfContents(prev => !prev);
   };
 
-  const handleSelectLesson = (slug: string) => {
-    setActiveLessonSlug(slug);
-    const lesson = findLessonRecursively(DEMO_COURSE, slug);
-    if (lesson) {
-      setActiveLesson(lesson);
-    }
-    setShowListOfContents(false);
-  };
-
   useEffect(() => {
     // TODO - load data on server side at first load
-    handleSelectLesson('introduction');
+    // handleSelectLesson('introduction');
   }, []);
 
   return (
     <>
       <SectionTabs></SectionTabs>
+      <S.Section>
+        <LessonHeader title="aaaaaa" handleClick={toggleListOfContents} />
+        <S.SectionContent style={{ overflow: showListOfContents ? 'hidden' : 'scroll' }}>
+          <Fade in={showListOfContents} timeout={500} style={{ overflow: 'scroll' }}>
+            <S.OverlayBox>
+              <S.ListOfContents>
+                <ContentLevel lessons={DEMO_COURSE} level={1} handleSelectLesson={() => {}} />
+              </S.ListOfContents>
+            </S.OverlayBox>
+          </Fade>
+          {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
+          {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
+          {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
+        </S.SectionContent>
+      </S.Section>
       <SplitPane
         split="vertical"
         sizes={panelSizeHorizontal}
         onChange={setPanelSizeHorizontal}
         sashRender={(_, active) => <SashContent active={active} type="vscode" />}
       >
-        <Pane minSize={500} maxSize="50%">
-          <S.Section>
-            {activeLesson && (
-              <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />
-            )}
-            <S.SectionContent style={{ overflow: showListOfContents ? 'hidden' : 'scroll' }}>
-              <Fade in={showListOfContents} timeout={500} style={{ overflow: 'scroll' }}>
-                <S.OverlayBox>
-                  <S.ListOfContents>
-                    <ContentLevel
-                      lessons={DEMO_COURSE}
-                      level={1}
-                      handleSelectLesson={handleSelectLesson}
-                    />
-                  </S.ListOfContents>
-                </S.OverlayBox>
-              </Fade>
-              {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
-              {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
-              {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
-            </S.SectionContent>
-          </S.Section>
-        </Pane>
+        <Pane minSize={500} maxSize="50%"></Pane>
         <S.RightPane>
           <SplitPane
             split="horizontal"

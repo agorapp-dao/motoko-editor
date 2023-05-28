@@ -4,6 +4,7 @@ import { Markdown } from '@/app/Editor/Markdown/Markdown';
 import { EditorContext } from '@/app/context/EditorContext';
 import * as S from './SectionLesson.styled';
 import { Solution } from '@/app/Editor/Solution/Solution';
+import Link from 'next/link';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -22,78 +23,12 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export const SectionLesson = () => {
-  const [lessonTab, setLessonTab] = useState(0);
-  const [markdown, setMarkdown] = useState('');
-  const [solution, setSolution] = useState('');
-  const { activeLessonSlug, activeLesson } = useContext(EditorContext);
-
-  const changeTab = (event: React.SyntheticEvent, newValue: number) => {
-    setLessonTab(newValue);
-  };
-
-  // TODO - this is called twice on page load
-  useEffect(() => {
-    if (activeLesson?.content) {
-      // TODO - use SWR, cache, etc. (or load outside of this component)
-      fetch(activeLesson.content[0].markdown)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Markdown download failed! status: ${response.status}`);
-          }
-          return response.text();
-        })
-        .then(text => {
-          setMarkdown(text);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
-
-    if (activeLesson?.solution) {
-      fetch(activeLesson.solution.markdown)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(
-              `Failed to fetch ${activeLesson.solution?.markdown}, status: ${response.status}`,
-            );
-          }
-          return response.text();
-        })
-        .then(text => {
-          setSolution(text);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
-  }, [activeLessonSlug]);
-
-  // TODO - add loading state
+  const { content } = useContext(EditorContext);
 
   return (
     <div style={{ margin: '1.5rem' }}>
       <Box sx={{ width: '100%', flex: '1 1 auto' }}>
-        {activeLesson?.content && activeLesson?.content.length > 1 && (
-          <>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={lessonTab} onChange={changeTab} centered>
-                {activeLesson.content.map(item => (
-                  <Tab key={item.tab} label={item.tab} />
-                ))}
-              </Tabs>
-            </Box>
-            {activeLesson.content.map((item, index) => (
-              <TabPanel value={lessonTab} index={index} key={index}>
-                <Markdown>{markdown}</Markdown>
-              </TabPanel>
-            ))}
-          </>
-        )}
-        {activeLesson?.content && activeLesson?.content.length === 1 && (
-          <Markdown>{markdown}</Markdown>
-        )}
-        {solution && <Solution content={solution} />}
+        <Markdown>{content}</Markdown>
       </Box>
     </div>
   );

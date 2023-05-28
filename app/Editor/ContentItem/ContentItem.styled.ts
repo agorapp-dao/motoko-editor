@@ -51,7 +51,7 @@ export const Number = styled.div`
   text-align: left;
 `;
 
-export const Name = styled.div<TProps>`
+export const Name = styled.a<TProps>`
   flex: 1 1 auto;
   text-align: left;
 `;

@@ -24,4 +24,9 @@ export interface TLesson {
   hints?: TLessonHint[];
 }
 
+export interface TCourse {
+  slug: string;
+  lessons: TLesson[];
+}
+
 // main.mo, "code asdsadsa", type: ""
