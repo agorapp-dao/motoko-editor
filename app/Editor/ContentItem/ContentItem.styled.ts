@@ -12,14 +12,14 @@ export const Wrapper = styled.div<TProps>`
 `;
 
 interface RowProps {
-  noContent?: boolean;
+  $noContent?: boolean;
 }
 
 export const Row = styled.div<RowProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: ${p => (p.noContent ? p.theme.mutedText : p.theme.intenseText)};
+  color: ${p => (p.$noContent ? p.theme.mutedText : p.theme.intenseText)};
 `;
 
 export const ActiveLink = styled.button`
