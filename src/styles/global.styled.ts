@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import rgba from 'polished/lib/color/rgba';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -29,12 +30,21 @@ export const GlobalStyle = createGlobalStyle`
 
   /** Global definition of scrollbars */
   *::-webkit-scrollbar {
-    width: 0.5rem;
+    width: 0.75rem;
   }
 
   *::-webkit-scrollbar-thumb {
+    background: ${p => rgba(p.theme.scrollbar, 0.5)};
+    border-radius: 5px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
     background: ${p => p.theme.scrollbar};
     border-radius: 5px;
+    border: 3px solid transparent;
+    background-clip: content-box;
   }
 
   *::-webkit-scrollbar-track {
@@ -43,12 +53,21 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   *::-moz-scrollbar {
-    width: 0.5rem;
+    width: 0.75rem;
   }
 
   *::-moz-scrollbar-thumb {
+    background: ${p => rgba(p.theme.scrollbar, 0.5)};
+    border-radius: 5px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  *::-moz-scrollbar-thumb:hover {
     background: ${p => p.theme.scrollbar};
     border-radius: 5px;
+    border: 3px solid transparent;
+    background-clip: content-box;
   }
 
   *::-moz-scrollbar-track {
