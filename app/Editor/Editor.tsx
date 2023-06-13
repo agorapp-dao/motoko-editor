@@ -4,6 +4,8 @@ import * as S from './Editor.styled';
 import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Fade } from '@mui/material';
 import { SectionTabs } from '@/app/Editor/SectionTabs/SectionTabs';
 import { LessonHeader } from '@/app/Editor/LessonHeader/LessonHeader';
@@ -13,15 +15,21 @@ import { SectionCode } from '@/app/Editor/Section/Code/SectionCode';
 import { SectionLesson } from '@/app/Editor/Section/Lesson/SectionLesson';
 import { BottomPanel } from '@/app/Editor/Panel/BottomPanel/BottomPanel';
 import { EditorContext } from '@/app/context/EditorContext';
-import { SectionTree } from '@/app/Editor/Section/Tree/SectionTree';
-import { ContentItem } from '@/app/Editor/ContentItem/ContentItem';
 import { DEMO_COURSE } from '@/app/constants/education';
 import findLessonRecursively from '@/app/utils/findLesson';
 import {ContentLevel} from "@/app/Editor/ContentItem/ContentLevel";
+import { StorageService } from '../services/StorageService';
+import { SectionStorage } from './Section/SectionStorage/SectionStorage';
+import { SectionWallet } from './Section/SectionWallet/SectionWallet';
+import { EChains } from '../types/education';
+
+toast.configure();
+
+const StorageUploadInfo = ({swarmUrl}: {swarmUrl: string}) => <a href={swarmUrl} target="blank" rel="noreferrer">File saved on swarm:  click here to check it</a>
 
 export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const { currentSection, setActiveLessonSlug, setActiveLesson, activeLesson } =
+  const { instance, currentSection, setActiveLessonSlug, setActiveLesson, activeLesson, setWalletIdentity, walletIdentity, activeLessonSlug } =
     React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([500, Infinity]);
@@ -49,9 +57,58 @@ export default function Editor() {
     handleSelectLesson('introduction');
   }, []);
 
+  const handleSectionStorage = async() => {
+    try {
+      if(!instance) {
+        // TODO: fire toast message notifying the user that nothing happened because no editor instance was recognized (or alternative text message)
+        toast('Unrecognized IDE instance')
+        return
+      }
+      if(!walletIdentity.address) {
+        // todo: notify the user that they need to connect their wallet
+        toast('Please connect your wallet first. Go to the wallet tab')
+        return
+      }
+  
+      // console.log('wallet-identity: ', walletIdentity)
+      // console.log('activeLessonSlug ', activeLessonSlug)
+  
+      const swarmFileName = `${walletIdentity.address}-${activeLessonSlug}`
+  
+      const response = await StorageService.swarmUploadFile({
+        file: JSON.stringify(instance.getValue()),
+        fileName: swarmFileName,
+      })
+      toast.info(<StorageUploadInfo swarmUrl={response.swarmUrl} />)
+    } catch(e) {
+      toast('Something went wrong. Try to upload again.')
+    }
+  }
+
+  const handleSectionWallet = async() => {
+    try {
+      if (!window) {
+        console.log('no window');
+        toast('Something went wrong.')
+        return;
+      }
+      //@ts-ignore
+      if (!window === typeof 'undefined' && !window.ic) {
+        toast('Please install a supported ICP wallet (e.g.: plug)')
+        return;
+      }
+      const publicKey = await window.ic.plug.requestConnect();
+      setWalletIdentity({address: window.ic.plug.principalId, chain: EChains.ICP})
+      toast(`Wallet connected: ${ window.ic.plug.principalId}`)
+    } catch(e) {
+      console.log(e)
+      toast('Something went wrong.')
+    }
+  }
+
   return (
     <>
-      <SectionTabs></SectionTabs>
+      <SectionTabs />
       <SplitPane
         split="vertical"
         sizes={panelSizeHorizontal}
@@ -75,7 +132,8 @@ export default function Editor() {
               </Fade>
               {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
               {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
-              {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
+              {currentSection === EEditorSectionType.SHARE && <SectionStorage handleSectionStorage={handleSectionStorage} />}
+              {currentSection === EEditorSectionType.WALLET && <SectionWallet handleSectionWallet={handleSectionWallet} />}
             </S.SectionContent>
           </S.Section>
         </Pane>

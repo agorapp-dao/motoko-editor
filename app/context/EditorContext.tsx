@@ -3,7 +3,7 @@
 import {useState, createContext} from 'react';
 import type {editor as monacoEditor} from 'monaco-editor';
 import {EEditorSectionType} from "@/app/constants/editor";
-import {TLesson} from "@/app/types/education";
+import {TLesson, TWalletIdentity} from "@/app/types/education";
 
 export type TEditorContext = {
   instance: monacoEditor.IStandaloneCodeEditor | undefined;
@@ -18,6 +18,8 @@ export type TEditorContext = {
   setActiveLessonSlug: (slug: string) => void;
   activeLesson: TLesson | undefined
   setActiveLesson: (lesson: TLesson) => void;
+  walletIdentity: TWalletIdentity,
+  setWalletIdentity: (walletIdentity: TWalletIdentity) => void;
 };
 
 const initialState: TEditorContext = {
@@ -33,6 +35,11 @@ const initialState: TEditorContext = {
   setActiveLessonSlug: (slug: string) => {},
   activeLesson: undefined,
   setActiveLesson: (lesson: TLesson) => {},
+  walletIdentity: {
+    address: undefined,
+    chain: undefined
+  },
+  setWalletIdentity: (walletIdentity: TWalletIdentity) => {},
 };
 
 const EditorContext = createContext<TEditorContext>(initialState);
@@ -48,6 +55,8 @@ const EditorProvider = ({children}: TProps) => {
   const [fontSize, setFontSize] = useState(initialState.fontSize);
   const [activeLessonSlug, setActiveLessonSlug] = useState(initialState.activeLessonSlug);
   const [activeLesson, setActiveLesson] = useState(initialState.activeLesson);
+  const [walletIdentity, setWalletIdentity] = useState(initialState.walletIdentity);
+
 
   return (
     <EditorContext.Provider
@@ -64,6 +73,8 @@ const EditorProvider = ({children}: TProps) => {
         setActiveLessonSlug,
         activeLesson,
         setActiveLesson,
+        walletIdentity,
+        setWalletIdentity
       }}
     >
       {children}

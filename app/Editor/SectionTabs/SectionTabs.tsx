@@ -4,6 +4,7 @@ import {useContext, useState} from "react";
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import BackupIcon from '@mui/icons-material/Backup';
+import WalletIcon from '@mui/icons-material/Wallet';
 import {styled} from '@mui/material/styles';
 import {EEditorSectionType} from "@/app/constants/editor";
 import * as S from './SectionTabs.styled';
@@ -57,7 +58,7 @@ export const SectionTabs = () => {
     <S.Wrapper>
       <S.Logo>
         <Icon sx={{fontSize: 40}} style={{width: '100%', lineHeight: 0}}>
-          <img src="/logoAgorApp.svg" height={35} width={35}/>
+          <img src="/logoAgorApp.svg" height={35} width={35} alt='agorapp-logo'/>
         </Icon>
       </S.Logo>
       <S.Tabs>
@@ -73,6 +74,7 @@ export const SectionTabs = () => {
             <AntTab icon={<ImportContactsIcon/>} value={EEditorSectionType.LESSON}/>
             {/*<AntTab icon={<FolderOpenIcon/>} value={EEditorSectionType.TREE}/>*/}
             <AntTab icon={<BackupIcon/>} value={EEditorSectionType.SHARE}/>
+            <AntTab icon={<WalletIcon/>} value={EEditorSectionType.WALLET}/>
           </Tabs>
         </Box>
       </S.Tabs>

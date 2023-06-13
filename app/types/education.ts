@@ -25,3 +25,12 @@ export interface TLesson {
 }
 
 // main.mo, "code asdsadsa", type: ""
+
+export enum EChains {
+  ICP = "icp",
+}
+
+export type TWalletIdentity  = {
+  address: string | undefined;
+  chain: EChains | undefined;
+}
