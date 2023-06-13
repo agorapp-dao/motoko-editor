@@ -3,7 +3,7 @@
 import * as S from './Editor.styled';
 import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fade } from '@mui/material';
 import { SectionTabs } from '@/src/features/editor/components/Editor/SectionTabs/SectionTabs';
 import { LessonHeader } from '@/src/features/editor/components/Editor/LessonHeader/LessonHeader';
@@ -65,8 +65,8 @@ export default function Editor() {
             {activeLesson && (
               <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />
             )}
-            <S.SectionContent style={{ overflow: showListOfContents ? 'hidden' : 'scroll' }}>
-              <Fade in={showListOfContents} timeout={500} style={{ overflow: 'scroll' }}>
+            <S.SectionContent style={{ overflowY: showListOfContents ? 'hidden' : 'auto' }}>
+              <Fade in={showListOfContents} timeout={500} style={{ overflowY: 'auto' }}>
                 <S.OverlayBox>
                   <S.ListOfContents>
                     <ContentLevel

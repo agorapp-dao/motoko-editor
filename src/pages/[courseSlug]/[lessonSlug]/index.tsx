@@ -3,16 +3,15 @@ import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'styled-components';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { muiDarkTheme, theme } from '@/src/styles/themes';
-import { EditorContext, EditorProvider } from '@/src/features/editor/context/EditorContext';
+import { EditorProvider } from '@/src/features/editor/context/EditorContext';
 import { CssBaseline } from '@mui/material';
-import '@/src/styles/globals.css';
 import * as S from '@/src/styles/global.styled';
 import Editor from '@/src/features/editor/components/Editor/Editor';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { MOTOKO_TUTORIAL_COURSE } from '@/src/features/editor/constants/motokoTutorial';
 import findLessonRecursively from '@/src/utils/findLesson';
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { GlobalStyle } from '@/src/styles/global.styled';
 
 type TEditorPageProps = {
   lessonSlug: string | undefined;
@@ -38,6 +37,7 @@ export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditor
         <MuiThemeProvider theme={muiDarkTheme}>
           <CssBaseline />
           <ThemeProvider theme={theme}>
+            <GlobalStyle />
             <S.Main>
               <Editor />
             </S.Main>

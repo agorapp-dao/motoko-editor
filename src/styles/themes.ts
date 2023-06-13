@@ -9,6 +9,7 @@ const palette = {
   intenseGray: '#3A384A',
   primary: '#00CB79',
   secondary: '#363445',
+  text: '#cccccc',
 };
 
 export const theme = {
@@ -20,8 +21,11 @@ export const theme = {
   blockBg: palette.darkLighterBg,
   lessonLinkHover: rgba(palette.secondary, 0.7),
   link: palette.primary,
+  scrollbar: palette.intenseGray,
   // TODO:
   mutedText: '#888',
+  text: palette.text,
+  sashHover: palette.primary,
 };
 
 export const muiDarkTheme = createTheme({
