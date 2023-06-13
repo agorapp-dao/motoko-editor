@@ -8,6 +8,7 @@ import { useText } from '@/src/hooks/useText';
 import { useJson } from '@/src/hooks/useJson';
 import { TCourse } from '@/src/types/education';
 import findLessonRecursively from '@/src/utils/findLesson';
+import { courseService } from '@/src/features/editor/services/courseService';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -27,8 +28,8 @@ function TabPanel(props: TabPanelProps) {
 
 export const SectionLesson = () => {
   const [lessonTab, setLessonTab] = useState(0);
-  const course = useJson<TCourse>('/api/course/motoko-tutorial');
-  const { activeLessonSlug } = useContext(EditorContext);
+  const { courseSlug, activeLessonSlug } = useContext(EditorContext);
+  const course = courseService.useCourse(courseSlug);
   const activeLesson = findLessonRecursively(course.data?.lessons || [], activeLessonSlug || '');
   const markdown = useText(activeLesson?.content && activeLesson.content[lessonTab].markdown);
   const solutionMarkdown = useText(activeLesson?.solution?.markdown);

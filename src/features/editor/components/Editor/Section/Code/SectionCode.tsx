@@ -8,11 +8,12 @@ import { TCourse, TLesson } from '@/src/types/education';
 import useSWR from 'swr';
 import { useJson } from '@/src/hooks/useJson';
 import findLessonRecursively from '@/src/utils/findLesson';
+import { courseService } from '@/src/features/editor/services/courseService';
 
 export const SectionCode = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { instance, activeLessonSlug } = useContext(EditorContext);
-  const course = useJson<TCourse>('/api/course/motoko-tutorial');
+  const { courseSlug, activeLessonSlug } = useContext(EditorContext);
+  const course = courseService.useCourse(courseSlug);
   const activeLesson = findLessonRecursively(course.data?.lessons || [], activeLessonSlug || '');
   const file = useText(activeLesson?.files && activeLesson.files[activeTab].path);
 

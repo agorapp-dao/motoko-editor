@@ -8,16 +8,16 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import mo from 'motoko/lib/versions/interpreter';
 import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
-import { sleep } from '@/src/utils/sleep';
 import nextLesson from '@/src/utils/nextLesson';
-import { TCourse, TLesson } from '@/src/types/education';
-import { useJson } from '@/src/hooks/useJson';
+import { TLesson } from '@/src/types/education';
+import { courseService } from '@/src/features/editor/services/courseService';
 
 export const ControlPanel = () => {
-  const { instance, setOutput, activeLessonSlug, setActiveLessonSlug } = useContext(EditorContext);
+  const { instance, setOutput, courseSlug, activeLessonSlug, setActiveLessonSlug } =
+    useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextActive, setNextActive] = useState<TLesson | undefined>(undefined);
-  const course = useJson<TCourse>('/api/course/motoko-tutorial');
+  const course = courseService.useCourse(courseSlug);
 
   useEffect(() => {
     // TODO - reject running code

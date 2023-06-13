@@ -16,15 +16,25 @@ import { useContext, useEffect, useState } from 'react';
 
 type TEditorPageProps = {
   lessonSlug: string | undefined;
+  courseSlug: string;
   fallback: { [key: string]: any };
 };
 
-export default function EditorPage({ lessonSlug, fallback }: TEditorPageProps) {
+export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditorPageProps) {
   const [activeLessonSlug, setActiveLessonSlug] = useState(lessonSlug);
+  const router = useRouter();
+
+  useEffect(() => {
+    setActiveLessonSlug(router.query.lessonSlug as string);
+  }, [router.query.lessonSlug]);
 
   return (
     <SWRConfig value={{ fallback }}>
-      <EditorProvider activeLessonSlug={activeLessonSlug} setActiveLessonSlug={setActiveLessonSlug}>
+      <EditorProvider
+        courseSlug={courseSlug}
+        activeLessonSlug={activeLessonSlug}
+        setActiveLessonSlug={setActiveLessonSlug}
+      >
         <MuiThemeProvider theme={muiDarkTheme}>
           <CssBaseline />
           <ThemeProvider theme={theme}>
@@ -40,7 +50,7 @@ export default function EditorPage({ lessonSlug, fallback }: TEditorPageProps) {
 
 type TEditorPageParams = {
   courseSlug: string;
-  lessonSlugs: string[];
+  lessonSlug: string;
 };
 
 export async function getServerSideProps(
@@ -54,14 +64,13 @@ export async function getServerSideProps(
 
   fallback['/api/course/motoko-tutorial'] = MOTOKO_TUTORIAL_COURSE;
 
-  const lesson = findLessonRecursively(
-    MOTOKO_TUTORIAL_COURSE.lessons,
-    ctx.params.lessonSlugs[ctx.params.lessonSlugs.length - 1],
-  );
+  const lesson = findLessonRecursively(MOTOKO_TUTORIAL_COURSE.lessons, ctx.params.lessonSlug);
   if (lesson?.content) {
     const content = await fs.readFile('./public' + lesson.content[0].markdown, 'utf-8');
     fallback[lesson.content[0].markdown] = content;
   }
 
-  return { props: { lessonSlug: lesson?.slug, fallback } };
+  return {
+    props: { courseSlug: ctx.params.courseSlug, lessonSlug: ctx.params.lessonSlug, fallback },
+  };
 }

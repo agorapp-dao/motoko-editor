@@ -15,24 +15,16 @@ import { BottomPanel } from '@/src/features/editor/components/Editor/Panel/Botto
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import findLessonRecursively from '@/src/utils/findLesson';
 import { ContentLevel } from '@/src/features/editor/components/Editor/ContentItem/ContentLevel';
-import { useJson } from '@/src/hooks/useJson';
-import { TCourse } from '@/src/types/education';
-import { useRouter } from 'next/router';
+import { courseService } from '@/src/features/editor/services/courseService';
 
 export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const { currentSection, activeLessonSlug, setActiveLessonSlug } = React.useContext(EditorContext);
+  const { currentSection, courseSlug, activeLessonSlug, setActiveLessonSlug } =
+    React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([500, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
-  const course = useJson<TCourse>('/api/course/motoko-tutorial');
-
-  const router = useRouter();
-
-  useEffect(() => {
-    const lessonSlugs = router.query.lessonSlugs || ([] as string[]);
-    setActiveLessonSlug(lessonSlugs[lessonSlugs.length - 1]);
-  }, [router.query]);
+  const course = courseService.useCourse(courseSlug);
 
   useEffect(() => {
     setShowListOfContents(false);

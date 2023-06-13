@@ -14,6 +14,7 @@ export type TEditorContext = {
   setCurrentSection: (section: EEditorSectionType) => void;
   fontSize: number;
   setFontSize: (size: number) => void;
+  courseSlug: string | undefined;
   activeLessonSlug: string | undefined;
   setActiveLessonSlug: (slug: string) => void;
 };
@@ -27,6 +28,7 @@ const initialState: TEditorContext = {
   setCurrentSection: (section: EEditorSectionType) => {},
   fontSize: 14,
   setFontSize: (size: number) => {},
+  courseSlug: undefined,
   activeLessonSlug: undefined,
   setActiveLessonSlug: (slug: string) => {},
 };
@@ -34,12 +36,18 @@ const initialState: TEditorContext = {
 const EditorContext = createContext<TEditorContext>(initialState);
 
 type TProps = {
+  courseSlug: string;
   activeLessonSlug: string | undefined;
   setActiveLessonSlug: (slug: string) => void;
   children: JSX.Element | JSX.Element[];
 };
 
-const EditorProvider = ({ children, activeLessonSlug, setActiveLessonSlug }: TProps) => {
+const EditorProvider = ({
+  courseSlug,
+  activeLessonSlug,
+  setActiveLessonSlug,
+  children,
+}: TProps) => {
   const [instance, setInstance] = useState(initialState.instance);
   const [output, setOutput] = useState(initialState.output);
   const [currentSection, setCurrentSection] = useState(initialState.currentSection);
@@ -56,6 +64,7 @@ const EditorProvider = ({ children, activeLessonSlug, setActiveLessonSlug }: TPr
         setCurrentSection,
         fontSize,
         setFontSize,
+        courseSlug,
         activeLessonSlug,
         setActiveLessonSlug,
       }}
