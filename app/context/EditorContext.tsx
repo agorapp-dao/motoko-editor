@@ -1,13 +1,13 @@
 'use client';
 
 import {useState, createContext} from 'react';
-import type {editor as monacoEditor} from 'monaco-editor';
+import type {editor as TMonacoEditor} from 'monaco-editor';
 import {EEditorSectionType} from "@/app/constants/editor";
 import {TLesson} from "@/app/types/education";
 
 export type TEditorContext = {
-  instance: monacoEditor.IStandaloneCodeEditor | undefined;
-  setInstance: (instance: monacoEditor.IStandaloneCodeEditor) => void;
+  instance: TMonacoEditor.IStandaloneCodeEditor | undefined;
+  setInstance: (instance: TMonacoEditor.IStandaloneCodeEditor) => void;
   output: string;
   setOutput: (text: string) => void;
   currentSection: EEditorSectionType;
@@ -22,7 +22,7 @@ export type TEditorContext = {
 
 const initialState: TEditorContext = {
   instance: undefined,
-  setInstance: (instance: monacoEditor.IStandaloneCodeEditor) => {},
+  setInstance: (instance: TMonacoEditor.IStandaloneCodeEditor) => {},
   output: "",
   setOutput: (text: string) => {},
   currentSection: EEditorSectionType.LESSON,

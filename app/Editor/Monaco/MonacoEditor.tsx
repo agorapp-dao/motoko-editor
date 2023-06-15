@@ -11,7 +11,7 @@ export interface MonacoEditorProps {
 
 export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
   const divEl = useRef<HTMLDivElement>(null);
-  const { fontSize, setInstance } = useContext(EditorContext);
+  const { fontSize, instance, setInstance } = useContext(EditorContext);
 
   useEffect(() => {
     let isMounted = true;
@@ -39,6 +39,8 @@ export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
     };
     // TODO: chci mit v deps fontSize, value a language?
   }, [divEl, language, value, fontSize]);
+
+
 
   return <S.Code ref={divEl} />;
 };

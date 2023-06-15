@@ -1,5 +1,5 @@
 import * as S from './ControlPanel.styled';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button, IconButton } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
