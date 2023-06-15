@@ -30,7 +30,7 @@ export default function Editor() {
 
   useEffect(() => {
     fullscreen ? handleFullscreen.enter() : handleFullscreen.exit();
-  }, [fullscreen, handleFullscreen]);
+  }, [fullscreen]);
 
   useEffect(() => {
     setShowListOfContents(false);
