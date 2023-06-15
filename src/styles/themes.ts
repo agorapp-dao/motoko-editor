@@ -9,7 +9,7 @@ const palette = {
   intenseGray: '#3A384A',
   primary: '#00CB79',
   secondary: '#363445',
-  text: '#cccccc',
+  text: '#a2a2a2',
 };
 
 export const theme = {
@@ -59,6 +59,14 @@ export const muiDarkTheme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(','),
+    h2: {
+      fontSize: 25,
+      fontWeight: 'bold',
+    },
+    subtitle1: {
+      fontSize: 20,
+      color: theme.text,
+    },
   },
 });
 

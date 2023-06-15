@@ -2,7 +2,6 @@ import { Box, Icon, IconButton, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
 import { useContext, useState } from 'react';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import BackupIcon from '@mui/icons-material/Backup';
 import { styled } from '@mui/material/styles';
 import { EEditorSectionType } from '@/src/features/editor/constants/editor';
@@ -10,6 +9,8 @@ import * as S from './SectionTabs.styled';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { SettingsDialog } from '@/src/features/editor/components/Editor/SettingsDialog/SettingsDialog';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
+import { AgorAppIcon } from '@/src/features/editor/constants/assets';
+import { AuthorDialog } from '@/src/components/AuthorDialog/AuthorDialog';
 
 interface StyledTabProps {
   icon?: string | React.ReactElement;
@@ -40,18 +41,18 @@ const AntTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} /
 export const SectionTabs = () => {
   const { currentSection, setCurrentSection } = useContext(EditorContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [authorDialogOpen, setAuthorDialogOpen] = useState(false);
 
   const changeSection = (event: React.SyntheticEvent, section: EEditorSectionType) => {
     setCurrentSection(section);
   };
 
-  const openSettingsDialog = () => {};
-
   return (
     <S.Wrapper>
-      <S.Logo>
+      <AuthorDialog open={authorDialogOpen} handleClose={() => setAuthorDialogOpen(false)} />
+      <S.Logo onClick={() => setAuthorDialogOpen(state => !state)}>
         <Icon sx={{ fontSize: 40 }} style={{ width: '100%', lineHeight: 0 }}>
-          <img src="/logoAgorApp.svg" height={35} width={35} />
+          <img src={AgorAppIcon} height={35} width={35} alt="AgorApp" />
         </Icon>
       </S.Logo>
       <S.Tabs>
