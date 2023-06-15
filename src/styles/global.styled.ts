@@ -23,6 +23,13 @@ export const GlobalStyle = createGlobalStyle`
   .split-sash-content.split-sash-content-vscode.split-sash-content-active {
     background-color: ${p => p.theme.sashHover} !important;
   }
+  
+  .fullscreen {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
 
   #__next {
     height: 100%;

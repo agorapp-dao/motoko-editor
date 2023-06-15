@@ -10,7 +10,7 @@ import Editor from '@/src/features/editor/components/Editor/Editor';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { MOTOKO_TUTORIAL_COURSE } from '@/src/features/editor/constants/motokoTutorial';
 import findLessonRecursively from '@/src/utils/findLesson';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GlobalStyle } from '@/src/styles/global.styled';
 import { useRouter } from 'next/router';
 

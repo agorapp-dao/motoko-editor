@@ -16,15 +16,21 @@ import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import findLessonRecursively from '@/src/utils/findLesson';
 import { ContentLevel } from '@/src/features/editor/components/Editor/ContentItem/ContentLevel';
 import { courseService } from '@/src/features/editor/services/courseService';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 export default function Editor() {
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const { currentSection, courseSlug, activeLessonSlug, setActiveLessonSlug } =
+  const { currentSection, courseSlug, activeLessonSlug, setActiveLessonSlug, fullscreen } =
     React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([500, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
   const course = courseService.useCourse(courseSlug);
+  const handleFullscreen = useFullScreenHandle();
+
+  useEffect(() => {
+    fullscreen ? handleFullscreen.enter() : handleFullscreen.exit();
+  }, [fullscreen, handleFullscreen]);
 
   useEffect(() => {
     setShowListOfContents(false);
@@ -52,7 +58,7 @@ export default function Editor() {
   const activeLesson = findLessonRecursively(course.data.lessons, activeLessonSlug || '');
 
   return (
-    <>
+    <FullScreen handle={handleFullscreen} className="fullscreen">
       <SectionTabs></SectionTabs>
       <SplitPane
         split="vertical"
@@ -100,6 +106,6 @@ export default function Editor() {
           </SplitPane>
         </S.RightPane>
       </SplitPane>
-    </>
+    </FullScreen>
   );
 }

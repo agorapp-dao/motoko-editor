@@ -17,6 +17,8 @@ export type TEditorContext = {
   courseSlug: string | undefined;
   activeLessonSlug: string | undefined;
   setActiveLessonSlug: (slug: string) => void;
+  fullscreen: boolean;
+  setFullscreen: (fullscreen: boolean) => void;
 };
 
 const initialState: TEditorContext = {
@@ -31,6 +33,8 @@ const initialState: TEditorContext = {
   courseSlug: undefined,
   activeLessonSlug: undefined,
   setActiveLessonSlug: (slug: string) => {},
+  fullscreen: false,
+  setFullscreen: (fullscreen: boolean) => {},
 };
 
 const EditorContext = createContext<TEditorContext>(initialState);
@@ -52,6 +56,7 @@ const EditorProvider = ({
   const [output, setOutput] = useState(initialState.output);
   const [currentSection, setCurrentSection] = useState(initialState.currentSection);
   const [fontSize, setFontSize] = useState(initialState.fontSize);
+  const [fullscreen, setFullscreen] = useState(initialState.fullscreen);
 
   return (
     <EditorContext.Provider
@@ -67,6 +72,8 @@ const EditorProvider = ({
         courseSlug,
         activeLessonSlug,
         setActiveLessonSlug,
+        fullscreen,
+        setFullscreen,
       }}
     >
       {children}
