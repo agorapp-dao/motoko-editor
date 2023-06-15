@@ -109,13 +109,11 @@ const GeneralDialog: React.FC<Props> = ({
           fontSize="h4.fontSize"
           fontWeight="h4.fontWeight"
           justifyContent={size === 'small' ? 'center' : 'space-between'}
-          minHeight={!isSmall ? '40px' : ''}
-          paddingTop={isSmall ? 4 : ''}
-          style={{ width: '100%' }}
+          style={{ width: '100%', paddingTop: '0.5rem', paddingRight: '0.5rem' }}
         >
           <>
             <Box flexGrow={1}>{title}</Box>
-            {onClose && !isSmall && (
+            {onClose && (
               <IconButton aria-label="Close modal" disabled={isFetching} onClick={onClose}>
                 <CloseIcon />
               </IconButton>
@@ -135,22 +133,14 @@ const GeneralDialog: React.FC<Props> = ({
       </DialogTitle>
       {header}
       {children && (
-        <Box
-          overflow={isSmall ? 'unset' : ''}
-          paddingBottom={isSmall ? 4 : ''}
-          paddingTop={isSmall ? 1 : ''}
-        >
+        <Box overflow={isSmall ? 'unset' : ''}>
           <DialogContent style={{ height: 'inherit', position: 'relative' }}>
             {children}
           </DialogContent>
         </Box>
       )}
       {actions && (
-        <Box
-          justifyContent={isSmall ? 'center' : ''}
-          paddingBottom={isSmall ? 7 : ''}
-          paddingTop={isSmall ? 1 : ''}
-        >
+        <Box justifyContent={isSmall ? 'center' : ''}>
           <DialogActions>{actions}</DialogActions>
         </Box>
       )}
