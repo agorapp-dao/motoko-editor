@@ -1,6 +1,5 @@
 import useSWR from 'swr';
 import { MOTOKO_TUTORIAL_COURSE } from '@/src/features/editor/constants/motokoTutorial';
-import { sleep } from '@/src/utils/sleep';
 
 const fetcher = async (path: string) => {
   if (path === '/api/course/motoko-tutorial') {

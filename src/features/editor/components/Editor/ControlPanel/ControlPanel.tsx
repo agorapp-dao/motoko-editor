@@ -8,7 +8,6 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import mo from 'motoko/lib/versions/interpreter';
 import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
-import nextLesson from '@/src/utils/nextLesson';
 import { TLesson } from '@/src/types/education';
 import { courseService } from '@/src/features/editor/services/courseService';
 
@@ -16,13 +15,16 @@ export const ControlPanel = () => {
   const { instance, setOutput, courseSlug, activeLessonSlug, setActiveLessonSlug } =
     useContext(EditorContext);
   const [running, setRunning] = useState(false);
-  const [nextActive, setNextActive] = useState<TLesson | undefined>(undefined);
+  const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
+  const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
   const course = courseService.useCourse(courseSlug);
 
   useEffect(() => {
-    // TODO - reject running code
-    setNextActive(undefined);
-  }, [activeLessonSlug]);
+    if (course.data && activeLessonSlug) {
+      setNextLesson(courseService.nextLesson(course.data, activeLessonSlug));
+      setPrevLesson(courseService.prevLesson(course.data, activeLessonSlug));
+    }
+  }, [activeLessonSlug, course]);
 
   const handleRunCode = async () => {
     if (!instance) {
@@ -30,7 +32,6 @@ export const ControlPanel = () => {
     }
 
     setRunning(true);
-    setNextActive(undefined);
     mo.clearPackages();
     mo.loadPackage(motokoBasePackage);
     mo.write('Main.mo', instance.getValue());
@@ -38,18 +39,18 @@ export const ControlPanel = () => {
 
     setRunning(false);
 
-    if (activeLessonSlug) {
-      if (course.data) {
-        const next = nextLesson(course.data.lessons, activeLessonSlug);
-        setNextActive(next);
-      }
-    }
     setOutput(res.stdout + res.stderr);
   };
 
   const handleGoToNext = () => {
-    if (nextActive) {
-      setActiveLessonSlug(nextActive.slug);
+    if (nextLesson) {
+      setActiveLessonSlug(nextLesson.slug);
+    }
+  };
+
+  const handleGoToPrev = () => {
+    if (prevLesson) {
+      setActiveLessonSlug(prevLesson.slug);
     }
   };
 
@@ -68,14 +69,14 @@ export const ControlPanel = () => {
       <IconButton aria-label="delete">
         <DeleteOutlineRoundedIcon />
       </IconButton>
-      <IconButton aria-label="back">
+      <IconButton aria-label="back" onClick={handleGoToPrev} disabled={!prevLesson || running}>
         <NavigateBeforeRoundedIcon />
       </IconButton>
       <Button
         onClick={handleGoToNext}
         variant="contained"
-        disabled={!nextActive}
-        color={nextActive ? 'primary' : 'secondary'}
+        disabled={!nextLesson || running}
+        color={nextLesson ? 'primary' : 'secondary'}
         endIcon={<NavigateNextRoundedIcon />}
         sx={{ borderRadius: '1.6rem' }}
       >
