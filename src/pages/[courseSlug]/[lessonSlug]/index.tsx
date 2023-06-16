@@ -9,10 +9,10 @@ import * as S from '@/src/styles/global.styled';
 import Editor from '@/src/features/editor/components/Editor/Editor';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { MOTOKO_TUTORIAL_COURSE } from '@/src/features/editor/constants/motokoTutorial';
-import findLessonRecursively from '@/src/utils/findLesson';
 import React, { useEffect, useState } from 'react';
 import { GlobalStyle } from '@/src/styles/global.styled';
 import { useRouter } from 'next/router';
+import { courseService } from '@/src/features/editor/services/courseService';
 
 type TEditorPageProps = {
   lessonSlug: string | undefined;
@@ -65,7 +65,7 @@ export async function getServerSideProps(
 
   fallback['/api/course/motoko-tutorial'] = MOTOKO_TUTORIAL_COURSE;
 
-  const lesson = findLessonRecursively(MOTOKO_TUTORIAL_COURSE.lessons, ctx.params.lessonSlug);
+  const lesson = courseService.findLesson(MOTOKO_TUTORIAL_COURSE, ctx.params.lessonSlug);
   if (lesson?.content) {
     const content = await fs.readFile('./public' + lesson.content[0].markdown, 'utf-8');
     fallback[lesson.content[0].markdown] = content;

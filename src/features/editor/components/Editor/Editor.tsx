@@ -13,7 +13,6 @@ import { SectionCode } from '@/src/features/editor/components/Editor/Section/Cod
 import { SectionLesson } from '@/src/features/editor/components/Editor/Section/Lesson/SectionLesson';
 import { BottomPanel } from '@/src/features/editor/components/Editor/Panel/BottomPanel/BottomPanel';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
-import findLessonRecursively from '@/src/utils/findLesson';
 import { ContentLevel } from '@/src/features/editor/components/Editor/ContentItem/ContentLevel';
 import { courseService } from '@/src/features/editor/services/courseService';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
@@ -43,7 +42,7 @@ export default function Editor() {
   const handleSelectLesson = (slug: string) => {
     setActiveLessonSlug(slug);
     if (course.data) {
-      const lesson = findLessonRecursively(course.data.lessons, slug);
+      const lesson = courseService.findLesson(course.data, slug);
       if (lesson) {
         setActiveLessonSlug(lesson.slug);
       }
@@ -55,7 +54,7 @@ export default function Editor() {
     return <div></div>;
   }
 
-  const activeLesson = findLessonRecursively(course.data.lessons, activeLessonSlug || '');
+  const activeLesson = courseService.findLesson(course.data, activeLessonSlug);
 
   return (
     <FullScreen handle={handleFullscreen} className="fullscreen">

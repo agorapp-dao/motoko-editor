@@ -2,12 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { Markdown } from '@/src/features/editor/components/Editor/Markdown/Markdown';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
-import * as S from './SectionLesson.styled';
 import { Solution } from '@/src/features/editor/components/Editor/Solution/Solution';
 import { useText } from '@/src/hooks/useText';
-import { useJson } from '@/src/hooks/useJson';
-import { TCourse } from '@/src/types/education';
-import findLessonRecursively from '@/src/utils/findLesson';
 import { courseService } from '@/src/features/editor/services/courseService';
 
 interface TabPanelProps {
@@ -30,7 +26,7 @@ export const SectionLesson = () => {
   const [lessonTab, setLessonTab] = useState(0);
   const { courseSlug, activeLessonSlug } = useContext(EditorContext);
   const course = courseService.useCourse(courseSlug);
-  const activeLesson = findLessonRecursively(course.data?.lessons || [], activeLessonSlug || '');
+  const activeLesson = courseService.findLesson(course.data, activeLessonSlug);
   const markdown = useText(activeLesson?.content && activeLesson.content[lessonTab].markdown);
   const solutionMarkdown = useText(activeLesson?.solution?.markdown);
 

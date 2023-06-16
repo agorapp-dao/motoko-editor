@@ -7,6 +7,30 @@ class CourseService {
     return useJson<TCourse>(`/api/course/${courseSlug}`);
   }
 
+  findLesson(course: TCourse | undefined, lessonSlug: string | undefined) {
+    if (!course || !lessonSlug) {
+      return undefined;
+    }
+    return this.findLessonInner(course.lessons, lessonSlug);
+  }
+
+  private findLessonInner(lessons: TLesson[], lessonSlug: string): TLesson | undefined {
+    for (const lesson of lessons) {
+      if (lesson.slug === lessonSlug) {
+        return lesson;
+      }
+
+      if (lesson.children) {
+        const found = this.findLessonInner(lesson.children, lessonSlug);
+        if (found) {
+          return found;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
   /**
    * Finds next lesson to which user can navigate.
    *

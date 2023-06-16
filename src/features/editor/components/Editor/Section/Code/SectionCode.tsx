@@ -4,7 +4,6 @@ import { MonacoEditor } from '@/src/features/editor/components/Editor/Monaco/Mon
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import { PanelTab } from '@/src/components/PanelTab/PanelTab';
 import { useText } from '@/src/hooks/useText';
-import findLessonRecursively from '@/src/utils/findLesson';
 import { courseService } from '@/src/features/editor/services/courseService';
 import { FullscreenControl } from '@/src/components/FullscreenControl/FullscreenControl';
 
@@ -12,7 +11,7 @@ export const SectionCode = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { courseSlug, activeLessonSlug } = useContext(EditorContext);
   const course = courseService.useCourse(courseSlug);
-  const activeLesson = findLessonRecursively(course.data?.lessons || [], activeLessonSlug || '');
+  const activeLesson = courseService.findLesson(course.data, activeLessonSlug);
   const file = useText(activeLesson?.files && activeLesson.files[activeTab].path);
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
