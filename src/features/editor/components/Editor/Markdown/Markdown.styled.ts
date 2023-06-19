@@ -31,4 +31,8 @@ export const P = styled.p`
 
 export const HrefLink = styled(Link)`
   color: ${p => p.theme.link};
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;

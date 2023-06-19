@@ -34,7 +34,7 @@ export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
             <>
               {href && (
                 <S.HrefLink href={href} target="_blank">
-                  {String(children)}
+                  {children}
                 </S.HrefLink>
               )}
             </>

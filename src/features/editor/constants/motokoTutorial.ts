@@ -20,10 +20,7 @@ export const MOTOKO_TUTORIAL_COURSE: TCourse = {
           content: [
             { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/print-values/theory.md' },
           ],
-          files: [
-            { path: '/motoko-tutorial/02-basics/print-values/main.mo', language: 'motoko' },
-            { path: '/motoko-tutorial/02-basics/print-values/druhej.mo', language: 'motoko' },
-          ],
+          files: [{ path: '/motoko-tutorial/02-basics/print-values/main.mo', language: 'motoko' }],
           solution: { markdown: '/motoko-tutorial/02-basics/print-values/solution.md' },
         },
         {
