@@ -1,4 +1,3 @@
-import fs from 'fs/promises';
 import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'styled-components';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
@@ -86,11 +85,22 @@ export async function getServerSideProps(
   }
 
   const lesson = courseService.findLessonBySlug(MOTOKO_TUTORIAL_COURSE, lessonSlug);
-  if (lesson?.content) {
-    console.log('CWD', process.cwd());
-    const files = await fs.readdir('.');
-    console.log(`FILES: ${files.join(', ')}`);
-    const content = await fs.readFile('./public' + lesson.content[0].markdown, 'utf-8');
+  const host = ctx.req.headers.host;
+  if (lesson?.content && host) {
+    let contentUrl;
+    if (host.includes('localhost')) {
+      contentUrl = `http://${host}`;
+    } else {
+      contentUrl = `https://${host}`;
+    }
+    contentUrl += `/${lesson.content[0].markdown}`;
+
+    const res = await fetch(contentUrl);
+    if (!res.ok) {
+      throw new Error(`Failed to preload ${contentUrl}`);
+    }
+
+    const content = await res.text();
     fallback[lesson.content[0].markdown] = content;
   }
 
