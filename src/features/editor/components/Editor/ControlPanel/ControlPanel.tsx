@@ -10,10 +10,11 @@ import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import { TLesson } from '@/src/types/education';
 import { courseService } from '@/src/features/editor/services/courseService';
+import { useRouter } from 'next/router';
 
 export const ControlPanel = () => {
-  const { instance, setOutput, courseSlug, activeLessonSlug, setActiveLessonSlug } =
-    useContext(EditorContext);
+  const router = useRouter();
+  const { instance, setOutput, courseSlug, activeLessonSlug } = useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
   const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
@@ -44,13 +45,13 @@ export const ControlPanel = () => {
 
   const handleGoToNext = () => {
     if (nextLesson) {
-      setActiveLessonSlug(nextLesson.slug);
+      router.push(`/${course.data?.slug}/${nextLesson.slug}`);
     }
   };
 
   const handleGoToPrev = () => {
     if (prevLesson) {
-      setActiveLessonSlug(prevLesson.slug);
+      router.push(`/${course.data?.slug}/${prevLesson.slug}`);
     }
   };
 

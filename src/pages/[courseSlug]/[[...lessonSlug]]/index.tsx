@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { courseService } from '@/src/features/editor/services/courseService';
 
 type TEditorPageProps = {
-  lessonSlug: string | undefined;
+  lessonSlug: string;
   courseSlug: string;
   fallback: { [key: string]: any };
 };
@@ -25,7 +25,8 @@ export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditor
   const router = useRouter();
 
   useEffect(() => {
-    setActiveLessonSlug(router.query.lessonSlug as string);
+    const slug = router.query.lessonSlug ? router.query.lessonSlug[0] : '';
+    setActiveLessonSlug(slug);
   }, [router.query.lessonSlug]);
 
   return (
@@ -51,27 +52,46 @@ export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditor
 
 type TEditorPageParams = {
   courseSlug: string;
-  lessonSlug: string;
+  lessonSlug: string[];
 };
 
 export async function getServerSideProps(
   ctx: GetServerSidePropsContext<TEditorPageParams>,
 ): Promise<GetServerSidePropsResult<TEditorPageProps>> {
   if (!ctx.params) {
-    throw new Error('todo');
+    throw new Error('No params provided');
   }
+
+  const { courseSlug } = ctx.params;
 
   const fallback: { [key: string]: any } = {};
 
   fallback['/api/course/motoko-tutorial'] = MOTOKO_TUTORIAL_COURSE;
 
-  const lesson = courseService.findLesson(MOTOKO_TUTORIAL_COURSE, ctx.params.lessonSlug);
+  let lessonSlug = ctx.params.lessonSlug?.length ? ctx.params.lessonSlug[0] : undefined;
+  if (!lessonSlug) {
+    const firstLesson = courseService.findLesson(
+      MOTOKO_TUTORIAL_COURSE,
+      lesson => !!lesson.content,
+    );
+    if (!firstLesson) {
+      throw new Error(`Course ${MOTOKO_TUTORIAL_COURSE.slug}: no lesson with content found`);
+    }
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${courseSlug}/${firstLesson.slug}`,
+      },
+    };
+  }
+
+  const lesson = courseService.findLessonBySlug(MOTOKO_TUTORIAL_COURSE, lessonSlug);
   if (lesson?.content) {
     const content = await fs.readFile('./public' + lesson.content[0].markdown, 'utf-8');
     fallback[lesson.content[0].markdown] = content;
   }
 
   return {
-    props: { courseSlug: ctx.params.courseSlug, lessonSlug: ctx.params.lessonSlug, fallback },
+    props: { courseSlug: ctx.params.courseSlug, lessonSlug, fallback },
   };
 }

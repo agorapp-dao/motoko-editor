@@ -26,7 +26,7 @@ export const SectionLesson = () => {
   const [lessonTab, setLessonTab] = useState(0);
   const { courseSlug, activeLessonSlug } = useContext(EditorContext);
   const course = courseService.useCourse(courseSlug);
-  const activeLesson = courseService.findLesson(course.data, activeLessonSlug);
+  const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
   const markdown = useText(activeLesson?.content && activeLesson.content[lessonTab].markdown);
   const solutionMarkdown = useText(activeLesson?.solution?.markdown);
 

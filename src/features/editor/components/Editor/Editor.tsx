@@ -42,7 +42,7 @@ export default function Editor() {
   const handleSelectLesson = (slug: string) => {
     setActiveLessonSlug(slug);
     if (course.data) {
-      const lesson = courseService.findLesson(course.data, slug);
+      const lesson = courseService.findLessonBySlug(course.data, slug);
       if (lesson) {
         setActiveLessonSlug(lesson.slug);
       }
@@ -54,7 +54,7 @@ export default function Editor() {
     return <div></div>;
   }
 
-  const activeLesson = courseService.findLesson(course.data, activeLessonSlug);
+  const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
 
   return (
     <FullScreen handle={handleFullscreen} className="fullscreen">

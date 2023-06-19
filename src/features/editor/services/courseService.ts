@@ -7,21 +7,28 @@ class CourseService {
     return useJson<TCourse>(`/api/course/${courseSlug}`);
   }
 
-  findLesson(course: TCourse | undefined, lessonSlug: string | undefined) {
+  findLessonBySlug(course: TCourse | undefined, lessonSlug: string | undefined) {
     if (!course || !lessonSlug) {
       return undefined;
     }
-    return this.findLessonInner(course.lessons, lessonSlug);
+    return this.findLessonInner(course.lessons, lesson => lesson.slug === lessonSlug);
   }
 
-  private findLessonInner(lessons: TLesson[], lessonSlug: string): TLesson | undefined {
+  findLesson(course: TCourse, predicate: (lesson: TLesson) => boolean): TLesson | undefined {
+    return this.findLessonInner(course.lessons, predicate);
+  }
+
+  private findLessonInner(
+    lessons: TLesson[],
+    predicate: (lesson: TLesson) => boolean,
+  ): TLesson | undefined {
     for (const lesson of lessons) {
-      if (lesson.slug === lessonSlug) {
+      if (predicate(lesson)) {
         return lesson;
       }
 
       if (lesson.children) {
-        const found = this.findLessonInner(lesson.children, lessonSlug);
+        const found = this.findLessonInner(lesson.children, predicate);
         if (found) {
           return found;
         }
