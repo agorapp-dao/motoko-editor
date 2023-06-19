@@ -85,11 +85,14 @@ export async function getServerSideProps(
     };
   }
 
-  // const lesson = courseService.findLessonBySlug(MOTOKO_TUTORIAL_COURSE, lessonSlug);
-  // if (lesson?.content) {
-  //   const content = await fs.readFile('./public' + lesson.content[0].markdown, 'utf-8');
-  //   fallback[lesson.content[0].markdown] = content;
-  // }
+  const lesson = courseService.findLessonBySlug(MOTOKO_TUTORIAL_COURSE, lessonSlug);
+  if (lesson?.content) {
+    console.log('CWD', process.cwd());
+    const files = await fs.readdir('.');
+    console.log(`FILES: ${files.join(', ')}`);
+    const content = await fs.readFile('./public' + lesson.content[0].markdown, 'utf-8');
+    fallback[lesson.content[0].markdown] = content;
+  }
 
   return {
     props: { courseSlug: ctx.params.courseSlug, lessonSlug, fallback },
