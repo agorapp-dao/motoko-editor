@@ -73,6 +73,13 @@ export const MOTOKO_TUTORIAL_COURSE: TCourse = {
         {
           name: 'Logical expressions',
           slug: 'logical-expressions',
+          content: [
+            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/logical-expressions/theory.md' },
+          ],
+          files: [
+            { path: '/motoko-tutorial/02-basics/logical-expressions/main.mo', language: 'motoko' },
+          ],
+          solution: { markdown: '/motoko-tutorial/02-basics/logical-expressions/solution.md' },
         },
         {
           name: 'Text concatenation',
