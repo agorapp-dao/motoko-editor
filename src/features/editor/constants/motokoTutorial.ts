@@ -48,18 +48,35 @@ export const MOTOKO_TUTORIAL_COURSE: TCourse = {
         {
           name: 'Assigning values',
           slug: 'assigning-values',
+          content: [
+            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/assigning-values/theory.md' },
+          ],
+          files: [
+            { path: '/motoko-tutorial/02-basics/assigning-values/main.mo', language: 'motoko' },
+          ],
+          solution: { markdown: '/motoko-tutorial/02-basics/assigning-values/solution.md' },
         },
         {
-          name: 'Operators',
-          slug: 'operators',
-        },
-        {
-          name: 'Text concatenation',
-          slug: 'text-concatenation',
+          name: 'Arithmetic operators',
+          slug: 'arithmetic-operators',
+          content: [
+            {
+              tab: 'Theory',
+              markdown: '/motoko-tutorial/02-basics/arithmetic-operators/theory.md',
+            },
+          ],
+          files: [
+            { path: '/motoko-tutorial/02-basics/arithmetic-operators/main.mo', language: 'motoko' },
+          ],
+          solution: { markdown: '/motoko-tutorial/02-basics/arithmetic-operators/solution.md' },
         },
         {
           name: 'Logical expressions',
           slug: 'logical-expressions',
+        },
+        {
+          name: 'Text concatenation',
+          slug: 'text-concatenation',
         },
         {
           name: 'Functions',
