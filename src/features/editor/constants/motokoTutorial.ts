@@ -82,16 +82,30 @@ export const MOTOKO_TUTORIAL_COURSE: TCourse = {
           solution: { markdown: '/motoko-tutorial/02-basics/logical-expressions/solution.md' },
         },
         {
-          name: 'Text concatenation',
-          slug: 'text-concatenation',
+          name: 'Expressions',
+          slug: 'expressions',
+          content: [
+            {
+              tab: 'Theory',
+              markdown: '/motoko-tutorial/02-basics/expressions/theory.md',
+            },
+          ],
+          files: [
+            {
+              path: '/motoko-tutorial/02-basics/expressions/main.mo',
+              language: 'motoko',
+            },
+          ],
+          solution: {
+            markdown: '/motoko-tutorial/02-basics/expressions/solution.md',
+          },
         },
         {
           name: 'Functions',
           slug: 'functions',
-        },
-        {
-          name: 'Ignore expressions',
-          slug: 'ignore-expressions',
+          content: [{ tab: 'Theory', markdown: '/motoko-tutorial/02-basics/functions/theory.md' }],
+          files: [{ path: '/motoko-tutorial/02-basics/functions/main.mo', language: 'motoko' }],
+          solution: { markdown: '/motoko-tutorial/02-basics/functions/solution.md' },
         },
       ],
     },
