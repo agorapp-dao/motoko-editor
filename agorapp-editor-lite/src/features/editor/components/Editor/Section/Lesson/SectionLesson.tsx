@@ -27,8 +27,11 @@ export const SectionLesson = () => {
   const { courseSlug, activeLessonSlug } = useContext(EditorContext);
   const course = courseService.useCourse(courseSlug);
   const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
-  const markdown = useText(activeLesson?.content && activeLesson.content[lessonTab].markdown);
-  const solutionMarkdown = useText(activeLesson?.solution?.markdown);
+  const markdown = courseService.useContent(
+    course.data,
+    activeLesson?.content && activeLesson.content[lessonTab].markdown,
+  );
+  const solutionMarkdown = courseService.useContent(course.data, activeLesson?.solution?.markdown);
 
   console.debug('activeLessonSlug', activeLessonSlug);
 

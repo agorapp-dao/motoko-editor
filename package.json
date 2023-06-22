@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "pnpm run -r clean && rm -rf node_modules",
     "dev": "pnpm --filter agorapp-editor-lite run dev",
     "postinstall": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1"

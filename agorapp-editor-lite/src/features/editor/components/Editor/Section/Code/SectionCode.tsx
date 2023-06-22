@@ -12,7 +12,10 @@ export const SectionCode = () => {
   const { courseSlug, activeLessonSlug } = useContext(EditorContext);
   const course = courseService.useCourse(courseSlug);
   const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
-  const file = useText(activeLesson?.files && activeLesson.files[activeTab].path);
+  const file = courseService.useContent(
+    course.data,
+    activeLesson?.files && activeLesson.files[activeTab].path,
+  );
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);

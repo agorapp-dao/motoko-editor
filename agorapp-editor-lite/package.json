@@ -6,8 +6,10 @@
     "dev": "next dev -p 3010",
     "build": "next build",
     "start": "next start",
+    "clean": "rm -rf node_modules && rm -rf public/content-*",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "node ./scripts/link-content.js"
   },
   "dependencies": {
     "@agorapp/content-common": "workspace:^",

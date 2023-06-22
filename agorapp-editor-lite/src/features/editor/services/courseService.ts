@@ -1,10 +1,34 @@
 import { TCourse, TLesson } from '@agorapp/content-common';
 import { useJson } from '@/src/hooks/useJson';
+import { useText } from '@/src/hooks/useText';
 
 class CourseService {
+  /**
+   * Fetches information about the specified course.
+   * @param courseSlug
+   */
   useCourse(courseSlug: string | undefined) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return useJson<TCourse>(`/api/course/${courseSlug}`);
+  }
+
+  /**
+   * Fetches content from the specified course.
+   *
+   * @param course
+   * @param contentPath
+   */
+  useContent(course: TCourse | undefined, contentPath: string | undefined) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useText(this.resolveContent(course, contentPath));
+  }
+
+  resolveContent(course: TCourse | undefined, contentPath: string | undefined) {
+    if (!course || !contentPath) {
+      return undefined;
+    }
+
+    return `/content-${course.slug}/${contentPath}`;
   }
 
   findLessonBySlug(course: TCourse | undefined, lessonSlug: string | undefined) {

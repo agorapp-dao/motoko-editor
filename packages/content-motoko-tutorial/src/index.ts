@@ -7,8 +7,8 @@ const course: TCourse = {
     {
       name: 'Introduction',
       slug: 'introduction',
-      content: [{ tab: 'Theory', markdown: '/motoko-tutorial/01-introduction/theory.md' }],
-      files: [{ path: '/motoko-tutorial/01-introduction/main.mo', language: 'motoko' }],
+      content: [{ tab: 'Theory', markdown: '01-introduction/theory.md' }],
+      files: [{ path: './01-introduction/main.mo', language: 'motoko' }],
     },
     {
       name: 'Basics',
@@ -18,43 +18,68 @@ const course: TCourse = {
           name: 'Printing values',
           slug: 'printing-values',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/print-values/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './02-basics/print-values/theory.md',
+            },
           ],
-          files: [{ path: '/motoko-tutorial/02-basics/print-values/main.mo', language: 'motoko' }],
-          solution: { markdown: '/motoko-tutorial/02-basics/print-values/solution.md' },
+          files: [{ path: './02-basics/print-values/main.mo', language: 'motoko' }],
+          solution: { markdown: './02-basics/print-values/solution.md' },
         },
         {
           name: 'Mutable variables',
           slug: 'mutable-variables',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/mutable-variables/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './02-basics/mutable-variables/theory.md',
+            },
           ],
           files: [
-            { path: '/motoko-tutorial/02-basics/mutable-variables/main.mo', language: 'motoko' },
+            {
+              path: './02-basics/mutable-variables/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/02-basics/mutable-variables/solution.md' },
+          solution: {
+            markdown: './02-basics/mutable-variables/solution.md',
+          },
         },
         {
           name: 'Immutable variables',
           slug: 'immutable-variables',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/immutable-variables/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './02-basics/immutable-variables/theory.md',
+            },
           ],
           files: [
-            { path: '/motoko-tutorial/02-basics/immutable-variables/main.mo', language: 'motoko' },
+            {
+              path: './02-basics/immutable-variables/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/02-basics/immutable-variables/solution.md' },
+          solution: {
+            markdown: './02-basics/immutable-variables/solution.md',
+          },
         },
         {
           name: 'Assigning values',
           slug: 'assigning-values',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/assigning-values/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './02-basics/assigning-values/theory.md',
+            },
           ],
           files: [
-            { path: '/motoko-tutorial/02-basics/assigning-values/main.mo', language: 'motoko' },
+            {
+              path: './02-basics/assigning-values/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/02-basics/assigning-values/solution.md' },
+          solution: { markdown: './02-basics/assigning-values/solution.md' },
         },
         {
           name: 'Arithmetic operators',
@@ -62,24 +87,37 @@ const course: TCourse = {
           content: [
             {
               tab: 'Theory',
-              markdown: '/motoko-tutorial/02-basics/arithmetic-operators/theory.md',
+              markdown: './02-basics/arithmetic-operators/theory.md',
             },
           ],
           files: [
-            { path: '/motoko-tutorial/02-basics/arithmetic-operators/main.mo', language: 'motoko' },
+            {
+              path: './02-basics/arithmetic-operators/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/02-basics/arithmetic-operators/solution.md' },
+          solution: {
+            markdown: './02-basics/arithmetic-operators/solution.md',
+          },
         },
         {
           name: 'Logical expressions',
           slug: 'logical-expressions',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/logical-expressions/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './02-basics/logical-expressions/theory.md',
+            },
           ],
           files: [
-            { path: '/motoko-tutorial/02-basics/logical-expressions/main.mo', language: 'motoko' },
+            {
+              path: './02-basics/logical-expressions/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/02-basics/logical-expressions/solution.md' },
+          solution: {
+            markdown: './02-basics/logical-expressions/solution.md',
+          },
         },
         {
           name: 'Expressions',
@@ -87,25 +125,25 @@ const course: TCourse = {
           content: [
             {
               tab: 'Theory',
-              markdown: '/motoko-tutorial/02-basics/expressions/theory.md',
+              markdown: './02-basics/expressions/theory.md',
             },
           ],
           files: [
             {
-              path: '/motoko-tutorial/02-basics/expressions/main.mo',
+              path: './02-basics/expressions/main.mo',
               language: 'motoko',
             },
           ],
           solution: {
-            markdown: '/motoko-tutorial/02-basics/expressions/solution.md',
+            markdown: './02-basics/expressions/solution.md',
           },
         },
         {
           name: 'Functions',
           slug: 'functions',
-          content: [{ tab: 'Theory', markdown: '/motoko-tutorial/02-basics/functions/theory.md' }],
-          files: [{ path: '/motoko-tutorial/02-basics/functions/main.mo', language: 'motoko' }],
-          solution: { markdown: '/motoko-tutorial/02-basics/functions/solution.md' },
+          content: [{ tab: 'Theory', markdown: './02-basics/functions/theory.md' }],
+          files: [{ path: './02-basics/functions/main.mo', language: 'motoko' }],
+          solution: { markdown: './02-basics/functions/solution.md' },
         },
       ],
     },
@@ -117,23 +155,35 @@ const course: TCourse = {
           name: 'Type annotations',
           slug: 'type-annotations',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/03-types/type-annotations/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './03-types/type-annotations/theory.md',
+            },
           ],
           files: [
-            { path: '/motoko-tutorial/03-types/type-annotations/main.mo', language: 'motoko' },
+            {
+              path: './03-types/type-annotations/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/03-types/type-annotations/solution.md' },
+          solution: { markdown: './03-types/type-annotations/solution.md' },
         },
         {
           name: 'Primitive types',
           slug: 'primitive-types',
           content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/03-types/primitive-types/theory.md' },
+            {
+              tab: 'Theory',
+              markdown: './03-types/primitive-types/theory.md',
+            },
           ],
           files: [
-            { path: '/motoko-tutorial/03-types/primitive-types/main.mo', language: 'motoko' },
+            {
+              path: './03-types/primitive-types/main.mo',
+              language: 'motoko',
+            },
           ],
-          solution: { markdown: '/motoko-tutorial/03-types/primitive-types/solution.md' },
+          solution: { markdown: './03-types/primitive-types/solution.md' },
         },
         {
           name: 'Optional types',

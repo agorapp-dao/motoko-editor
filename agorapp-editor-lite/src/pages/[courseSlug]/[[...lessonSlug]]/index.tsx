@@ -84,21 +84,25 @@ export async function getServerSideProps(
   const lesson = courseService.findLessonBySlug(motokoTutorial, lessonSlug);
   const host = ctx.req.headers.host;
   if (lesson?.content && host) {
-    let contentUrl;
-    if (host.includes('localhost')) {
-      contentUrl = `http://${host}`;
-    } else {
-      contentUrl = `https://${host}`;
-    }
-    contentUrl += `/${lesson.content[0].markdown}`;
+    const contentPath = courseService.resolveContent(motokoTutorial, lesson.content[0].markdown);
+    if (contentPath) {
+      let contentUrl;
+      if (host.includes('localhost')) {
+        contentUrl = `http://${host}`;
+      } else {
+        contentUrl = `https://${host}`;
+      }
 
-    const res = await fetch(contentUrl);
-    if (!res.ok) {
-      throw new Error(`Failed to preload ${contentUrl}`);
-    }
+      contentUrl += contentPath;
 
-    const content = await res.text();
-    fallback[lesson.content[0].markdown] = content;
+      const res = await fetch(contentUrl);
+      if (!res.ok) {
+        throw new Error(`Failed to preload ${contentUrl}`);
+      }
+
+      const content = await res.text();
+      fallback[contentPath] = content;
+    }
   }
 
   return {
