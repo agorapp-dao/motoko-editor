@@ -114,16 +114,30 @@ export const MOTOKO_TUTORIAL_COURSE: TCourse = {
       slug: 'types',
       children: [
         {
+          name: 'Type annotations',
+          slug: 'type-annotations',
+          content: [
+            { tab: 'Theory', markdown: '/motoko-tutorial/03-types/type-annotations/theory.md' },
+          ],
+          files: [
+            { path: '/motoko-tutorial/03-types/type-annotations/main.mo', language: 'motoko' },
+          ],
+          solution: { markdown: '/motoko-tutorial/03-types/type-annotations/solution.md' },
+        },
+        {
           name: 'Primitive types',
           slug: 'primitive-types',
+          content: [
+            { tab: 'Theory', markdown: '/motoko-tutorial/03-types/primitive-types/theory.md' },
+          ],
+          files: [
+            { path: '/motoko-tutorial/03-types/primitive-types/main.mo', language: 'motoko' },
+          ],
+          solution: { markdown: '/motoko-tutorial/03-types/primitive-types/solution.md' },
         },
         {
-          name: 'Unit type',
-          slug: 'unit-type',
-        },
-        {
-          name: 'Type inference',
-          slug: 'type-inference',
+          name: 'Optional types',
+          slug: 'optional-types',
         },
         {
           name: 'Tuples',
@@ -144,6 +158,10 @@ export const MOTOKO_TUTORIAL_COURSE: TCourse = {
         {
           name: 'Mutable arrays',
           slug: 'mutable-arrays',
+        },
+        {
+          name: 'Type aliases',
+          slug: 'type-aliases',
         },
         {
           name: 'Function types',
