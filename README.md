@@ -1,8 +1,8 @@
 ## Run locally
 
 ```
-yarn install
-yarn dev
+pnpm install
+pnpm dev
 ```
 
 ## Run with docker

@@ -1,0 +1,3 @@
+packages
+  - 'dfinity-editor-poc'
+  - 'packages/*'

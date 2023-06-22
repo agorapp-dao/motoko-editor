@@ -1,0 +1,15 @@
+{
+  "name": "@agorapp/content-motoko-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/config.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@agorapp/content-common": "workspace:^"
+  }
+}
