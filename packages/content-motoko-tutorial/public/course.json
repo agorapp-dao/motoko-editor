@@ -5,7 +5,7 @@
     {
       "name": "Introduction",
       "slug": "introduction",
-      "content": "01-introduction/theory.md",
+      "content": "01-introduction/lesson.md",
       "files": ["01-introduction/main.mo"]
     },
     {
@@ -15,56 +15,56 @@
         {
           "name": "Printing values",
           "slug": "printing-values",
-          "content": "02-basics/print-values/theory.md",
+          "content": "02-basics/print-values/lesson.md",
           "files": ["02-basics/print-values/main.mo"],
           "solution": "02-basics/print-values/solution.md"
         },
         {
           "name": "Mutable variables",
           "slug": "mutable-variables",
-          "content": "02-basics/mutable-variables/theory.md",
+          "content": "02-basics/mutable-variables/lesson.md",
           "files": ["02-basics/mutable-variables/main.mo"],
           "solution": "02-basics/mutable-variables/solution.md"
         },
         {
           "name": "Immutable variables",
           "slug": "immutable-variables",
-          "content": "02-basics/immutable-variables/theory.md",
+          "content": "02-basics/immutable-variables/lesson.md",
           "files": ["02-basics/immutable-variables/main.mo"],
           "solution": "02-basics/immutable-variables/solution.md"
         },
         {
           "name": "Assigning values",
           "slug": "assigning-values",
-          "content": "02-basics/assigning-values/theory.md",
+          "content": "02-basics/assigning-values/lesson.md",
           "files": ["02-basics/assigning-values/main.mo"],
           "solution": "02-basics/assigning-values/solution.md"
         },
         {
           "name": "Arithmetic operators",
           "slug": "arithmetic-operators",
-          "content": "02-basics/arithmetic-operators/theory.md",
+          "content": "02-basics/arithmetic-operators/lesson.md",
           "files": ["02-basics/arithmetic-operators/main.mo"],
           "solution": "02-basics/arithmetic-operators/solution.md"
         },
         {
           "name": "Logical expressions",
           "slug": "logical-expressions",
-          "content": "02-basics/logical-expressions/theory.md",
+          "content": "02-basics/logical-expressions/lesson.md",
           "files": ["02-basics/logical-expressions/main.mo"],
           "solution": "02-basics/logical-expressions/solution.md"
         },
         {
           "name": "Expressions",
           "slug": "expressions",
-          "content": "02-basics/expressions/theory.md",
+          "content": "02-basics/expressions/lesson.md",
           "files": ["02-basics/expressions/main.mo"],
           "solution": "02-basics/expressions/solution.md"
         },
         {
           "name": "Functions",
           "slug": "functions",
-          "content": "02-basics/functions/theory.md",
+          "content": "02-basics/functions/lesson.md",
           "files": ["02-basics/functions/main.mo"],
           "solution": "02-basics/functions/solution.md"
         }
@@ -77,21 +77,21 @@
         {
           "name": "Type annotations",
           "slug": "type-annotations",
-          "content": "03-types/type-annotations/theory.md",
+          "content": "03-types/type-annotations/lesson.md",
           "files": ["03-types/type-annotations/main.mo"],
           "solution": "03-types/type-annotations/solution.md"
         },
         {
           "name": "Primitive types",
           "slug": "primitive-types",
-          "content": "03-types/primitive-types/theory.md",
+          "content": "03-types/primitive-types/lesson.md",
           "files": ["03-types/primitive-types/main.mo"],
           "solution": "03-types/primitive-types/solution.md"
         },
         {
           "name": "Text",
           "slug": "text",
-          "content": "03-types/text/theory.md",
+          "content": "03-types/text/lesson.md",
           "files": ["03-types/text/main.mo"],
           "solution": "03-types/text/solution.md"
         },
