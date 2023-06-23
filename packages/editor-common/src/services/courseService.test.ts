@@ -1,5 +1,5 @@
 import { TCourse } from '@agorapp/content-common';
-import { courseService } from '@/src/features/editor/services/courseService';
+import { courseService } from './courseService';
 
 const COURSE: TCourse = {
   name: 'Motoko Tutorial',
@@ -8,8 +8,8 @@ const COURSE: TCourse = {
     {
       name: 'Introduction',
       slug: 'introduction',
-      content: [{ tab: 'Theory', markdown: '/motoko-tutorial/01-introduction/theory.md' }],
-      files: [{ path: '/motoko-tutorial/01-introduction/main.mo', language: 'motoko' }],
+      content: '/motoko-tutorial/01-introduction/theory.md',
+      files: ['/motoko-tutorial/01-introduction/main.mo'],
     },
     {
       name: 'Basics',
@@ -18,22 +18,16 @@ const COURSE: TCourse = {
         {
           name: 'Printing values',
           slug: 'printing-values',
-          content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/print-values/theory.md' },
-          ],
-          files: [{ path: '/motoko-tutorial/02-basics/print-values/main.mo', language: 'motoko' }],
-          solution: { markdown: '/motoko-tutorial/02-basics/print-values/solution.md' },
+          content: '/motoko-tutorial/02-basics/print-values/theory.md',
+          files: ['/motoko-tutorial/02-basics/print-values/main.mo'],
+          solution: '/motoko-tutorial/02-basics/print-values/solution.md',
         },
         {
           name: 'Mutable variables',
           slug: 'mutable-variables',
-          content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/mutable-variables/theory.md' },
-          ],
-          files: [
-            { path: '/motoko-tutorial/02-basics/mutable-variables/main.mo', language: 'motoko' },
-          ],
-          solution: { markdown: '/motoko-tutorial/02-basics/mutable-variables/solution.md' },
+          content: '/motoko-tutorial/02-basics/mutable-variables/theory.md',
+          files: ['/motoko-tutorial/02-basics/mutable-variables/main.mo'],
+          solution: '/motoko-tutorial/02-basics/mutable-variables/solution.md',
         },
         {
           name: 'Assigning values',
@@ -48,13 +42,9 @@ const COURSE: TCourse = {
         {
           name: 'Primitive types',
           slug: 'primitive-types',
-          content: [
-            { tab: 'Theory', markdown: '/motoko-tutorial/02-basics/immutable-variables/theory.md' },
-          ],
-          files: [
-            { path: '/motoko-tutorial/02-basics/immutable-variables/main.mo', language: 'motoko' },
-          ],
-          solution: { markdown: '/motoko-tutorial/02-basics/immutable-variables/solution.md' },
+          content: '/motoko-tutorial/02-basics/immutable-variables/theory.md',
+          files: ['/motoko-tutorial/02-basics/immutable-variables/main.mo'],
+          solution: '/motoko-tutorial/02-basics/immutable-variables/solution.md',
         },
       ],
     },

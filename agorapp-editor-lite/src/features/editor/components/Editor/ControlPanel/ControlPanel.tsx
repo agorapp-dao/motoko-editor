@@ -9,8 +9,8 @@ import mo from 'motoko/lib/versions/interpreter';
 import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import { TLesson } from '@agorapp/content-common';
-import { courseService } from '@/src/features/editor/services/courseService';
 import { useRouter } from 'next/router';
+import { courseService } from '@agorapp/editor-common';
 
 export const ControlPanel = () => {
   const router = useRouter();
@@ -45,13 +45,13 @@ export const ControlPanel = () => {
 
   const handleGoToNext = () => {
     if (nextLesson) {
-      router.push(`/${course.data?.slug}/${nextLesson.slug}`);
+      router.push(`/editor/${course.data?.slug}/${nextLesson.slug}`);
     }
   };
 
   const handleGoToPrev = () => {
     if (prevLesson) {
-      router.push(`/${course.data?.slug}/${prevLesson.slug}`);
+      router.push(`/editor/${course.data?.slug}/${prevLesson.slug}`);
     }
   };
 

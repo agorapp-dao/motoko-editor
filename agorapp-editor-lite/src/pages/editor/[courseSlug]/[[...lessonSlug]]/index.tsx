@@ -7,11 +7,11 @@ import { CssBaseline } from '@mui/material';
 import * as S from '@/src/styles/global.styled';
 import Editor from '@/src/features/editor/components/Editor/Editor';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import motokoTutorial from '@agorapp/content-motoko-tutorial';
 import React, { useEffect, useState } from 'react';
 import { GlobalStyle } from '@/src/styles/global.styled';
 import { useRouter } from 'next/router';
-import { courseService } from '@/src/features/editor/services/courseService';
+import { courseService } from '@agorapp/editor-common';
+import { contentService } from '@agorapp/content-common';
 
 type TEditorPageProps = {
   lessonSlug: string;
@@ -65,43 +65,31 @@ export async function getServerSideProps(
 
   const fallback: { [key: string]: any } = {};
 
-  fallback['/api/course/motoko-tutorial'] = motokoTutorial;
+  const course = await contentService.getCourse(courseSlug);
+  if (!course) {
+    throw new Error(`Course ${courseSlug} not found`);
+  }
+  fallback[`/api/course/${courseSlug}`] = course;
 
   let lessonSlug = ctx.params.lessonSlug?.length ? ctx.params.lessonSlug[0] : undefined;
   if (!lessonSlug) {
-    const firstLesson = courseService.findLesson(motokoTutorial, lesson => !!lesson.content);
+    const firstLesson = courseService.findLesson(course, lesson => !!lesson.content);
     if (!firstLesson) {
-      throw new Error(`Course ${motokoTutorial.slug}: no lesson with content found`);
+      throw new Error(`Course ${course.slug}: no lesson with content found`);
     }
     return {
       redirect: {
         permanent: false,
-        destination: `/${courseSlug}/${firstLesson.slug}`,
+        destination: `/editor/${courseSlug}/${firstLesson.slug}`,
       },
     };
   }
 
-  const lesson = courseService.findLessonBySlug(motokoTutorial, lessonSlug);
-  const host = ctx.req.headers.host;
-  if (lesson?.content && host) {
-    const contentPath = courseService.resolveContent(motokoTutorial, lesson.content[0].markdown);
+  const lesson = courseService.findLessonBySlug(course, lessonSlug);
+  if (lesson?.content) {
+    const contentPath = courseService.getContentPath(course, lesson.content);
     if (contentPath) {
-      let contentUrl;
-      if (host.includes('localhost')) {
-        contentUrl = `http://${host}`;
-      } else {
-        contentUrl = `https://${host}`;
-      }
-
-      contentUrl += contentPath;
-
-      const res = await fetch(contentUrl);
-      if (!res.ok) {
-        throw new Error(`Failed to preload ${contentUrl}`);
-      }
-
-      const content = await res.text();
-      fallback[contentPath] = content;
+      fallback[contentPath] = await contentService.getContent(course, lesson.content);
     }
   }
 

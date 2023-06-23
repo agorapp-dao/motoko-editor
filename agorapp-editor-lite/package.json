@@ -14,6 +14,7 @@
   "dependencies": {
     "@agorapp/content-common": "workspace:^",
     "@agorapp/content-motoko-tutorial": "workspace:^",
+    "@agorapp/editor-common": "workspace:^",
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",

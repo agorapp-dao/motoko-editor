@@ -14,7 +14,7 @@ import { SectionLesson } from '@/src/features/editor/components/Editor/Section/L
 import { BottomPanel } from '@/src/features/editor/components/Editor/Panel/BottomPanel/BottomPanel';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import { ContentLevel } from '@/src/features/editor/components/Editor/ContentItem/ContentLevel';
-import { courseService } from '@/src/features/editor/services/courseService';
+import { courseService } from '@agorapp/editor-common';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 export default function Editor() {

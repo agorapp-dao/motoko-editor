@@ -14,7 +14,7 @@ export default function IndexPage() {
       </p>
 
       <p>
-        <Link href="/motoko-tutorial">Go directly to tutorial</Link>
+        <Link href="/editor/motoko-tutorial">Go directly to tutorial</Link>
       </p>
     </div>
   );

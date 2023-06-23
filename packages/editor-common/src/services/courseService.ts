@@ -1,6 +1,6 @@
 import { TCourse, TLesson } from '@agorapp/content-common';
-import { useJson } from '@/src/hooks/useJson';
-import { useText } from '@/src/hooks/useText';
+import { useJson } from '../hooks/useJson';
+import { useText } from '../hooks/useText';
 
 class CourseService {
   /**
@@ -20,10 +20,10 @@ class CourseService {
    */
   useContent(course: TCourse | undefined, contentPath: string | undefined) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useText(this.resolveContent(course, contentPath));
+    return useText(this.getContentPath(course, contentPath));
   }
 
-  resolveContent(course: TCourse | undefined, contentPath: string | undefined) {
+  getContentPath(course: TCourse | undefined, contentPath: string | undefined) {
     if (!course || !contentPath) {
       return undefined;
     }

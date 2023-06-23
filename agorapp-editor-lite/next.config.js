@@ -7,7 +7,11 @@ const nextConfig = {
     styledComponents: true,
   },
   output: 'standalone',
-  transpilePackages: ['@agorapp/content-common', '@agorapp/content-motoko-tutorial'],
+  transpilePackages: [
+    '@agorapp/content-common',
+    '@agorapp/editor-common',
+    '@agorapp/editor-lang-motoko',
+  ],
 };
 
 module.exports = nextConfig;

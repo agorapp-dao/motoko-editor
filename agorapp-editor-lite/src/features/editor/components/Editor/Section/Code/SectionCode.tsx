@@ -3,8 +3,7 @@ import { Box, Tabs } from '@mui/material';
 import { MonacoEditor } from '@/src/features/editor/components/Editor/Monaco/MonacoEditor';
 import { EditorContext } from '@/src/features/editor/context/EditorContext';
 import { PanelTab } from '@/src/components/PanelTab/PanelTab';
-import { useText } from '@/src/hooks/useText';
-import { courseService } from '@/src/features/editor/services/courseService';
+import { courseService } from '@agorapp/editor-common';
 import { FullscreenControl } from '@/src/components/FullscreenControl/FullscreenControl';
 
 export const SectionCode = () => {
@@ -14,7 +13,7 @@ export const SectionCode = () => {
   const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
   const file = courseService.useContent(
     course.data,
-    activeLesson?.files && activeLesson.files[activeTab].path,
+    activeLesson?.files && activeLesson.files[activeTab],
   );
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
@@ -31,13 +30,14 @@ export const SectionCode = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', flex: '1 1 auto' }}>
           <Tabs value={activeTab} onChange={changeActiveTab}>
             {activeLesson?.files?.map((file, index) => (
-              <PanelTab label={file.path.split('/').pop()} key={index} value={index} />
+              <PanelTab label={file.split('/').pop()} key={index} value={index} />
             ))}
           </Tabs>
         </Box>
         <FullscreenControl />
       </Box>
-      <MonacoEditor language={activeLesson.files[activeTab].language} value={file.data} />
+      {/*TODO: get language from extension of activeLesson.files[activeTab] */}
+      <MonacoEditor language="motoko" value={file.data} />
     </>
   );
 };
