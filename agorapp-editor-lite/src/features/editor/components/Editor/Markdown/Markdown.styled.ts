@@ -5,8 +5,11 @@ export const Wrapper = styled.div`
   ul {
     list-style: initial;
     padding-left: 40px;
-    font-weight: 300;
-    margin-bottom: 16px;
+    margin-top: 1rem;
+  }
+
+  li {
+    margin-bottom: 0.2rem;
   }
 
   hr {
