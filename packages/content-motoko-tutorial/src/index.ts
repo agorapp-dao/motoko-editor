@@ -186,6 +186,13 @@ const course: TCourse = {
           solution: { markdown: '03-types/primitive-types/solution.md' },
         },
         {
+          name: 'Text',
+          slug: 'text',
+          content: [{ tab: 'Theory', markdown: '03-types/text/theory.md' }],
+          files: [{ path: '03-types/text/main.mo', language: 'motoko' }],
+          solution: { markdown: '03-types/text/solution.md' },
+        },
+        {
           name: 'Optional types',
           slug: 'optional-types',
         },

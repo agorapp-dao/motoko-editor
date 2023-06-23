@@ -22,7 +22,7 @@ export default function Editor() {
   const { currentSection, courseSlug, activeLessonSlug, setActiveLessonSlug, fullscreen } =
     React.useContext(EditorContext);
 
-  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([500, Infinity]);
+  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([600, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
   const course = courseService.useCourse(courseSlug);
   const handleFullscreen = useFullScreenHandle();

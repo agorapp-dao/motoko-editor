@@ -13,7 +13,7 @@ function does not return any value:
 
 ```motoko
 func printNumber(a : Nat) {
-    D.print(debug_show(a));
+  D.print(debug_show(a));
 };
 
 printNumber(10);
@@ -23,6 +23,6 @@ See Motoko documentation for the [full list of supported types](https://internet
 
 We will be talking about some of these types in more detail in the following sections.
 
-# Exercise
+## Exercise
 
 Code on the right does not compile. Can you fix it?
