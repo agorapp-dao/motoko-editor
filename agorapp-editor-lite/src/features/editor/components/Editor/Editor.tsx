@@ -70,7 +70,7 @@ export default function Editor() {
             {activeLesson && (
               <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />
             )}
-            <S.SectionContent style={{ overflowY: showListOfContents ? 'hidden' : 'auto' }}>
+            <S.SectionContent>
               <Fade in={showListOfContents} timeout={500} style={{ overflowY: 'auto' }}>
                 <S.OverlayBox>
                   <S.ListOfContents>
@@ -82,9 +82,11 @@ export default function Editor() {
                   </S.ListOfContents>
                 </S.OverlayBox>
               </Fade>
-              {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
-              {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
-              {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
+              <div style={{ overflowY: showListOfContents ? 'hidden' : 'auto' }}>
+                {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
+                {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
+                {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
+              </div>
             </S.SectionContent>
           </S.Section>
         </Pane>
