@@ -28,7 +28,7 @@ class CourseService {
       return undefined;
     }
 
-    return `/content-${course.slug}/${contentPath}`;
+    return `/content/content-${course.slug}/${contentPath}`;
   }
 
   findLessonBySlug(course: TCourse | undefined, lessonSlug: string | undefined) {
