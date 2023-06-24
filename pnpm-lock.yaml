@@ -74,12 +74,6 @@ importers:
       eslint-config-next:
         specifier: 13.2.3
         version: 13.2.3(eslint@8.35.0)(typescript@4.9.5)
-      monaco-editor:
-        specifier: ^0.36.1
-        version: 0.36.1
-      motoko:
-        specifier: ^3.5.6
-        version: 3.5.6
       next:
         specifier: 13.2.3
         version: 13.2.3(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
@@ -92,18 +86,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      react-full-screen:
-        specifier: ^1.1.1
-        version: 1.1.1(react@18.2.0)
-      react-markdown:
-        specifier: ^8.0.7
-        version: 8.0.7(@types/react@18.0.28)(react@18.2.0)
-      react-use-clipboard:
-        specifier: ^1.0.9
-        version: 1.0.9(react-dom@18.2.0)(react@18.2.0)
-      split-pane-react:
-        specifier: ^0.1.3
-        version: 0.1.3(react-dom@18.2.0)(react@18.2.0)
       styled-components:
         specifier: ^6.0.0-rc.1
         version: 6.0.0-rc.1(react-dom@18.2.0)(react@18.2.0)
@@ -153,6 +135,63 @@ importers:
       '@agorapp/content-common':
         specifier: workspace:^
         version: link:../content-common
+      '@emotion/core':
+        specifier: ^11.0.0
+        version: 11.0.0
+      '@emotion/react':
+        specifier: ^11.11.0
+        version: 11.11.0(@types/react@18.0.28)(react@18.2.0)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.11.0(@emotion/react@11.11.0)(@types/react@18.0.28)(react@18.2.0)
+      '@emotion/stylis':
+        specifier: ^0.8.5
+        version: 0.8.5
+      '@mui/icons-material':
+        specifier: ^5.11.16
+        version: 5.11.16(@mui/material@5.12.3)(@types/react@18.0.28)(react@18.2.0)
+      '@mui/lab':
+        specifier: ^5.0.0-alpha.130
+        version: 5.0.0-alpha.130(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/material@5.12.3)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/material':
+        specifier: ^5.12.3
+        version: 5.12.3(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react':
+        specifier: 18.0.28
+        version: 18.0.28
+      '@types/react-dom':
+        specifier: 18.0.11
+        version: 18.0.11
+      monaco-editor:
+        specifier: ^0.36.1
+        version: 0.36.1
+      motoko:
+        specifier: ^3.5.6
+        version: 3.5.6(encoding@0.1.13)
+      next:
+        specifier: 13.2.3
+        version: 13.2.3(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-full-screen:
+        specifier: ^1.1.1
+        version: 1.1.1(react@18.2.0)
+      react-markdown:
+        specifier: ^8.0.7
+        version: 8.0.7(@types/react@18.0.28)(react@18.2.0)
+      react-use-clipboard:
+        specifier: ^1.0.9
+        version: 1.0.9(react-dom@18.2.0)(react@18.2.0)
+      split-pane-react:
+        specifier: ^0.1.3
+        version: 0.1.3(react-dom@18.2.0)(react@18.2.0)
+      styled-components:
+        specifier: ^6.0.0-rc.1
+        version: 6.0.0-rc.1(react-dom@18.2.0)(react@18.2.0)
       swr:
         specifier: ^2.1.5
         version: 2.1.5(react@18.2.0)
@@ -169,6 +208,9 @@ importers:
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
+      encoding:
+        specifier: ^0.1.13
+        version: 0.1.13
       eslint-config-prettier:
         specifier: ^8.8.0
         version: 8.8.0(eslint@8.35.0)
@@ -3298,10 +3340,10 @@ packages:
       yaml: 1.10.2
     dev: false
 
-  /cross-fetch@3.1.5:
+  /cross-fetch@3.1.5(encoding@0.1.13):
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
-      node-fetch: 2.6.7
+      node-fetch: 2.6.7(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -3539,6 +3581,11 @@ packages:
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  /encoding@0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    dependencies:
+      iconv-lite: 0.6.3
 
   /enhanced-resolve@5.15.0:
     resolution: {integrity: sha512-LXYT42KJ7lpIKECr2mAXIaMldcNCh/7E0KBKOu4KSfkHmP+mZmSs+8V5gBAqisWBy0OO4W5Oyys0GO1Y8KtdKg==}
@@ -4350,7 +4397,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
-    dev: true
 
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
@@ -5680,10 +5726,10 @@ packages:
     resolution: {integrity: sha512-/CaclMHKQ3A6rnzBzOADfwdSJ25BFoFT0Emxsc4zYVyav5SkK9iA6lEtIeuN/oRYbwPgviJT+t3l+sjFa28jYg==}
     dev: false
 
-  /motoko@3.5.6:
+  /motoko@3.5.6(encoding@0.1.13):
     resolution: {integrity: sha512-h3j90v790F+eRmSL5XVeRL1Z4daXx7b9fEgV3ySrCevf2UA1n/l5Kj+dSbSBPJdz86Y3S/W8eYxR4hv03QQqoA==}
     dependencies:
-      cross-fetch: 3.1.5
+      cross-fetch: 3.1.5(encoding@0.1.13)
       debug: 4.3.4
       isomorphic-parse-github-url: 1.0.2
       sanitize-filename: 1.6.3
@@ -5760,7 +5806,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /node-fetch@2.6.7:
+  /node-fetch@2.6.7(encoding@0.1.13):
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -5769,6 +5815,7 @@ packages:
       encoding:
         optional: true
     dependencies:
+      encoding: 0.1.13
       whatwg-url: 5.0.0
     dev: false
 
@@ -6409,7 +6456,6 @@ packages:
 
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
-    dev: true
 
   /sanitize-filename@1.6.3:
     resolution: {integrity: sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==}
