@@ -10,25 +10,6 @@ import { IEditorFile } from '../../../types/IEditorFile';
 export const SectionCode = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { courseSlug, activeLessonSlug, files, setFiles } = useContext(EditorContext);
-  const course = courseService.useCourse(courseSlug);
-  let mounted = true;
-
-  useEffect(() => {
-    const fetchFiles = async () => {
-      if (!mounted || !course.data || !activeLessonSlug) {
-        return;
-      }
-
-      const files_ = await courseService.getLessonFiles(course.data, activeLessonSlug);
-      setFiles(files_);
-
-      return () => {
-        mounted = false;
-      };
-    };
-
-    fetchFiles();
-  }, [course.data, activeLessonSlug]);
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);

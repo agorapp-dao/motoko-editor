@@ -37,8 +37,14 @@ export function Editor({ courseSlug, activeLessonSlug, setActiveLessonSlug }: Ed
 
 function EditorInner() {
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const { currentSection, courseSlug, activeLessonSlug, setActiveLessonSlug, fullscreen } =
-    React.useContext(EditorContext);
+  const {
+    currentSection,
+    courseSlug,
+    activeLessonSlug,
+    setActiveLessonSlug,
+    fullscreen,
+    setFiles,
+  } = React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([600, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
@@ -67,6 +73,19 @@ function EditorInner() {
     }
     setShowListOfContents(false);
   };
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      if (!course.data || !activeLessonSlug) {
+        return;
+      }
+
+      const files_ = await courseService.getLessonFiles(course.data, activeLessonSlug);
+      setFiles(files_);
+    };
+
+    fetchFiles();
+  }, [course.data, activeLessonSlug]);
 
   if (!course.data) {
     return <div></div>;
