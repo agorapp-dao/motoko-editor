@@ -89,6 +89,20 @@
           "solution": "03-types/primitive-types/solution.md"
         },
         {
+          "name": "Integers",
+          "slug": "integers",
+          "content": "03-types/integers/lesson.md",
+          "files": ["03-types/integers/main.mo"],
+          "solution": "03-types/integers/solution.md"
+        },
+        {
+          "name": "Floats",
+          "slug": "floats",
+          "content": "03-types/floats/lesson.md",
+          "files": ["03-types/floats/main.mo"],
+          "solution": "03-types/floats/solution.md"
+        },
+        {
           "name": "Text",
           "slug": "text",
           "content": "03-types/text/lesson.md",

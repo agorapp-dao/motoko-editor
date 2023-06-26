@@ -1,10 +1,11 @@
 import * as S from './ContentItem.styled';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TLesson } from '@agorapp/content-common';
 import { Collapse } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';
 import { ContentLevel } from './ContentLevel';
+import { EditorContext } from '../EditorContext';
 
 interface TProps {
   item: TLesson;
@@ -19,13 +20,13 @@ export const ContentItem: React.FC<TProps> = ({
   baseIndex,
   handleSelectLesson,
 }: TProps) => {
+  const { courseSlug } = useContext(EditorContext);
   const [opened, setOpened] = useState(true);
   const router = useRouter();
 
   const handleClick = (lesson: TLesson) => {
     if (lesson.content) {
-      // TODO: do not hardcode course name
-      router.push(`/motoko-tutorial/${lesson.slug}`);
+      router.push(`/editor/${courseSlug}/${lesson.slug}`);
       handleSelectLesson(lesson.slug);
     } else if (lesson.children?.length) {
       setOpened(!opened);
