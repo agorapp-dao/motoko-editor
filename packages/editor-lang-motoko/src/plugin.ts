@@ -6,6 +6,8 @@ import motokoBasePackage from 'motoko/packages/latest/base.json';
 export class MotokoEditorPlugin implements IEditorLanguagePlugin {
   language = 'motoko';
 
+  fileExtensions = ['mo'];
+
   init(monaco: Monaco): void {
     configure(monaco);
   }

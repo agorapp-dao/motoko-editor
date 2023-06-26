@@ -3,6 +3,8 @@ import { IEditorFile, Monaco } from '../index';
 export interface IEditorLanguagePlugin {
   language: string;
 
+  fileExtensions: string[];
+
   init(monaco: Monaco): void;
 
   /**

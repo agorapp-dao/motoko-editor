@@ -9,7 +9,7 @@ import { TLesson } from '@agorapp/content-common';
 import { useRouter } from 'next/router';
 import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
-import { getLanguagePlugin } from '../Monaco/Monaco';
+import { editorService } from '../editorService';
 
 export const ControlPanel = () => {
   const router = useRouter();
@@ -33,8 +33,7 @@ export const ControlPanel = () => {
 
     setRunning(true);
     try {
-      const plugin = getLanguagePlugin(course.data.language);
-      const output = await plugin.run(files);
+      const output = await editorService.run(course.data.language, files);
       setOutput(output);
     } finally {
       setRunning(false);
