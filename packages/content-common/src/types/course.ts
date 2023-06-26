@@ -13,6 +13,7 @@ export interface TLesson {
 export interface TCourse {
   name: string;
   slug: string;
+  language: string;
 
   lessons: TLesson[];
 }

@@ -1,6 +1,7 @@
 {
   "name": "Motoko Tutorial",
   "slug": "motoko-tutorial",
+  "language": "motoko",
   "lessons": [
     {
       "name": "Introduction",

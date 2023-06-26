@@ -8,14 +8,17 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import React, { useEffect, useState } from 'react';
 import { GlobalStyle } from '@/src/styles/global.styled';
 import { useRouter } from 'next/router';
-import { courseService, Editor } from '@agorapp/editor-common';
+import { courseService, Editor, registerLanguagePlugin } from '@agorapp/editor-common';
 import { contentService } from '@agorapp/content-common';
+import { MotokoEditorPlugin } from '@agorapp/editor-lang-motoko';
 
 type TEditorPageProps = {
   lessonSlug: string;
   courseSlug: string;
   fallback: { [key: string]: any };
 };
+
+registerLanguagePlugin(new MotokoEditorPlugin());
 
 export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditorPageProps) {
   const [activeLessonSlug, setActiveLessonSlug] = useState(lessonSlug);

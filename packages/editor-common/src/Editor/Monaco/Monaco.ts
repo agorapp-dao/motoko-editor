@@ -1,13 +1,27 @@
 // it is important to not import monaco-editor directly, otherwise it fails with navigator not defined on the server
 import type TMonaco from 'monaco-editor';
-import { configure } from 'motoko/contrib/monaco';
-
+import { IEditorLanguagePlugin } from '../../types/IEditorLanguagePlugin';
 let monaco: Promise<typeof TMonaco>;
+
+const languagePlugins: { [key: string]: IEditorLanguagePlugin } = {};
+
+export function registerLanguagePlugin(plugin: IEditorLanguagePlugin) {
+  languagePlugins[plugin.language] = plugin;
+}
+
+export function getLanguagePlugin(language: string) {
+  if (!languagePlugins[language]) {
+    throw new Error(`Language plugin for ${language} not found`);
+  }
+  return languagePlugins[language];
+}
 
 export async function getMonaco() {
   if (!monaco) {
     monaco = import('monaco-editor').then(monaco => {
-      configure(monaco);
+      for (const plugin of Object.values(languagePlugins)) {
+        plugin.init(monaco);
+      }
       return monaco;
     });
   }

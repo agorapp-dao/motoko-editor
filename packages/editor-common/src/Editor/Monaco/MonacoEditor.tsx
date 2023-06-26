@@ -1,17 +1,19 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import type { editor } from 'monaco-editor';
 import * as S from './MonacoEditor.styled';
 import { getMonaco } from './Monaco';
 import { EditorContext } from '../EditorContext';
 
 export interface MonacoEditorProps {
-  value?: string;
   language?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
 }
 
-export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
+export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorProps) => {
+  const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | undefined>(undefined);
   const divEl = useRef<HTMLDivElement>(null);
-  const { fontSize, setInstance } = useContext(EditorContext);
+  const { fontSize } = useContext(EditorContext);
 
   useEffect(() => {
     let isMounted = true;
@@ -20,7 +22,7 @@ export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
     getMonaco().then(monaco => {
       if (isMounted && divEl.current) {
         editor = monaco.editor.create(divEl.current, {
-          value,
+          value: '',
           language,
           theme: 'editorTheme',
           automaticLayout: true,
@@ -29,7 +31,12 @@ export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
             enabled: false,
           },
         });
-        setInstance(editor);
+
+        editor.onDidBlurEditorText(() => {
+          onValueChange && onValueChange(editor.getValue());
+        });
+
+        setEditor(editor);
       }
     });
 
@@ -37,8 +44,17 @@ export const MonacoEditor = ({ value, language }: MonacoEditorProps) => {
       isMounted = false;
       editor?.dispose();
     };
-    // TODO: chci mit v deps fontSize, value a language?
-  }, [divEl, language, value, fontSize]);
+  }, [divEl, language, fontSize]);
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+    if (editor.getValue() !== value) {
+      // setValue will clear undo stack, so be careful when you're doing this
+      editor.setValue(value || '');
+    }
+  }, [editor, value]);
 
   return <S.Code ref={divEl} />;
 };

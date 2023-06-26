@@ -23,6 +23,11 @@ class CourseService {
     return useText(this.getContentPath(course, contentPath));
   }
 
+  async fetchContent(course: TCourse, contentPath: string): Promise<string> {
+    const res = await fetch(this.getContentPath(course, contentPath) as string);
+    return res.text();
+  }
+
   getContentPath(course: TCourse | undefined, contentPath: string | undefined) {
     if (!course || !contentPath) {
       return undefined;

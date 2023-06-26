@@ -32,6 +32,9 @@ importers:
       '@agorapp/editor-common':
         specifier: workspace:^
         version: link:../packages/editor-common
+      '@agorapp/editor-lang-motoko':
+        specifier: workspace:^
+        version: link:../packages/editor-lang-motoko
       '@emotion/core':
         specifier: ^11.0.0
         version: 11.0.0
@@ -165,9 +168,6 @@ importers:
       monaco-editor:
         specifier: ^0.36.1
         version: 0.36.1
-      motoko:
-        specifier: ^3.5.6
-        version: 3.5.6(encoding@0.1.13)
       next:
         specifier: 13.2.3
         version: 13.2.3(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
@@ -220,6 +220,15 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.5.0
         version: 29.5.0
+
+  packages/editor-lang-motoko:
+    dependencies:
+      '@agorapp/editor-common':
+        specifier: workspace:^
+        version: link:../editor-common
+      motoko:
+        specifier: ^3.5.6
+        version: 3.5.6
 
 packages:
 
@@ -3340,10 +3349,10 @@ packages:
       yaml: 1.10.2
     dev: false
 
-  /cross-fetch@3.1.5(encoding@0.1.13):
+  /cross-fetch@3.1.5:
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
-      node-fetch: 2.6.7(encoding@0.1.13)
+      node-fetch: 2.6.7
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -3586,6 +3595,7 @@ packages:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
     dependencies:
       iconv-lite: 0.6.3
+    dev: true
 
   /enhanced-resolve@5.15.0:
     resolution: {integrity: sha512-LXYT42KJ7lpIKECr2mAXIaMldcNCh/7E0KBKOu4KSfkHmP+mZmSs+8V5gBAqisWBy0OO4W5Oyys0GO1Y8KtdKg==}
@@ -4397,6 +4407,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
+    dev: true
 
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
@@ -5726,10 +5737,10 @@ packages:
     resolution: {integrity: sha512-/CaclMHKQ3A6rnzBzOADfwdSJ25BFoFT0Emxsc4zYVyav5SkK9iA6lEtIeuN/oRYbwPgviJT+t3l+sjFa28jYg==}
     dev: false
 
-  /motoko@3.5.6(encoding@0.1.13):
+  /motoko@3.5.6:
     resolution: {integrity: sha512-h3j90v790F+eRmSL5XVeRL1Z4daXx7b9fEgV3ySrCevf2UA1n/l5Kj+dSbSBPJdz86Y3S/W8eYxR4hv03QQqoA==}
     dependencies:
-      cross-fetch: 3.1.5(encoding@0.1.13)
+      cross-fetch: 3.1.5
       debug: 4.3.4
       isomorphic-parse-github-url: 1.0.2
       sanitize-filename: 1.6.3
@@ -5806,7 +5817,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /node-fetch@2.6.7(encoding@0.1.13):
+  /node-fetch@2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -5815,7 +5826,6 @@ packages:
       encoding:
         optional: true
     dependencies:
-      encoding: 0.1.13
       whatwg-url: 5.0.0
     dev: false
 
@@ -6456,6 +6466,7 @@ packages:
 
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    dev: true
 
   /sanitize-filename@1.6.3:
     resolution: {integrity: sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==}

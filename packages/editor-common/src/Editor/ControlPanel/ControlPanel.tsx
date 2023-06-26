@@ -5,16 +5,15 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
-import mo from 'motoko/lib/versions/interpreter';
-import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { TLesson } from '@agorapp/content-common';
 import { useRouter } from 'next/router';
 import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
+import { getLanguagePlugin } from '../Monaco/Monaco';
 
 export const ControlPanel = () => {
   const router = useRouter();
-  const { instance, setOutput, courseSlug, activeLessonSlug } = useContext(EditorContext);
+  const { files, setOutput, courseSlug, activeLessonSlug } = useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
   const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
@@ -28,19 +27,18 @@ export const ControlPanel = () => {
   }, [activeLessonSlug, course]);
 
   const handleRunCode = async () => {
-    if (!instance) {
+    if (!course.data) {
       return;
     }
 
     setRunning(true);
-    mo.clearPackages();
-    mo.loadPackage(motokoBasePackage);
-    mo.write('Main.mo', instance.getValue());
-    const res = mo.run('Main.mo');
-
-    setRunning(false);
-
-    setOutput(res.stdout + res.stderr);
+    try {
+      const plugin = getLanguagePlugin(course.data.language);
+      const output = await plugin.run(files);
+      setOutput(output);
+    } finally {
+      setRunning(false);
+    }
   };
 
   const handleGoToNext = () => {

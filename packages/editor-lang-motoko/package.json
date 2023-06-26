@@ -1,0 +1,16 @@
+{
+  "name": "@agorapp/editor-lang-motoko",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/plugin.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@agorapp/editor-common": "workspace:^",
+    "motoko": "^3.5.6"
+  }
+}

@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, createContext } from 'react';
-import type { editor as monacoEditor } from 'monaco-editor';
+import { useState, createContext, Dispatch, SetStateAction } from 'react';
 import { EEditorSectionType } from '../constants';
+import { IEditorFile } from '../types/IEditorFile';
 
 export type TEditorContext = {
-  instance: monacoEditor.IStandaloneCodeEditor | undefined;
-  setInstance: (instance: monacoEditor.IStandaloneCodeEditor) => void;
+  files: IEditorFile[];
+  setFiles: Dispatch<SetStateAction<IEditorFile[]>>;
   output: string;
   setOutput: (text: string) => void;
   currentSection: EEditorSectionType;
@@ -21,8 +21,8 @@ export type TEditorContext = {
 };
 
 const initialState: TEditorContext = {
-  instance: undefined,
-  setInstance: (instance: monacoEditor.IStandaloneCodeEditor) => {},
+  files: [],
+  setFiles: (files: IEditorFile[] | ((prevState: IEditorFile[]) => IEditorFile[])) => {},
   output: '',
   setOutput: (text: string) => {},
   currentSection: EEditorSectionType.LESSON,
@@ -51,7 +51,7 @@ const EditorProvider = ({
   setActiveLessonSlug,
   children,
 }: TProps) => {
-  const [instance, setInstance] = useState(initialState.instance);
+  const [files, setFiles] = useState(initialState.files);
   const [output, setOutput] = useState(initialState.output);
   const [currentSection, setCurrentSection] = useState(initialState.currentSection);
   const [fontSize, setFontSize] = useState(initialState.fontSize);
@@ -60,8 +60,8 @@ const EditorProvider = ({
   return (
     <EditorContext.Provider
       value={{
-        instance,
-        setInstance,
+        files,
+        setFiles,
         output,
         setOutput,
         currentSection,
