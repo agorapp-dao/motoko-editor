@@ -1,6 +1,7 @@
 import { TCourse, TLesson } from '@agorapp/content-common';
 import { useJson } from '../hooks/useJson';
 import { useText } from '../hooks/useText';
+import { IEditorFile } from '../types/IEditorFile';
 
 class CourseService {
   /**
@@ -100,6 +101,56 @@ class CourseService {
 
     const currentLessonIndex = lessons.findIndex(l => l.slug === currentLesson);
     return lessons[currentLessonIndex + delta];
+  }
+
+  async getLessonFiles(course: TCourse, lessonSlug: string): Promise<IEditorFile[]> {
+    const lesson = this.findLessonBySlug(course, lessonSlug);
+    if (!lesson) {
+      throw new Error(`Lesson ${lessonSlug} not found in course ${course.slug}`);
+    }
+
+    if (!lesson.files) {
+      return [];
+    }
+
+    const contents = await Promise.all(
+      lesson.files.map(file => courseService.fetchContent(course, file)),
+    );
+
+    const files: IEditorFile[] = lesson.files.map((file, index) => ({
+      path: file,
+      content: contents[index] || '',
+    }));
+
+    const rootEndIndex = this._findCommonRoot(files.map(file => file.path));
+    for (const file of files) {
+      file.path = file.path.substring(rootEndIndex + 1);
+    }
+
+    return files;
+  }
+
+  _findCommonRoot(paths: string[]): number {
+    let longest = 0;
+    for (const path of paths) {
+      if (path.length > longest) {
+        longest = path.length;
+      }
+    }
+
+    // last `/` character found in the paths
+    let lastSlashFound = 0;
+    for (let i = 0; i < longest; i++) {
+      const char = paths[0][i];
+      if (paths.some(path => path[i] !== char)) {
+        return lastSlashFound;
+      }
+      if (char === '/') {
+        lastSlashFound = i;
+      }
+    }
+
+    return lastSlashFound;
   }
 }
 

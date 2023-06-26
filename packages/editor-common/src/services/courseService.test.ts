@@ -4,6 +4,7 @@ import { courseService } from './courseService';
 const COURSE: TCourse = {
   name: 'Motoko Tutorial',
   slug: 'motoko-tutorial',
+  language: 'motoko',
   lessons: [
     {
       name: 'Introduction',
@@ -19,7 +20,11 @@ const COURSE: TCourse = {
           name: 'Printing values',
           slug: 'printing-values',
           content: '/motoko-tutorial/02-basics/print-values/theory.md',
-          files: ['/motoko-tutorial/02-basics/print-values/main.mo'],
+          files: [
+            '/motoko-tutorial/02-basics/print-values/main.mo',
+            '/motoko-tutorial/02-basics/print-values/folder1/some.mo',
+            '/motoko-tutorial/02-basics/print-values/folder2/other.mo',
+          ],
           solution: '/motoko-tutorial/02-basics/print-values/solution.md',
         },
         {
@@ -52,6 +57,12 @@ const COURSE: TCourse = {
 };
 
 describe('courseService', () => {
+  beforeEach(() => {
+    courseService.fetchContent = jest.fn(
+      async (course, contentPath) => `content of ${contentPath}`,
+    );
+  });
+
   test('find next lesson 1', () => {
     const res = courseService.nextLesson(COURSE, 'introduction');
     expect(res?.slug).toEqual('printing-values');
@@ -80,5 +91,40 @@ describe('courseService', () => {
   test('find prev lesson 3', () => {
     const res = courseService.prevLesson(COURSE, 'printing-values');
     expect(res?.slug).toEqual('introduction');
+  });
+
+  test('get lesson files 1', async () => {
+    const res = await courseService.getLessonFiles(COURSE, 'introduction');
+    expect(res[0]).toEqual({
+      path: 'main.mo',
+      content: 'content of /motoko-tutorial/01-introduction/main.mo',
+    });
+    expect(res.length).toEqual(1);
+  });
+
+  test('get lesson files 2', async () => {
+    const res = await courseService.getLessonFiles(COURSE, 'printing-values');
+    expect(res[0]).toEqual({
+      path: 'main.mo',
+      content: 'content of /motoko-tutorial/02-basics/print-values/main.mo',
+    });
+    expect(res[1]).toEqual({
+      path: 'folder1/some.mo',
+      content: 'content of /motoko-tutorial/02-basics/print-values/folder1/some.mo',
+    });
+    expect(res[2]).toEqual({
+      path: 'folder2/other.mo',
+      content: 'content of /motoko-tutorial/02-basics/print-values/folder2/other.mo',
+    });
+    expect(res.length).toEqual(3);
+  });
+
+  test('get common root of files', () => {
+    const res = courseService._findCommonRoot([
+      '02-basics/print-values/main.mo',
+      '02-basics/print-values/folder1/some.mo',
+      '02-basics/print-values/folder2/other.mo',
+    ]);
+    expect(res).toEqual(22);
   });
 });

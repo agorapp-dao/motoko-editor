@@ -11,26 +11,15 @@ export const SectionCode = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { courseSlug, activeLessonSlug, files, setFiles } = useContext(EditorContext);
   const course = courseService.useCourse(courseSlug);
-  const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
   let mounted = true;
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const courseData = course.data;
-
-      if (!mounted || !courseData || !activeLesson?.files) {
+      if (!mounted || !course.data || !activeLessonSlug) {
         return;
       }
 
-      const contents = await Promise.all(
-        activeLesson.files.map(file => courseService.fetchContent(courseData, file)),
-      );
-
-      const files_: IEditorFile[] = activeLesson.files.map((file, index) => ({
-        path: file,
-        content: contents[index] || '',
-      }));
-
+      const files_ = await courseService.getLessonFiles(course.data, activeLessonSlug);
       setFiles(files_);
 
       return () => {
@@ -39,7 +28,7 @@ export const SectionCode = () => {
     };
 
     fetchFiles();
-  }, [course.data, activeLesson]);
+  }, [course.data, activeLessonSlug]);
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -52,7 +41,7 @@ export const SectionCode = () => {
     });
   };
 
-  if (!activeLesson?.files) {
+  if (!files.length) {
     return <div></div>;
   }
 
