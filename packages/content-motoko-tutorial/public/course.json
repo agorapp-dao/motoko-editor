@@ -118,27 +118,30 @@
         {
           "name": "Tuples",
           "slug": "tuples",
-          "content": ""
+          "content": "03-types/tuples/lesson.md",
+          "files": ["03-types/tuples/main.mo"],
+          "solution": "03-types/tuples/solution.md"
         },
         {
           "name": "Records",
           "slug": "records",
-          "content": ""
+          "content": "03-types/records/lesson.md",
+          "files": ["03-types/records/main.mo"],
+          "solution": "03-types/records/solution.md"
         },
         {
           "name": "Variants",
           "slug": "variants",
-          "content": ""
+          "content": "03-types/variants/lesson.md",
+          "files": ["03-types/variants/main.mo"],
+          "solution": "03-types/variants/solution.md"
         },
         {
-          "name": "Immutable arrays",
-          "slug": "immutable-arrays",
-          "content": ""
-        },
-        {
-          "name": "Mutable arrays",
-          "slug": "mutable-arrays",
-          "content": ""
+          "name": "Arrays",
+          "slug": "arrays",
+          "content": "03-types/arrays/lesson.md",
+          "files": ["03-types/arrays/main.mo"],
+          "solution": "03-types/arrays/solution.md"
         },
         {
           "name": "Type aliases",

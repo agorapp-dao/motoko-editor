@@ -30,6 +30,7 @@ export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorPro
           minimap: {
             enabled: false,
           },
+          tabSize: 2,
         });
 
         editor.onDidBlurEditorText(() => {
