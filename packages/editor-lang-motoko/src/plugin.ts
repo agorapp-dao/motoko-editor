@@ -14,7 +14,7 @@ export class MotokoEditorPlugin implements IEditorLanguagePlugin {
 
   init(monaco: Monaco): void {
     this.monaco = monaco;
-    configure(monaco, { snippets: true });
+    configure(monaco, { snippets: false });
   }
 
   async run(files: IEditorFile[]): Promise<string> {
