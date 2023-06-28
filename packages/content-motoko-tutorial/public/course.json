@@ -162,12 +162,23 @@
         {
           "name": "If",
           "slug": "if",
-          "content": ""
+          "content": "04-control-flow/if/lesson.md",
+          "files": ["04-control-flow/if/main.mo"],
+          "solution": "04-control-flow/if/solution.md"
         },
         {
           "name": "Switch",
           "slug": "switch",
-          "content": ""
+          "content": "04-control-flow/switch/lesson.md",
+          "files": ["04-control-flow/switch/main.mo"],
+          "solution": "04-control-flow/switch/solution.md"
+        },
+        {
+          "name": "Switch and variants",
+          "slug": "switch-and-variants",
+          "content": "04-control-flow/switch-and-variants/lesson.md",
+          "files": ["04-control-flow/switch-and-variants/main.mo"],
+          "solution": "04-control-flow/switch-and-variants/solution.md"
         },
         {
           "name": "For loop",

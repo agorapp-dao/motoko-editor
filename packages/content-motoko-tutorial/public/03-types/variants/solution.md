@@ -1,17 +1,13 @@
-Variant type represents a set of options:
-
 ```motoko
-type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
+import D "mo:base/Debug";
 
-let day : Day = #Wed;
-```
+type Shape = {
+  #circle;
+  #rectangle;
+  #triangle;
+};
 
-// TODO: revisit this later
-You can assign a type to each option:
+let s : Shape = #circle;
 
-```motoko
-type Result = {
-  #ok : Nat;
-  #err : Text;
-}
+D.print(debug_show(s));
 ```
