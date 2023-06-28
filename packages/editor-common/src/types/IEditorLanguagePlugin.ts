@@ -12,4 +12,6 @@ export interface IEditorLanguagePlugin {
    * @param files
    */
   run(files: IEditorFile[]): Promise<string>;
+
+  check(file: IEditorFile, files: IEditorFile[]): Promise<void>;
 }

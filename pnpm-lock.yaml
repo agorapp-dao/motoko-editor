@@ -232,6 +232,9 @@ importers:
       '@agorapp/editor-common':
         specifier: workspace:^
         version: link:../editor-common
+      monaco-editor:
+        specifier: ^0.36.1
+        version: 0.36.1
       motoko:
         specifier: ^3.5.6
         version: 3.5.6

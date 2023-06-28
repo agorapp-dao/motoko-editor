@@ -7,6 +7,8 @@ import { IEditorFile } from '../types/IEditorFile';
 export type TEditorContext = {
   files: IEditorFile[];
   setFiles: Dispatch<SetStateAction<IEditorFile[]>>;
+  activeFile: number;
+  setActiveFile: Dispatch<SetStateAction<number>>;
   output: string;
   setOutput: (text: string) => void;
   currentSection: EEditorSectionType;
@@ -23,6 +25,8 @@ export type TEditorContext = {
 const initialState: TEditorContext = {
   files: [],
   setFiles: (files: IEditorFile[] | ((prevState: IEditorFile[]) => IEditorFile[])) => {},
+  activeFile: 0,
+  setActiveFile: (index: number | ((prevState: number) => number)) => {},
   output: '',
   setOutput: (text: string) => {},
   currentSection: EEditorSectionType.LESSON,
@@ -52,6 +56,7 @@ const EditorProvider = ({
   children,
 }: TProps) => {
   const [files, setFiles] = useState(initialState.files);
+  const [activeFile, setActiveFile] = useState(0);
   const [output, setOutput] = useState(initialState.output);
   const [currentSection, setCurrentSection] = useState(initialState.currentSection);
   const [fontSize, setFontSize] = useState(initialState.fontSize);
@@ -62,6 +67,8 @@ const EditorProvider = ({
       value={{
         files,
         setFiles,
+        activeFile,
+        setActiveFile,
         output,
         setOutput,
         currentSection,

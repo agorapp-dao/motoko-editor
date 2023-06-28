@@ -39,6 +39,16 @@ class EditorService {
     const output = await plugin.run(files);
     return output;
   }
+
+  async check(file: IEditorFile, files: IEditorFile[]): Promise<void> {
+    const language = this.getLanguageForFile(file.path);
+    if (!language) {
+      return;
+    }
+
+    const plugin = editorService.getLanguagePlugin(language);
+    await plugin.check(file, files);
+  }
 }
 
 export const editorService = new EditorService();

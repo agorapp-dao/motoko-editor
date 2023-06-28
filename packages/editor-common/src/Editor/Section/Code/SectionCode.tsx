@@ -7,16 +7,15 @@ import { MonacoEditor } from '../../Monaco/MonacoEditor';
 import { editorService } from '../../editorService';
 
 export const SectionCode = () => {
-  const [activeTab, setActiveTab] = useState(0);
-  const { courseSlug, activeLessonSlug, files, setFiles } = useContext(EditorContext);
+  const { files, setFiles, activeFile, setActiveFile } = useContext(EditorContext);
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
+    setActiveFile(newValue);
   };
 
   const handleValueChange = (value: string) => {
     setFiles(files => {
-      files[activeTab].content = value;
+      files[activeFile].content = value;
       return [...files];
     });
   };
@@ -29,7 +28,7 @@ export const SectionCode = () => {
     <>
       <Box display="flex" flexDirection="row">
         <Box sx={{ borderBottom: 1, borderColor: 'divider', flex: '1 1 auto' }}>
-          <Tabs value={activeTab} onChange={changeActiveTab}>
+          <Tabs value={activeFile} onChange={changeActiveTab}>
             {files?.map((file, index) => (
               <PanelTab label={file.path} key={index} value={index} />
             ))}
@@ -38,8 +37,8 @@ export const SectionCode = () => {
         <FullscreenControl />
       </Box>
       <MonacoEditor
-        language={editorService.getLanguageForFile(files[activeTab]?.path)}
-        value={files[activeTab]?.content}
+        language={editorService.getLanguageForFile(files[activeFile]?.path)}
+        value={files[activeFile]?.content}
         onValueChange={handleValueChange}
       />
     </>
