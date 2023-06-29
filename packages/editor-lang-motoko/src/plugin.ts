@@ -4,6 +4,7 @@ import mo from 'motoko/lib/versions/moc';
 import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { editor, MarkerSeverity } from 'monaco-editor';
 import IMarkerData = editor.IMarkerData;
+import { completion } from './completion';
 
 mo.setRunStepLimit(100_000);
 
@@ -17,6 +18,8 @@ export class MotokoEditorPlugin implements IEditorLanguagePlugin {
   init(monaco: Monaco): void {
     this.monaco = monaco;
     configure(monaco, { snippets: false });
+
+    completion(this.monaco, mo);
   }
 
   async run(files: IEditorFile[]): Promise<string> {

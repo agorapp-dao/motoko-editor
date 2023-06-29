@@ -10,6 +10,20 @@ class EditorService {
    */
   private fileExtensions: { [key: string]: string } = {};
 
+  /**
+   * List of files available in the editor.
+   *
+   * @private
+   */
+  files: IEditorFile[] = [];
+
+  /**
+   * Index of the active file.
+   *
+   * @private
+   */
+  activeFile = 0;
+
   registerLanguagePlugin(plugin: IEditorLanguagePlugin) {
     this.languagePlugins[plugin.language] = plugin;
 

@@ -17,6 +17,7 @@ import { SectionCode } from './Section/Code/SectionCode';
 import { ControlPanel } from './ControlPanel/ControlPanel';
 import { BottomPanel } from './Panel/BottomPanel/BottomPanel';
 import { FeedbackBtn } from '../components/Feeback/FeedbackBtn';
+import { editorService } from './editorService';
 
 type EditorProps = {
   courseSlug: string;
@@ -61,6 +62,12 @@ function EditorInner() {
   useEffect(() => {
     setShowListOfContents(false);
   }, [currentSection]);
+
+  // propagate context props to editorService
+  useEffect(() => {
+    editorService.files = files;
+    editorService.activeFile = activeFile;
+  }, [files, activeFile]);
 
   const toggleListOfContents = () => {
     setShowListOfContents(prev => !prev);

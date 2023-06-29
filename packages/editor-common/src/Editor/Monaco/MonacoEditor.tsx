@@ -33,6 +33,11 @@ export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorPro
             enabled: false,
           },
           tabSize: 2,
+          suggest: {
+            // Without this, first suggestion won't be selected automatically when snippet is active
+            // https://github.com/microsoft/vscode/issues/173387
+            snippetsPreventQuickSuggestions: false,
+          },
         });
 
         editor.onDidBlurEditorText(() => {
