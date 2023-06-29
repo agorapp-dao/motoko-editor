@@ -16,6 +16,7 @@ import { SectionLesson } from './Section/Lesson/SectionLesson';
 import { SectionCode } from './Section/Code/SectionCode';
 import { ControlPanel } from './ControlPanel/ControlPanel';
 import { BottomPanel } from './Panel/BottomPanel/BottomPanel';
+import { FeedbackBtn } from '../components/Feeback/FeedbackBtn';
 
 type EditorProps = {
   courseSlug: string;
@@ -44,6 +45,8 @@ function EditorInner() {
     setActiveLessonSlug,
     fullscreen,
     setFiles,
+    files,
+    activeFile,
   } = React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([600, Infinity]);
@@ -95,6 +98,12 @@ function EditorInner() {
 
   return (
     <FullScreen handle={handleFullscreen} className="fullscreen">
+      {courseSlug && activeLessonSlug && (
+        <FeedbackBtn
+          userCode={files[activeFile]?.content}
+          slug={`${courseSlug}/${activeLessonSlug}`}
+        />
+      )}
       <SectionTabs></SectionTabs>
       <SplitPane
         split="vertical"
