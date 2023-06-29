@@ -183,12 +183,16 @@
         {
           "name": "For loop",
           "slug": "for-loop",
-          "content": ""
+          "content": "04-control-flow/for-loop/lesson.md",
+          "files": ["04-control-flow/for-loop/main.mo"],
+          "solution": "04-control-flow/for-loop/solution.md"
         },
         {
           "name": "While loop",
           "slug": "While loop",
-          "content": ""
+          "content": "04-control-flow/while-loop/lesson.md",
+          "files": ["04-control-flow/while-loop/main.mo"],
+          "solution": "04-control-flow/while-loop/solution.md"
         }
       ]
     },

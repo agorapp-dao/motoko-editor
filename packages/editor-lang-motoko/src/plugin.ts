@@ -5,6 +5,8 @@ import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { editor, MarkerSeverity } from 'monaco-editor';
 import IMarkerData = editor.IMarkerData;
 
+mo.setRunStepLimit(100_000);
+
 export class MotokoEditorPlugin implements IEditorLanguagePlugin {
   language = 'motoko';
 
