@@ -123,13 +123,6 @@
           "solution": "03-types/tuples/solution.md"
         },
         {
-          "name": "Records",
-          "slug": "records",
-          "content": "03-types/records/lesson.md",
-          "files": ["03-types/records/main.mo"],
-          "solution": "03-types/records/solution.md"
-        },
-        {
           "name": "Variants",
           "slug": "variants",
           "content": "03-types/variants/lesson.md",
@@ -201,9 +194,18 @@
       "slug": "beyond-basics",
       "children": [
         {
+          "name": "Records",
+          "slug": "records",
+          "content": "05-beyond-basics/records/lesson.md",
+          "files": ["05-beyond-basics/records/main.mo"],
+          "solution": "05-beyond-basics/records/solution.md"
+        },
+        {
           "name": "Objects",
           "slug": "objects",
-          "content": ""
+          "content": "05-beyond-basics/objects/lesson.md",
+          "files": ["05-beyond-basics/objects/main.mo"],
+          "solution": "05-beyond-basics/objects/solution.md"
         },
         {
           "name": "Classes",
