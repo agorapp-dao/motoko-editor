@@ -23,7 +23,7 @@ export class CompletionTree {
   private pendingVarP: string | undefined;
 
   constructor(private ast: Node) {
-    this.processNode(ast);
+    this.processNodeChildren(ast);
   }
 
   getCompletions(row: number, column: number): Suggestions {
@@ -94,7 +94,7 @@ export class CompletionTree {
     return true;
   }
 
-  private processNode(node: Node) {
+  private processNodeChildren(node: Node) {
     if (node.args) {
       for (const arg of node.args) {
         if (!arg) continue;
@@ -156,9 +156,7 @@ export class CompletionTree {
     this.scope.children.push(scope);
     this.scope = scope;
 
-    if (node.args) {
-      this.processNode(node);
-    }
+    this.processNodeChildren(node);
 
     // restore previous scope
     this.scope = this.scope.parent!;
@@ -168,9 +166,7 @@ export class CompletionTree {
    * `let` declaration
    */
   private processLetD(node: Node) {
-    if (node.args) {
-      this.processNode(node);
-    }
+    this.processNodeChildren(node);
 
     if (this.pendingVarP) {
       this.scope.variables.push(this.pendingVarP);
@@ -200,9 +196,7 @@ export class CompletionTree {
   }
 
   private processUnknown(node: Node) {
-    if (node.args) {
-      this.processNode(node);
-    }
+    this.processNodeChildren(node);
   }
 
   printTree() {
