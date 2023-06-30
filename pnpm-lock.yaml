@@ -29,12 +29,18 @@ importers:
       '@agorapp/content-motoko-tutorial':
         specifier: workspace:^
         version: link:../packages/content-motoko-tutorial
+      '@agorapp/content-solidity-sample':
+        specifier: workspace:^
+        version: link:../packages/content-solidity-sample
       '@agorapp/editor-common':
         specifier: workspace:^
         version: link:../packages/editor-common
       '@agorapp/editor-lang-motoko':
         specifier: workspace:^
         version: link:../packages/editor-lang-motoko
+      '@agorapp/editor-lang-solidity':
+        specifier: workspace:^
+        version: link:../packages/editor-lang-solidity
       '@emotion/core':
         specifier: ^11.0.0
         version: 11.0.0
@@ -132,6 +138,8 @@ importers:
       '@agorapp/content-common':
         specifier: workspace:^
         version: link:../content-common
+
+  packages/content-solidity-sample: {}
 
   packages/editor-common:
     dependencies:
@@ -238,6 +246,15 @@ importers:
       motoko:
         specifier: ^3.5.6
         version: 3.5.6
+
+  packages/editor-lang-solidity:
+    dependencies:
+      '@agorapp/editor-common':
+        specifier: workspace:^
+        version: link:../editor-common
+      monaco-editor:
+        specifier: ^0.36.1
+        version: 0.36.1
 
 packages:
 

@@ -1,0 +1,13 @@
+{
+  "name": "Solidity Sample",
+  "slug": "solidity-sample",
+  "language": "solidity",
+  "lessons": [
+    {
+      "name": "Sample",
+      "slug": "sample",
+      "content": "sample/lesson.md",
+      "files": ["sample/main.sol"]
+    }
+  ]
+}
