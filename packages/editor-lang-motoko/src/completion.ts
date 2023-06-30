@@ -4,7 +4,7 @@ import Mo from 'motoko/lib/versions/moc';
 import { keywords } from 'motoko/lib/keywords';
 import { typeKeywords } from 'motoko/src/keywords';
 import { Node } from 'motoko/src/ast';
-import { CompletionTree } from './completion-tree';
+import { CompletionTree } from './CompletionTree';
 
 export function completion(monaco: Monaco, mo: typeof Mo) {
   monaco.languages.registerCompletionItemProvider('motoko', new CompletionItemProvider(monaco, mo));
@@ -74,9 +74,10 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
       // look for things to complete
       if (this.lastTree) {
         const completionTree = new CompletionTree(this.lastTree);
+        const completions = completionTree.getCompletions(position.lineNumber, position.column);
 
         suggestions = suggestions.concat(
-          completionTree.scope.variables.map(variable => ({
+          completions.variables.map(variable => ({
             label: variable,
             kind: monaco.languages.CompletionItemKind.Variable,
             insertText: variable,
@@ -84,7 +85,7 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
           })),
         );
         suggestions = suggestions.concat(
-          completionTree.scope.functions.map(fn => ({
+          completions.functions.map(fn => ({
             label: fn,
             kind: monaco.languages.CompletionItemKind.Function,
             insertText: fn + '($1)',
@@ -92,9 +93,6 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
             range: range,
           })),
         );
-
-        console.debug('tree', this.lastTree);
-        console.debug('scope', completionTree.scope);
       }
     }
 
