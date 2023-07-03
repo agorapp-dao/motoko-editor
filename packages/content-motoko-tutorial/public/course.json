@@ -135,16 +135,6 @@
           "content": "03-types/arrays/lesson.md",
           "files": ["03-types/arrays/main.mo"],
           "solution": "03-types/arrays/solution.md"
-        },
-        {
-          "name": "Type aliases",
-          "slug": "type-aliases",
-          "content": ""
-        },
-        {
-          "name": "Function types",
-          "slug": "function-types",
-          "content": ""
         }
       ]
     },
@@ -242,7 +232,12 @@
         {
           "name": "Modules and imports",
           "slug": "modules-and-imports",
-          "content": ""
+          "content": "05-beyond-basics/modules-and-imports/lesson.md",
+          "files": [
+            "05-beyond-basics/modules-and-imports/main.mo",
+            "05-beyond-basics/modules-and-imports/Math.mo"
+          ],
+          "solution": "05-beyond-basics/modules-and-imports/solution.md"
         },
         {
           "name": "Assertions",

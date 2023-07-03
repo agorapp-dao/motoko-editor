@@ -10,20 +10,6 @@ class EditorService {
    */
   private fileExtensions: { [key: string]: string } = {};
 
-  /**
-   * List of files available in the editor.
-   *
-   * @private
-   */
-  files: IEditorFile[] = [];
-
-  /**
-   * Index of the active file.
-   *
-   * @private
-   */
-  activeFile = 0;
-
   registerLanguagePlugin(plugin: IEditorLanguagePlugin) {
     this.languagePlugins[plugin.language] = plugin;
 
@@ -43,9 +29,9 @@ class EditorService {
     return Object.values(this.languagePlugins);
   }
 
-  getLanguageForFile(filePath: string) {
+  getLanguageForFile(filePath: string): string {
     const fileExtension = filePath.split('.').pop();
-    return fileExtension ? this.fileExtensions[fileExtension] : undefined;
+    return fileExtension ? this.fileExtensions[fileExtension] : 'text/plain';
   }
 
   async run(language: string, files: IEditorFile[]): Promise<string> {

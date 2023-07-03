@@ -13,7 +13,7 @@ import { editorService } from '../editorService';
 
 export const ControlPanel = () => {
   const router = useRouter();
-  const { files, setOutput, courseSlug, activeLessonSlug } = useContext(EditorContext);
+  const { files, tabs, setOutput, courseSlug, activeLessonSlug } = useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
   const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
@@ -33,6 +33,13 @@ export const ControlPanel = () => {
 
     setRunning(true);
     try {
+      for (const tab of tabs) {
+        const file = files.find(f => f.path === tab.path);
+        if (!file) {
+          throw new Error(`File ${tab.path} not found`);
+        }
+        file.content = tab.model.getValue();
+      }
       const output = await editorService.run(course.data.language, files);
       setOutput(output);
     } finally {

@@ -2,13 +2,22 @@
 
 import { useState, createContext, Dispatch, SetStateAction } from 'react';
 import { EEditorSectionType } from '../constants';
+import { IEditorTab } from '../types/IEditorTab';
 import { IEditorFile } from '../types/IEditorFile';
 
 export type TEditorContext = {
+  /**
+   * All lesson files.
+   */
   files: IEditorFile[];
   setFiles: Dispatch<SetStateAction<IEditorFile[]>>;
-  activeFile: number;
-  setActiveFile: Dispatch<SetStateAction<number>>;
+  /**
+   * Open tabs.
+   */
+  tabs: IEditorTab[];
+  setTabs: Dispatch<SetStateAction<IEditorTab[]>>;
+  activeTab: number;
+  setActiveTab: Dispatch<SetStateAction<number>>;
   output: string;
   setOutput: (text: string) => void;
   currentSection: EEditorSectionType;
@@ -25,8 +34,10 @@ export type TEditorContext = {
 const initialState: TEditorContext = {
   files: [],
   setFiles: (files: IEditorFile[] | ((prevState: IEditorFile[]) => IEditorFile[])) => {},
-  activeFile: 0,
-  setActiveFile: (index: number | ((prevState: number) => number)) => {},
+  tabs: [],
+  setTabs: (tabs: IEditorTab[] | ((prevState: IEditorTab[]) => IEditorTab[])) => {},
+  activeTab: 0,
+  setActiveTab: (index: number | ((prevState: number) => number)) => {},
   output: '',
   setOutput: (text: string) => {},
   currentSection: EEditorSectionType.LESSON,
@@ -56,7 +67,8 @@ const EditorProvider = ({
   children,
 }: TProps) => {
   const [files, setFiles] = useState(initialState.files);
-  const [activeFile, setActiveFile] = useState(0);
+  const [tabs, setTabs] = useState(initialState.tabs);
+  const [activeTab, setActiveTab] = useState(0);
   const [output, setOutput] = useState(initialState.output);
   const [currentSection, setCurrentSection] = useState(initialState.currentSection);
   const [fontSize, setFontSize] = useState(initialState.fontSize);
@@ -67,8 +79,10 @@ const EditorProvider = ({
       value={{
         files,
         setFiles,
-        activeFile,
-        setActiveFile,
+        tabs,
+        setTabs,
+        activeTab,
+        setActiveTab,
         output,
         setOutput,
         currentSection,

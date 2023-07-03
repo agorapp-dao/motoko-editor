@@ -17,6 +17,8 @@ import { SectionCode } from './Section/Code/SectionCode';
 import { ControlPanel } from './ControlPanel/ControlPanel';
 import { BottomPanel } from './Panel/BottomPanel/BottomPanel';
 import { FeedbackBtn } from '../components/Feeback/FeedbackBtn';
+import { getMonaco } from './Monaco/Monaco';
+import { IEditorTab } from '../types/IEditorTab';
 import { editorService } from './editorService';
 
 type EditorProps = {
@@ -46,8 +48,9 @@ function EditorInner() {
     setActiveLessonSlug,
     fullscreen,
     setFiles,
-    files,
-    activeFile,
+    tabs,
+    setTabs,
+    activeTab,
   } = React.useContext(EditorContext);
 
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([600, Infinity]);
@@ -62,12 +65,6 @@ function EditorInner() {
   useEffect(() => {
     setShowListOfContents(false);
   }, [currentSection]);
-
-  // propagate context props to editorService
-  useEffect(() => {
-    editorService.files = files;
-    editorService.activeFile = activeFile;
-  }, [files, activeFile]);
 
   const toggleListOfContents = () => {
     setShowListOfContents(prev => !prev);
@@ -85,16 +82,36 @@ function EditorInner() {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchFiles = async () => {
       if (!course.data || !activeLessonSlug) {
         return;
       }
 
-      const files_ = await courseService.getLessonFiles(course.data, activeLessonSlug);
-      setFiles(files_);
+      const [monaco, files] = await Promise.all([
+        getMonaco(),
+        courseService.getLessonFiles(course.data, activeLessonSlug),
+      ]);
+
+      if (isMounted) {
+        const tabs: IEditorTab[] = files.map(file => ({
+          path: file.path,
+          model: monaco.editor.createModel(
+            file.content,
+            editorService.getLanguageForFile(file.path),
+          ),
+        }));
+        setFiles(files);
+        setTabs(tabs);
+      }
     };
 
     fetchFiles();
+
+    return () => {
+      isMounted = false;
+    };
   }, [course.data, activeLessonSlug]);
 
   if (!course.data) {
@@ -107,7 +124,7 @@ function EditorInner() {
     <FullScreen handle={handleFullscreen} className="fullscreen">
       {courseSlug && activeLessonSlug && (
         <FeedbackBtn
-          userCode={files[activeFile]?.content}
+          userCode={tabs[activeTab]?.model.getValue()}
           slug={`${courseSlug}/${activeLessonSlug}`}
         />
       )}

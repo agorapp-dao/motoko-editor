@@ -4,17 +4,16 @@ import * as S from './MonacoEditor.styled';
 import { getMonaco } from './Monaco';
 import { EditorContext } from '../EditorContext';
 import { editorService } from '../editorService';
+import { IEditorFile } from '../../types/IEditorFile';
 
 export interface MonacoEditorProps {
-  language?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
+  model?: editor.ITextModel;
 }
 
-export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorProps) => {
+export const MonacoEditor = ({ model }: MonacoEditorProps) => {
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | undefined>(undefined);
   const divEl = useRef<HTMLDivElement>(null);
-  const { fontSize, files, activeFile } = useContext(EditorContext);
+  const { fontSize, files, tabs, activeTab } = useContext(EditorContext);
 
   useEffect(() => {
     let isMounted = true;
@@ -24,8 +23,7 @@ export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorPro
     getMonaco().then(monaco => {
       if (isMounted && divEl.current) {
         editor = monaco.editor.create(divEl.current, {
-          value: '',
-          language,
+          model: null,
           theme: 'editorTheme',
           automaticLayout: true,
           fontSize: fontSize,
@@ -34,14 +32,10 @@ export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorPro
           },
           tabSize: 2,
           suggest: {
-            // Without this, first suggestion won't be selected automatically when snippet is active
+            // Without this, the first suggestion won't be selected automatically when snippet is active
             // https://github.com/microsoft/vscode/issues/173387
             snippetsPreventQuickSuggestions: false,
           },
-        });
-
-        editor.onDidBlurEditorText(() => {
-          onValueChange && onValueChange(editor.getValue());
         });
 
         editor.onDidChangeModelContent(() => {
@@ -49,8 +43,12 @@ export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorPro
             clearTimeout(checkTimeout);
           }
           checkTimeout = setTimeout(() => {
-            files[activeFile].content = editor.getValue();
-            editorService.check(files[activeFile], files);
+            const tab = tabs[activeTab];
+            const file: IEditorFile = {
+              path: tab.path,
+              content: tab.model.getValue(),
+            };
+            editorService.check(file, files);
           }, 300);
         });
 
@@ -62,17 +60,15 @@ export const MonacoEditor = ({ language, value, onValueChange }: MonacoEditorPro
       isMounted = false;
       editor?.dispose();
     };
-  }, [divEl, language, fontSize]);
+  }, [divEl, fontSize]);
 
   useEffect(() => {
-    if (!editor) {
+    if (!editor || !model) {
       return;
     }
-    if (editor.getValue() !== value) {
-      // setValue will clear undo stack, so be careful when you're doing this
-      editor.setValue(value || '');
-    }
-  }, [editor, value]);
+    // TODO: keep view state, see https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
+    editor.setModel(model);
+  }, [editor, model]);
 
   return <S.Code ref={divEl} />;
 };
