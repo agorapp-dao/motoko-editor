@@ -25,7 +25,10 @@ let obj = object {
 obj.sum(); // 3
 ```
 
-Object members have a visibility associated with them:
+Variables and functions defined on the object are called object members. Functions defined on the
+object are called methods.
+
+Each object member has a visibility associated with it:
 
 - `private` - the member is only accessible from within the object.
 - `public` - the member is accessible from outside the object.

@@ -32,29 +32,20 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
     let suggestions: languages.CompletionItem[] = [];
 
     var word = model.getWordUntilPosition(position);
+    var range = {
+      startLineNumber: position.lineNumber,
+      endLineNumber: position.lineNumber,
+      startColumn: word.startColumn,
+      endColumn: word.endColumn,
+    };
 
     const dot = model.findPreviousMatch('.', position, false, false, null, false);
-
-    if (
+    const isAfterDot =
       dot?.range?.startLineNumber === position.lineNumber &&
-      dot.range.endColumn === word.startColumn
-    ) {
-      // current word is after a dot
-      const wordBeforeDot = model.getWordUntilPosition({
-        lineNumber: dot.range.startLineNumber,
-        column: dot.range.startColumn,
-      });
-      console.debug('wordBeforeDot', wordBeforeDot);
-      // TODO: try to auto-complete from stdlib
-    } else {
-      // current word is not after a dot
-      var range = {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: word.startColumn,
-        endColumn: word.endColumn,
-      };
+      dot.range.endColumn === word.startColumn;
 
+    if (!isAfterDot) {
+      // suggest keywords
       suggestions = keywords.map(keyword => ({
         label: keyword,
         kind: monaco.languages.CompletionItemKind.Keyword,
@@ -70,30 +61,44 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
           range: range,
         })),
       );
+    }
 
-      // look for things to complete
-      if (this.lastTree) {
-        const completionTree = new CompletionTree(this.lastTree);
-        const completions = completionTree.getCompletions(position.lineNumber, position.column);
+    if (this.lastTree) {
+      // AST is available, suggest symbols from code
+      const completionTree = new CompletionTree(this.lastTree);
+      let completions;
 
-        suggestions = suggestions.concat(
-          completions.variables.map(variable => ({
-            label: variable,
-            kind: monaco.languages.CompletionItemKind.Variable,
-            insertText: variable,
-            range: range,
-          })),
-        );
-        suggestions = suggestions.concat(
-          completions.functions.map(fn => ({
-            label: fn,
-            kind: monaco.languages.CompletionItemKind.Function,
-            insertText: fn + '($1)',
-            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-            range: range,
-          })),
+      if (!isAfterDot) {
+        completions = completionTree.getCompletions(position.lineNumber, position.column);
+      } else {
+        const wordBeforeDot = model.getWordUntilPosition({
+          lineNumber: dot.range.startLineNumber,
+          column: dot.range.startColumn,
+        }).word;
+        completions = completionTree.getObjectCompletions(
+          wordBeforeDot,
+          position.lineNumber,
+          position.column,
         );
       }
+
+      suggestions = suggestions.concat(
+        completions.variables.map(variable => ({
+          label: variable,
+          kind: monaco.languages.CompletionItemKind.Variable,
+          insertText: variable,
+          range: range,
+        })),
+      );
+      suggestions = suggestions.concat(
+        completions.functions.map(fn => ({
+          label: fn,
+          kind: monaco.languages.CompletionItemKind.Function,
+          insertText: fn + '($1)',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          range: range,
+        })),
+      );
     }
 
     return { suggestions: suggestions };

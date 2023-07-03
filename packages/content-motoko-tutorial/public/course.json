@@ -210,7 +210,9 @@
         {
           "name": "Classes",
           "slug": "classes",
-          "content": ""
+          "content": "05-beyond-basics/classes/lesson.md",
+          "files": ["05-beyond-basics/classes/main.mo"],
+          "solution": "05-beyond-basics/classes/solution.md"
         },
         {
           "name": "Options and results",

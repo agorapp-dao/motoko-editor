@@ -69,4 +69,36 @@ describe('CompletionTree', () => {
     const suggestions = completion.getCompletions(5, 0);
     expect(suggestions.variables).toEqual(['varA']); // note that local variables go first
   });
+
+  test('object has scope', () => {
+    const code = `
+      let obj = object {
+        public let x = 1;
+        public let y = 2;
+      
+        public func sum() : Nat {
+          x + y;
+        };
+      };
+    `;
+    const ast = mo.parseMotoko(code);
+    const completion = new CompletionTree(ast);
+    completion.printTree();
+
+    let suggestions = completion.getCompletions(0, 0);
+    expect(suggestions.variables).toEqual(['obj']);
+    expect(suggestions.functions).toEqual([]);
+
+    suggestions = completion.getCompletions(6, 0);
+    expect(suggestions.variables).toEqual(['x', 'y', 'obj']);
+    expect(suggestions.functions).toEqual(['sum']);
+
+    suggestions = completion.getObjectCompletions('obj', 0, 0);
+    expect(suggestions.variables).toEqual(['x', 'y']);
+    expect(suggestions.functions).toEqual(['sum']);
+  });
+
+  test('object - private vs public members', () => {});
+
+  test('class has its own private scope', () => {});
 });

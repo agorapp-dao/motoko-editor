@@ -12,6 +12,7 @@ export class CompletionTree {
 
     variables: [],
     functions: [],
+    objects: {},
   };
 
   private scopeIdCounter = 0;
@@ -42,6 +43,43 @@ export class CompletionTree {
       }
       for (const func of scope.functions) {
         functions.add(func);
+      }
+      scope = scope.parent;
+    }
+
+    return {
+      variables: Array.from(variables),
+      functions: Array.from(functions),
+    };
+  }
+
+  /**
+   * Returns completions for the object instance (triggered after dot).
+   *
+   * @param obj
+   * @param row
+   * @param column
+   */
+  getObjectCompletions(obj: string, row: number, column: number): Suggestions {
+    // find innermost scope
+    let scope = this.findInnerMostScope(this.scope, row, column);
+    if (!scope) {
+      scope = this.scope;
+    }
+
+    const variables = new Set<string>();
+    const functions = new Set<string>();
+
+    while (scope) {
+      if (scope.objects[obj]) {
+        for (const variable of scope.objects[obj].variables) {
+          variables.add(variable);
+        }
+        for (const func of scope.objects[obj].functions) {
+          functions.add(func);
+        }
+
+        break;
       }
       scope = scope.parent;
     }
@@ -117,10 +155,46 @@ export class CompletionTree {
             case 'VarP':
               this.processVarP(arg);
               break;
+            case 'ObjBlockE':
+              this.processObjBlockE(arg);
+              break;
             default:
               this.processUnknown(arg);
           }
         }
+      }
+    }
+  }
+
+  /**
+   * TODO: I don't know what VarP is, but it contains name of variable declared with let and name of function.
+   * @param node
+   * @private
+   */
+  private processVarP(node: Node) {
+    this.pendingVarP = node.args && (node.args[0] as string);
+  }
+
+  /**
+   * `let` declaration
+   */
+  private processLetD(node: Node) {
+    this.processNodeChildren(node);
+
+    if (this.pendingVarP) {
+      this.scope.variables.push(this.pendingVarP);
+      this.pendingVarP = undefined;
+    }
+  }
+
+  /**
+   * `var` declaration
+   */
+  private processVarD(node: Node) {
+    if (node.args) {
+      const varName = node.args[0]?.toString();
+      if (varName) {
+        this.scope.variables.push(varName);
       }
     }
   }
@@ -152,6 +226,7 @@ export class CompletionTree {
 
       variables: [],
       functions: [],
+      objects: {},
     };
     this.scope.children.push(scope);
     this.scope = scope;
@@ -163,36 +238,43 @@ export class CompletionTree {
   }
 
   /**
-   * `let` declaration
+   * Object block expression.
    */
-  private processLetD(node: Node) {
-    this.processNodeChildren(node);
+  private processObjBlockE(node: Node) {
+    if (!node.start || !node.end) {
+      throw new Error(`ObjBlockE does not have start or end position`);
+    }
+
+    // create new scope for object
+    const scope: CompletionScope = {
+      id: ++this.scopeIdCounter, // for debugging
+
+      parent: this.scope,
+      children: [],
+
+      startRow: node.start[0],
+      startColumn: node.start[1],
+      endRow: node.end[0],
+      endColumn: node.end[1],
+
+      variables: [],
+      functions: [],
+      objects: {},
+    };
+    this.scope.children.push(scope);
+    this.scope = scope;
 
     if (this.pendingVarP) {
-      this.scope.variables.push(this.pendingVarP);
+      // object instance stored in variable in the parent scope
+      this.scope.parent!.variables.push(this.pendingVarP);
+      this.scope.parent!.objects[this.pendingVarP] = this.scope;
       this.pendingVarP = undefined;
     }
-  }
 
-  /**
-   * `var` declaration
-   */
-  private processVarD(node: Node) {
-    if (node.args) {
-      const varName = node.args[0]?.toString();
-      if (varName) {
-        this.scope.variables.push(varName);
-      }
-    }
-  }
+    this.processNodeChildren(node);
 
-  /**
-   * TODO: I don't know what VarP is, but it contains name of variable declared with let and name of function.
-   * @param node
-   * @private
-   */
-  private processVarP(node: Node) {
-    this.pendingVarP = node.args && (node.args[0] as string);
+    // restore previous scope
+    this.scope = this.scope.parent!;
   }
 
   private processUnknown(node: Node) {
@@ -263,6 +345,7 @@ interface CompletionScope {
 
   variables: string[];
   functions: string[];
+  objects: { [key: string]: CompletionScope };
 }
 
 export interface Suggestions {
