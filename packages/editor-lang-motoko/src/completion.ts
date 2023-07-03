@@ -4,7 +4,8 @@ import Mo from 'motoko/lib/versions/moc';
 import { keywords } from 'motoko/lib/keywords';
 import { typeKeywords } from 'motoko/src/keywords';
 import { Node } from 'motoko/src/ast';
-import { CompletionTree } from './CompletionTree';
+import { CompletionService } from './completion/CompletionService';
+import { ProgramSymbol } from './completion/Program';
 
 export function completion(monaco: Monaco, mo: typeof Mo) {
   monaco.languages.registerCompletionItemProvider('motoko', new CompletionItemProvider(monaco, mo));
@@ -65,40 +66,63 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
 
     if (this.lastTree) {
       // AST is available, suggest symbols from code
-      const completionTree = new CompletionTree(this.lastTree);
-      let completions;
+      const completionService = new CompletionService(this.lastTree);
+      let symbols: ProgramSymbol[];
 
       if (!isAfterDot) {
-        completions = completionTree.getCompletions(position.lineNumber, position.column);
+        symbols = completionService.getSymbols(position.lineNumber, position.column);
       } else {
         const wordBeforeDot = model.getWordUntilPosition({
           lineNumber: dot.range.startLineNumber,
           column: dot.range.startColumn,
         }).word;
-        completions = completionTree.getObjectCompletions(
+        symbols = completionService.getObjectSymbols(
           wordBeforeDot,
           position.lineNumber,
           position.column,
         );
       }
 
-      suggestions = suggestions.concat(
-        completions.variables.map(variable => ({
-          label: variable,
-          kind: monaco.languages.CompletionItemKind.Variable,
-          insertText: variable,
-          range: range,
-        })),
-      );
-      suggestions = suggestions.concat(
-        completions.functions.map(fn => ({
-          label: fn,
-          kind: monaco.languages.CompletionItemKind.Function,
-          insertText: fn + '($1)',
-          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          range: range,
-        })),
-      );
+      for (const symbol of symbols) {
+        switch (symbol.kind) {
+          case 'variable':
+            suggestions.push({
+              label: symbol.name,
+              kind: monaco.languages.CompletionItemKind.Variable,
+              insertText: symbol.name,
+              range,
+            });
+            break;
+          case 'function':
+            suggestions.push({
+              label: symbol.name,
+              kind: monaco.languages.CompletionItemKind.Function,
+              insertText: symbol.name + '($1)',
+              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              range,
+            });
+            break;
+          case 'class':
+            suggestions.push({
+              label: symbol.name,
+              kind: monaco.languages.CompletionItemKind.Constructor,
+              insertText: symbol.name + '($1)',
+              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              range,
+            });
+            break;
+          case 'object':
+            suggestions.push({
+              label: symbol.name,
+              kind: monaco.languages.CompletionItemKind.Variable,
+              insertText: symbol.name,
+              range,
+            });
+            break;
+          default:
+            throw new Error(`Unknown symbol kind: ${symbol.kind}`);
+        }
+      }
     }
 
     return { suggestions: suggestions };
