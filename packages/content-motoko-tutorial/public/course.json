@@ -215,14 +215,29 @@
           "solution": "05-beyond-basics/classes/solution.md"
         },
         {
-          "name": "Options and results",
-          "slug": "options-and-results",
-          "content": ""
+          "name": "Async functions",
+          "slug": "async-functions",
+          "content": "05-beyond-basics/async-functions/lesson.md",
+          "files": ["05-beyond-basics/async-functions/main.mo"],
+          "solution": "05-beyond-basics/async-functions/solution.md"
         },
         {
-          "name": "Pattern matching",
-          "slug": "pattern-matching",
-          "content": ""
+          "name": "Options",
+          "slug": "options",
+          "content": "05-beyond-basics/options/lesson.md",
+          "files": ["05-beyond-basics/options/main.mo"],
+          "solution": "05-beyond-basics/options/solution.md"
+        },
+        {
+          "name": "Results",
+          "slug": "results",
+          "content": "05-beyond-basics/results/lesson.md",
+          "files": ["05-beyond-basics/results/main.mo"],
+          "solution": "05-beyond-basics/results/solution.md"
+        },
+        {
+          "name": "Errors",
+          "slug": "errors"
         },
         {
           "name": "Modules and imports",
