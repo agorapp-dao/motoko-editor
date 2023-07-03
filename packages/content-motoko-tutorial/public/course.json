@@ -111,11 +111,6 @@
           "solution": "03-types/text/solution.md"
         },
         {
-          "name": "Optional types",
-          "slug": "optional-types",
-          "content": ""
-        },
-        {
           "name": "Tuples",
           "slug": "tuples",
           "content": "03-types/tuples/lesson.md",
