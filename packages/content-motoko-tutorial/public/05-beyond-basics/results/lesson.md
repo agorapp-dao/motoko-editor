@@ -43,6 +43,11 @@ switch (c) {
 };
 ```
 
+TODO:
+
+- Pattern matching can become tedious and verbose, especially when dealing with multiple optional values. The base library exposes a collection of higher-order functions from the Optional and Result modules to improve the ergonomics of error handling.
+- src: https://internetcomputer.org/docs/current/motoko/main/errors#higher-order-functions
+
 ## Exercise
 
 Implement a function `login` that accepts two arguments: `username` and `password`.

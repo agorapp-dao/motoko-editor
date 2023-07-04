@@ -68,6 +68,10 @@
           "content": "02-basics/functions/lesson.md",
           "files": ["02-basics/functions/main.mo"],
           "solution": "02-basics/functions/solution.md"
+        },
+        {
+          "name": "Ignore expressions",
+          "slug": "ignore-expressions"
         }
       ]
     },
@@ -207,6 +211,10 @@
           "solution": "05-beyond-basics/async-functions/solution.md"
         },
         {
+          "name": "Generic types",
+          "slug": "generic-types"
+        },
+        {
           "name": "Options",
           "slug": "options",
           "content": "05-beyond-basics/options/lesson.md",
@@ -222,7 +230,10 @@
         },
         {
           "name": "Errors",
-          "slug": "errors"
+          "slug": "errors",
+          "content": "05-beyond-basics/errors/lesson.md",
+          "files": ["05-beyond-basics/errors/main.mo"],
+          "solution": "05-beyond-basics/errors/solution.md"
         },
         {
           "name": "Modules and imports",
