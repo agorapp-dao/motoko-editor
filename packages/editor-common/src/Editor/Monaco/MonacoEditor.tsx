@@ -19,6 +19,7 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
   useEffect(() => {
     let editor: editor.IStandaloneCodeEditor;
     let checkTimeout: any;
+    let isMounted = true;
 
     if (monaco && divEl.current) {
       editor = monaco.editor.create(divEl.current, {
@@ -37,24 +38,38 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
         },
       });
 
-      editor.onDidChangeModelContent(() => {
+      const checkModelDebounced = () => {
         if (checkTimeout) {
           clearTimeout(checkTimeout);
         }
         checkTimeout = setTimeout(() => {
+          if (!isMounted) {
+            return;
+          }
+
+          // sync opened tab content with files in memory
+          for (const tab of tabs) {
+            const file = files.find(file => file.path === tab.path);
+            if (!file) {
+              throw new Error(`File for tab not found: ${tab.path}`);
+            }
+            file.content = tab.model.getValue();
+          }
+
           const tab = tabs[activeTab];
-          const file: IEditorFile = {
-            path: tab.path,
-            content: tab.model.getValue(),
-          };
-          editorService.check(file, files);
+
+          editorService.check(tab.path, files);
         }, 300);
-      });
+      };
+
+      editor.onDidChangeModel(checkModelDebounced);
+      editor.onDidChangeModelContent(checkModelDebounced);
 
       setEditor(editor);
     }
 
     return () => {
+      isMounted = false;
       editor?.dispose();
     };
   }, [monaco, divEl, fontSize]);

@@ -36,7 +36,7 @@ export class MotokoEditorPlugin implements IEditorLanguagePlugin {
     return res.stdout + res.stderr;
   }
 
-  async check(file: IEditorFile, files: IEditorFile[]): Promise<void> {
+  async check(filePath: string, files: IEditorFile[]): Promise<void> {
     const monaco = this.monaco;
     if (!monaco) {
       return;
@@ -49,7 +49,7 @@ export class MotokoEditorPlugin implements IEditorLanguagePlugin {
       mo.write(file.path, file.content);
     }
 
-    const problems = mo.check(file.path);
+    const problems = mo.check(filePath);
 
     // get model of the current editor
     const model = monaco.editor.getModels()[0];

@@ -40,14 +40,14 @@ class EditorService {
     return output;
   }
 
-  async check(file: IEditorFile, files: IEditorFile[]): Promise<void> {
-    const language = this.getLanguageForFile(file.path);
+  async check(filePath: string, files: IEditorFile[]): Promise<void> {
+    const language = this.getLanguageForFile(filePath);
     if (!language) {
       return;
     }
 
     const plugin = editorService.getLanguagePlugin(language);
-    await plugin.check(file, files);
+    await plugin.check(filePath, files);
   }
 }
 

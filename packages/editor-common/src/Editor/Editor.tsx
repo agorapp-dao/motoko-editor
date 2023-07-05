@@ -20,6 +20,7 @@ import { FeedbackBtn } from '../components/Feeback/FeedbackBtn';
 import { useMonaco } from './Monaco/Monaco';
 import { IEditorTab } from '../types/IEditorTab';
 import { editorService } from './editorService';
+import type { editor } from 'monaco-editor';
 
 type EditorProps = {
   courseSlug: string;
@@ -84,6 +85,7 @@ function EditorInner() {
 
   useEffect(() => {
     let isMounted = true;
+    let models: editor.ITextModel[] = [];
 
     const fetchFiles = async () => {
       if (!course.data || !activeLessonSlug || !monaco) {
@@ -102,6 +104,7 @@ function EditorInner() {
         }));
         setFiles(files);
         setTabs(tabs);
+        models = tabs.map(tab => tab.model);
       }
     };
 
@@ -109,6 +112,8 @@ function EditorInner() {
 
     return () => {
       isMounted = false;
+      models.forEach(model => model.dispose());
+      setTabs([]);
     };
   }, [course.data, activeLessonSlug]);
 
