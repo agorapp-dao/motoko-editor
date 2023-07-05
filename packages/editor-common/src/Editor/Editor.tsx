@@ -17,7 +17,7 @@ import { SectionCode } from './Section/Code/SectionCode';
 import { ControlPanel } from './ControlPanel/ControlPanel';
 import { BottomPanel } from './Panel/BottomPanel/BottomPanel';
 import { FeedbackBtn } from '../components/Feeback/FeedbackBtn';
-import { getMonaco } from './Monaco/Monaco';
+import { useMonaco } from './Monaco/Monaco';
 import { IEditorTab } from '../types/IEditorTab';
 import { editorService } from './editorService';
 
@@ -40,6 +40,7 @@ export function Editor({ courseSlug, activeLessonSlug, setActiveLessonSlug }: Ed
 }
 
 function EditorInner() {
+  const monaco = useMonaco();
   const [showListOfContents, setShowListOfContents] = useState(true);
   const {
     currentSection,
@@ -85,14 +86,11 @@ function EditorInner() {
     let isMounted = true;
 
     const fetchFiles = async () => {
-      if (!course.data || !activeLessonSlug) {
+      if (!course.data || !activeLessonSlug || !monaco) {
         return;
       }
 
-      const [monaco, files] = await Promise.all([
-        getMonaco(),
-        courseService.getLessonFiles(course.data, activeLessonSlug),
-      ]);
+      const files = await courseService.getLessonFiles(course.data, activeLessonSlug);
 
       if (isMounted) {
         const tabs: IEditorTab[] = files.map(file => ({

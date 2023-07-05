@@ -1,7 +1,11 @@
 // it is important to not import monaco-editor directly, otherwise it fails with navigator not defined on the server
 import type TMonaco from 'monaco-editor';
 import { editorService } from '../editorService';
-let monaco: Promise<typeof TMonaco>;
+import { useEffect, useState } from 'react';
+
+export type Monaco = typeof TMonaco;
+
+let monaco: Promise<Monaco>;
 
 export async function getMonaco() {
   if (!monaco) {
@@ -12,6 +16,16 @@ export async function getMonaco() {
       return monaco;
     });
   }
+
+  return monaco;
+}
+
+export function useMonaco(): Monaco | null {
+  const [monaco, setMonaco] = useState<Monaco | null>(null);
+
+  useEffect(() => {
+    getMonaco().then(monaco => setMonaco(monaco));
+  }, []);
 
   return monaco;
 }

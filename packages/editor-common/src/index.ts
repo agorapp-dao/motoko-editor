@@ -8,5 +8,4 @@ export * from './types/IEditorLanguagePlugin';
 export * from './types/IEditorFile';
 
 // rexexport Monaco type
-import type TMonaco from 'monaco-editor';
-export type Monaco = typeof TMonaco;
+export * from './Editor/Monaco/Monaco';

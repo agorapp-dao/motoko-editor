@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as S from './MonacoCodeSnippet.styled';
-import { getMonaco } from './Monaco';
+import { useMonaco } from './Monaco';
 import { CopyToClipboard } from '../../components/CopyToClipboard/CopyToClibboard';
 
 export interface MonacoCodeSnippetProps {
@@ -10,21 +10,16 @@ export interface MonacoCodeSnippetProps {
 }
 
 export const MonacoCodeSnippet = ({ code, language, inline }: MonacoCodeSnippetProps) => {
+  const monaco = useMonaco();
   const preEl = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    if (!monaco || !preEl.current) {
+      return;
+    }
 
-    getMonaco().then(async monaco => {
-      if (isMounted && preEl.current) {
-        await monaco.editor.colorizeElement(preEl.current, { theme: 'editorTheme' });
-      }
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [preEl]);
+    monaco.editor.colorizeElement(preEl.current, { theme: 'editorTheme' });
+  }, [preEl, monaco]);
 
   language = language || 'text';
 
