@@ -134,6 +134,10 @@
           "content": "03-types/arrays/lesson.md",
           "files": ["03-types/arrays/main.mo"],
           "solution": "03-types/arrays/solution.md"
+        },
+        {
+          "name": "Buffers",
+          "slug": "buffers"
         }
       ]
     },
@@ -259,7 +263,16 @@
         {
           "name": "Defining actors",
           "slug": "defining-actors",
-          "content": ""
+          "content": "06-actors/defining-actors/lesson.md",
+          "files": ["06-actors/defining-actors/main.mo"],
+          "solution": "06-actors/defining-actors/solution.md"
+        },
+        {
+          "name": "Shared types",
+          "slug": "shared-types",
+          "content": "06-actors/shared-types/lesson.md",
+          "files": ["06-actors/shared-types/main.mo"],
+          "solution": "06-actors/shared-types/solution.md"
         },
         {
           "name": "Principals",
