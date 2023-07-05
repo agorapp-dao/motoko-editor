@@ -12,6 +12,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     const symbols = completion.getSymbols(0, 0);
     expect(getNames(symbols)).toEqual({
@@ -27,6 +28,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     const symbols = completion.getSymbols(0, 0);
     expect(getNames(symbols)).toEqual({
@@ -46,6 +48,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     // global scope
     let symbols = completion.getSymbols(0, 0);
@@ -77,6 +80,7 @@ describe('CompletionService', () => {
     `;
     const ast = mo.parseMotoko(code);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     const symbols = completion.getSymbols(5, 0);
     expect(getNames(symbols)).toEqual({
@@ -99,6 +103,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     let symbols = completion.getSymbols(0, 0);
     expect(getNames(symbols)).toEqual({
@@ -135,6 +140,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     let symbols = completion.getSymbols(0, 0);
     expect(getNames(symbols)).toEqual({
@@ -177,6 +183,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     // globally only `obj` is available
     let symbols = completion.getSymbols(0, 0);
@@ -222,6 +229,7 @@ describe('CompletionService', () => {
     const ast = mo.parseMotoko(code);
     // printTree(ast);
     const completion = new CompletionService(ast);
+    // completion.printScopes();
 
     // globally only `obj` and `MyClass` is available
     let symbols = completion.getSymbols(0, 0);
@@ -241,6 +249,50 @@ describe('CompletionService', () => {
 
     // when using the object from the outside, only public members are available
     symbols = completion.getObjectSymbols('obj', 0, 0);
+    expect(getNames(symbols)).toEqual({
+      variables: ['publicLet', 'publicVar'],
+      functions: ['publicFunc'],
+    });
+  });
+
+  test('actor', () => {
+    const code = `
+      actor MyActor {
+        var privateVar = 0;
+        public var publicVar = 0;
+      
+        let privateLet = 0;
+        public let publicLet = 0;
+      
+        func privateFunc() {
+        };
+      
+        public func publicFunc() {
+        };
+      };
+    `;
+
+    const ast = mo.parseMotoko(code);
+    // printTree(ast);
+    const completion = new CompletionService(ast);
+    // completion.printScopes();
+
+    // globally only `MyActor` is available
+    let symbols = completion.getSymbols(0, 0);
+    expect(getNames(symbols)).toEqual({
+      objects: ['MyActor'],
+    });
+
+    // within the actor all members are available
+    symbols = completion.getSymbols(9, 0);
+    expect(getNames(symbols)).toEqual({
+      variables: ['privateLet', 'privateVar', 'publicLet', 'publicVar'],
+      objects: ['MyActor'],
+      functions: ['privateFunc', 'publicFunc'],
+    });
+
+    // when using the actor from the outside, only public members are available
+    symbols = completion.getObjectSymbols('MyActor', 0, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['publicLet', 'publicVar'],
       functions: ['publicFunc'],

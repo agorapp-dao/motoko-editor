@@ -51,12 +51,16 @@ export class Program {
   private processUnknown(node: Node): ProgramSymbol | null {
     if (!node.args) return null;
 
+    // TODO: When handling nodes with multiple children, it's not clear what result to return. For now,
+    // we will return result from the last node, but beware: this might not be correct behavior.
+    let res = null;
+
     for (const arg of node.args) {
       if (isNode(arg)) {
-        this.processNode(arg);
+        res = this.processNode(arg);
       }
     }
-    return null;
+    return res;
   }
 
   /**
