@@ -7,7 +7,7 @@ export class SolidityEditorPlugin implements IEditorLanguagePlugin {
 
   init(monaco: Monaco): void {}
 
-  async check(file: IEditorFile, files: IEditorFile[]): Promise<void> {
+  async check(filePath: string, files: IEditorFile[]): Promise<void> {
     // do nothing
   }
 

@@ -1,4 +1,4 @@
-import { AST, Node } from 'motoko/src/ast';
+import { AST, Node } from 'motoko/lib/ast';
 
 export function printTree(ast: Node) {
   const out = printTreeInner(ast);

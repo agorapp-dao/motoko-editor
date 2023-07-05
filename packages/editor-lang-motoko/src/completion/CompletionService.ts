@@ -1,4 +1,4 @@
-import { Node } from 'motoko/src/ast';
+import { Node } from 'motoko/lib/ast';
 import { ProgramScope, ProgramSymbol, Program } from './Program';
 import { printScopes } from './utils/printScopes';
 

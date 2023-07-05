@@ -1,4 +1,4 @@
-import { AST, Node } from 'motoko/src/ast';
+import { AST, Node } from 'motoko/lib/ast';
 
 export class Program {
   scope: ProgramScope = {
