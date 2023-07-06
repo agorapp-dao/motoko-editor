@@ -39,6 +39,8 @@ func add(a : Nat, b : Nat) : Nat {
 let sum = add(1, 2);
 ```
 
+TODO: return
+
 ## Exercise
 
 Declare a function `subtract`, that takes two arguments and returns their difference. Call the

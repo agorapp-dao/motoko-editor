@@ -68,10 +68,6 @@
           "content": "02-basics/functions/lesson.md",
           "files": ["02-basics/functions/main.mo"],
           "solution": "02-basics/functions/solution.md"
-        },
-        {
-          "name": "Ignore expressions",
-          "slug": "ignore-expressions"
         }
       ]
     },
@@ -250,9 +246,14 @@
           "solution": "05-beyond-basics/modules-and-imports/solution.md"
         },
         {
-          "name": "Assertions",
-          "slug": "assertions",
-          "content": ""
+          "name": "Ignore expressions",
+          "slug": "ignore-expressions",
+          "content": "05-beyond-basics/ignore-expressions/lesson.md",
+          "files": [
+            "05-beyond-basics/ignore-expressions/main.mo",
+            "05-beyond-basics/ignore-expressions/Counter.mo"
+          ],
+          "solution": "05-beyond-basics/ignore-expressions/solution.md"
         }
       ]
     },
@@ -277,12 +278,9 @@
         {
           "name": "Principals",
           "slug": "principals",
-          "content": ""
-        },
-        {
-          "name": "Persistence",
-          "slug": "persistence",
-          "content": ""
+          "content": "06-actors/principals/lesson.md",
+          "files": ["06-actors/principals/main.mo"],
+          "solution": "06-actors/principals/solution.md"
         }
       ]
     }
