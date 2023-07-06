@@ -13,12 +13,36 @@ export class Program {
     symbols: [],
   };
 
-  constructor(private ast: Node) {
+  /**
+   * If the file exports the module, we will store it here.
+   */
+  module: ProgramSymbol | null = null;
+
+  /**
+   * All symbols in the program, by name.
+   *
+   * TODO: does not handle repeated names.
+   */
+  private allSymbols = new Map<string, ProgramSymbol>();
+
+  constructor(private moduleName: string, private ast: Node) {
     this.processNode(ast);
+  }
+
+  getSymbol(ref: SymbolRef): ProgramSymbol | null {
+    if (ref.class) {
+      return this.allSymbols.get(ref.class) || null;
+    } else if (ref.module) {
+      return this.module;
+    } else {
+      return null;
+    }
   }
 
   private processNode(node: any): ProgramSymbol | null {
     switch (node.name) {
+      case 'Prog':
+        return this.processProg(node);
       case 'LetD':
         return this.processLetD(node);
       case 'VarD':
@@ -37,6 +61,8 @@ export class Program {
         return this.processCallE(node);
       case 'VarE':
         return this.processVarE(node);
+      case 'ImportE':
+        return this.processImportE(node);
       default:
         return this.processUnknown(node);
     }
@@ -63,6 +89,20 @@ export class Program {
     return res;
   }
 
+  private processProg(node: any): ProgramSymbol | null {
+    for (const arg of node.args) {
+      if (isNode(arg)) {
+        let res = this.processNode(arg);
+        if (res?.kind === 'module') {
+          this.module = res;
+          break;
+        }
+      }
+    }
+
+    return null;
+  }
+
   /**
    * Variable declaration via `let`.
    */
@@ -86,7 +126,7 @@ export class Program {
 
     symbol.name = name;
 
-    this.scope.symbols.push(symbol);
+    this.addSymbol(symbol);
 
     return symbol;
   }
@@ -111,7 +151,7 @@ export class Program {
       };
     }
 
-    this.scope.symbols.push(symbol);
+    this.addSymbol(symbol);
 
     return symbol;
   }
@@ -164,7 +204,7 @@ export class Program {
       throw new Error(`[LetD] Cannot get name of variable, cannot find VarP node`);
     }
     const name = varPattern.args[0]?.toString();
-    this.scope.symbols.push({
+    this.addSymbol({
       name,
       visibility: 'private',
       kind: 'variable',
@@ -178,6 +218,22 @@ export class Program {
    */
   private processObjBlockE(node: any): ProgramSymbol | null {
     const fields: ProgramSymbol[] = [];
+
+    const objType = node.args[0];
+    let kind: SymbolKind;
+    switch (objType) {
+      case 'Object':
+        kind = 'object';
+        break;
+      case 'Actor':
+        kind = 'actor';
+        break;
+      case 'Module':
+        kind = 'module';
+        break;
+      default:
+        throw new Error(`[ObjBlockE] Unknown object type: ${objType}`);
+    }
 
     // create child scope for object block
     this.startChildScope(node);
@@ -197,7 +253,7 @@ export class Program {
     return {
       name: '',
       visibility: 'private',
-      kind: 'object',
+      kind,
       fields,
     };
   }
@@ -215,7 +271,7 @@ export class Program {
       kind: 'class',
       fields: [],
     };
-    this.scope.symbols.push(symbol);
+    this.addSymbol(symbol);
 
     // create child scope for class block
     this.startChildScope(node);
@@ -260,16 +316,32 @@ export class Program {
     const name = node.args[0];
 
     const symbol = this.scope.symbols.find(s => s.name === name);
-    if (symbol) {
+    if (symbol?.kind === 'class') {
       return {
         name: '',
         visibility: 'private',
         kind: 'object',
-        fields: symbol.fields,
+        ref: {
+          module: this.moduleName,
+          class: symbol.name,
+        }, // save ref to class if this is a constructor call
       };
     }
 
     return null;
+  }
+
+  private processImportE(node: any): ProgramSymbol | null {
+    const name = node.args[0];
+
+    return {
+      name: '',
+      visibility: 'private',
+      kind: 'variable', // TODO: what kind?
+      ref: {
+        module: name,
+      },
+    };
   }
 
   private scopeIdCounter = 0;
@@ -295,6 +367,11 @@ export class Program {
   private endChildScope() {
     this.scope = this.scope.parent!;
   }
+
+  private addSymbol(symbol: ProgramSymbol) {
+    this.scope.symbols.push(symbol);
+    this.allSymbols.set(symbol.name, symbol);
+  }
 }
 
 export interface ProgramScope {
@@ -314,8 +391,25 @@ export interface ProgramScope {
 export interface ProgramSymbol {
   name: string;
   visibility: 'public' | 'private';
-  kind: 'variable' | 'function' | 'object' | 'class';
+  kind: SymbolKind;
+
+  /**
+   * Symbol can contain other symbols as its fields. For example, a class has fields.
+   */
   fields?: ProgramSymbol[];
+
+  /**
+   * Symbol can reference other symbols by name. For example, an object instance can reference its class.
+   * Or imported name can reference a module.
+   */
+  ref?: SymbolRef;
+}
+
+export type SymbolKind = 'variable' | 'function' | 'object' | 'class' | 'actor' | 'module';
+
+export interface SymbolRef {
+  module: string;
+  class?: string;
 }
 
 function isNode(value: AST): value is Node {

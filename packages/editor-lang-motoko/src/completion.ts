@@ -119,6 +119,22 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
               range,
             });
             break;
+          case 'actor':
+            suggestions.push({
+              label: symbol.name,
+              kind: monaco.languages.CompletionItemKind.Variable,
+              insertText: symbol.name,
+              range,
+            });
+            break;
+          case 'module':
+            suggestions.push({
+              label: symbol.name,
+              kind: monaco.languages.CompletionItemKind.Module,
+              insertText: symbol.name,
+              range,
+            });
+            break;
           default:
             throw new Error(`Unknown symbol kind: ${symbol.kind}`);
         }

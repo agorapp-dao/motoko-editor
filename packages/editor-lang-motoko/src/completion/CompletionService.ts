@@ -1,19 +1,48 @@
+import mo from 'motoko/lib/versions/moc';
+import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { Node } from 'motoko/lib/ast';
 import { ProgramScope, ProgramSymbol, Program } from './Program';
 import { printScopes } from './utils/printScopes';
 
 export class CompletionService {
-  private program: Program;
+  private modules = new Map<String, Program>();
 
-  constructor(private ast: Node) {
-    this.program = new Program(ast);
+  constructor() {}
+
+  /**
+   * Adds new module to the completion service. If a module already exists, it gets replaced.
+   *
+   * @param moduleName  Name of the module. (Typically file name.)
+   * @param ast   Abstract syntax tree of the module.
+   */
+  addModule(moduleName: string, ast: Node) {
+    moduleName = this.normalizeModuleName(moduleName);
+    this.modules.set(moduleName, new Program(moduleName, ast));
   }
 
-  getSymbols(row: number, column: number): ProgramSymbol[] {
+  /**
+   * Adds module from the Motoko Base Library.
+   *
+   * @param moduleName
+   */
+  addBaseModule(moduleName: string) {
+    let filename = moduleName.replace('mo:base/', '');
+    filename += '.mo';
+    const ast = mo.parseMotoko((motokoBasePackage as any).files[filename].content);
+    this.addModule(moduleName, ast);
+  }
+
+  getSymbols(moduleName: string, row: number, column: number): ProgramSymbol[] {
+    moduleName = this.normalizeModuleName(moduleName);
+    const module = this.modules.get(moduleName);
+    if (!module) {
+      return [];
+    }
+
     // find innermost scope
-    let scope = this.findInnerMostScope(this.program.scope, row, column);
+    let scope = this.findInnerMostScope(module.scope, row, column);
     if (!scope) {
-      scope = this.program.scope;
+      scope = module.scope;
     }
 
     const symbols = new Map<string, ProgramSymbol>();
@@ -34,15 +63,22 @@ export class CompletionService {
   /**
    * Returns completions for the object instance (triggered after dot).
    *
+   * @param moduleName
    * @param obj
    * @param row
    * @param column
    */
-  getObjectSymbols(obj: string, row: number, column: number): ProgramSymbol[] {
+  getObjectSymbols(moduleName: string, obj: string, row: number, column: number): ProgramSymbol[] {
+    moduleName = this.normalizeModuleName(moduleName);
+    const module = this.modules.get(moduleName);
+    if (!module) {
+      return [];
+    }
+
     // find innermost scope
-    let scope = this.findInnerMostScope(this.program.scope, row, column);
+    let scope = this.findInnerMostScope(module.scope, row, column);
     if (!scope) {
-      scope = this.program.scope;
+      scope = module.scope;
     }
 
     while (scope) {
@@ -50,6 +86,13 @@ export class CompletionService {
 
       if (symbol) {
         let fields = symbol.fields || [];
+        if (symbol.ref) {
+          const module = this.modules.get(symbol.ref.module);
+          if (module) {
+            const reffedSymbol = module.getSymbol(symbol.ref);
+            fields = fields.concat(reffedSymbol?.fields || []);
+          }
+        }
         fields = fields.filter(f => f.visibility === 'public');
         fields = fields.sort((a, b) => a.name.localeCompare(b.name));
         return fields;
@@ -103,7 +146,18 @@ export class CompletionService {
     return true;
   }
 
-  printScopes() {
-    printScopes(this.program.scope);
+  private normalizeModuleName(moduleName: string): string {
+    if (moduleName.endsWith('.mo')) {
+      return moduleName.substring(0, moduleName.length - 3);
+    }
+    return moduleName;
+  }
+
+  printScopes(moduleName: string) {
+    moduleName = this.normalizeModuleName(moduleName);
+    const module = this.modules.get(moduleName);
+    if (module) {
+      printScopes(module.scope);
+    }
   }
 }

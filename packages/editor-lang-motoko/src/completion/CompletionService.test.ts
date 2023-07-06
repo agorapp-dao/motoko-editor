@@ -11,10 +11,11 @@ describe('CompletionService', () => {
     `;
     const ast = mo.parseMotoko(code);
     // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
-    const symbols = completion.getSymbols(0, 0);
+    const symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['varA', 'varB'],
     });
@@ -27,10 +28,11 @@ describe('CompletionService', () => {
     `;
     const ast = mo.parseMotoko(code);
     // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
-    const symbols = completion.getSymbols(0, 0);
+    const symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['varA', 'varB'],
     });
@@ -47,24 +49,25 @@ describe('CompletionService', () => {
     `;
     const ast = mo.parseMotoko(code);
     // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
     // global scope
-    let symbols = completion.getSymbols(0, 0);
+    let symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
       functions: ['hello', 'world'],
     });
 
     // local scope in hello func
-    symbols = completion.getSymbols(3, 0);
+    symbols = completion.getSymbols('main.mo', 3, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['param1', 'param2'],
       functions: ['hello', 'world'],
     });
 
     // local scope in world func
-    symbols = completion.getSymbols(6, 0);
+    symbols = completion.getSymbols('main.mo', 6, 0);
     expect(getNames(symbols)).toEqual({
       functions: ['hello', 'world'],
     });
@@ -79,10 +82,11 @@ describe('CompletionService', () => {
       };
     `;
     const ast = mo.parseMotoko(code);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
-    const symbols = completion.getSymbols(5, 0);
+    const symbols = completion.getSymbols('main.mo', 5, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['p1', 'varA'],
       functions: ['someFunc'],
@@ -92,80 +96,6 @@ describe('CompletionService', () => {
   test('object', () => {
     const code = `
       let obj = object {
-        public let x = 1;
-        public var y = 2;
-      
-        public func sum() : Nat {
-          x + y;
-        };
-      };
-    `;
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
-
-    let symbols = completion.getSymbols(0, 0);
-    expect(getNames(symbols)).toEqual({
-      objects: ['obj'],
-    });
-
-    symbols = completion.getSymbols(6, 0);
-    expect(getNames(symbols)).toEqual({
-      variables: ['x', 'y'],
-      objects: ['obj'],
-      functions: ['sum'],
-    });
-
-    symbols = completion.getObjectSymbols('obj', 0, 0);
-    expect(getNames(symbols)).toEqual({
-      variables: ['x', 'y'],
-      functions: ['sum'],
-    });
-  });
-
-  test('class', () => {
-    const code = `
-      class MyClass() {
-        public let x = 1;
-        public var y = 2;
-      
-        public func sum() : Nat {
-          x + y;
-        };
-      };
-      
-      let obj = MyClass();
-    `;
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
-
-    let symbols = completion.getSymbols(0, 0);
-    expect(getNames(symbols)).toEqual({
-      objects: ['obj'],
-      classes: ['MyClass'],
-    });
-
-    symbols = completion.getSymbols(6, 0);
-    expect(getNames(symbols)).toEqual({
-      variables: ['x', 'y'],
-      classes: ['MyClass'],
-      objects: ['obj'],
-      functions: ['sum'],
-    });
-
-    symbols = completion.getObjectSymbols('obj', 0, 0);
-    expect(getNames(symbols)).toEqual({
-      variables: ['x', 'y'],
-      functions: ['sum'],
-    });
-  });
-
-  test('object - private vs public members', () => {
-    const code = `
-      let obj = object {
         var privateVar = 0;
         public var publicVar = 0;
       
@@ -182,17 +112,18 @@ describe('CompletionService', () => {
 
     const ast = mo.parseMotoko(code);
     // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
     // globally only `obj` is available
-    let symbols = completion.getSymbols(0, 0);
+    let symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
       objects: ['obj'],
     });
 
     // within the object all members are available
-    symbols = completion.getSymbols(9, 0);
+    symbols = completion.getSymbols('main.mo', 9, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['privateLet', 'privateVar', 'publicLet', 'publicVar'],
       objects: ['obj'],
@@ -200,14 +131,14 @@ describe('CompletionService', () => {
     });
 
     // when using the object from the outside, only public members are available
-    symbols = completion.getObjectSymbols('obj', 0, 0);
+    symbols = completion.getObjectSymbols('main.mo', 'obj', 0, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['publicLet', 'publicVar'],
       functions: ['publicFunc'],
     });
   });
 
-  test('class - private vs public members', () => {
+  test('class', () => {
     const code = `
       class MyClass() {
         var privateVar = 0;
@@ -228,18 +159,19 @@ describe('CompletionService', () => {
 
     const ast = mo.parseMotoko(code);
     // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
     // globally only `obj` and `MyClass` is available
-    let symbols = completion.getSymbols(0, 0);
+    let symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
       classes: ['MyClass'],
       objects: ['obj'],
     });
 
     // within the object all members are available
-    symbols = completion.getSymbols(9, 0);
+    symbols = completion.getSymbols('main.mo', 9, 0);
     expect(getNames(symbols)).toEqual({
       classes: ['MyClass'],
       objects: ['obj'],
@@ -248,7 +180,7 @@ describe('CompletionService', () => {
     });
 
     // when using the object from the outside, only public members are available
-    symbols = completion.getObjectSymbols('obj', 0, 0);
+    symbols = completion.getObjectSymbols('main.mo', 'obj', 0, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['publicLet', 'publicVar'],
       functions: ['publicFunc'],
@@ -274,29 +206,93 @@ describe('CompletionService', () => {
 
     const ast = mo.parseMotoko(code);
     // printTree(ast);
-    const completion = new CompletionService(ast);
-    // completion.printScopes();
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    // completion.printScopes('main.mo');
 
     // globally only `MyActor` is available
-    let symbols = completion.getSymbols(0, 0);
+    let symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
-      objects: ['MyActor'],
+      actors: ['MyActor'],
     });
 
     // within the actor all members are available
-    symbols = completion.getSymbols(9, 0);
+    symbols = completion.getSymbols('main.mo', 9, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['privateLet', 'privateVar', 'publicLet', 'publicVar'],
-      objects: ['MyActor'],
+      actors: ['MyActor'],
       functions: ['privateFunc', 'publicFunc'],
     });
 
     // when using the actor from the outside, only public members are available
-    symbols = completion.getObjectSymbols('MyActor', 0, 0);
+    symbols = completion.getObjectSymbols('main.mo', 'MyActor', 0, 0);
     expect(getNames(symbols)).toEqual({
       variables: ['publicLet', 'publicVar'],
       functions: ['publicFunc'],
     });
+  });
+
+  test('module', () => {
+    const moduleCode = `
+      module {
+        var privateVar = 0;
+        public var publicVar = 0;
+        
+        func privateFunc() { };
+        public func publicFunc() { };
+      };
+    `;
+    const moduleAst = mo.parseMotoko(moduleCode);
+    // printTree(moduleAst);
+
+    const mainCode = `
+      import MyModule "MyModule";
+    `;
+    const mainAst = mo.parseMotoko(mainCode);
+    // printTree(mainAst);
+
+    let completion = new CompletionService();
+    completion.addModule('main.mo', mainAst);
+    completion.addModule('MyModule.mo', moduleAst);
+    // completion.printScopes('main.mo');
+
+    let symbols = completion.getObjectSymbols('main.mo', 'MyModule', 0, 0);
+    expect(getNames(symbols)).toEqual({
+      variables: ['publicVar'],
+      functions: ['publicFunc'],
+    });
+
+    // make sure that it doesn't matter in which order you add the modules
+    completion = new CompletionService();
+    completion.addModule('MyModule.mo', moduleAst);
+    completion.addModule('main.mo', mainAst);
+
+    symbols = completion.getObjectSymbols('main.mo', 'MyModule', 0, 0);
+    expect(getNames(symbols)).toEqual({
+      variables: ['publicVar'],
+      functions: ['publicFunc'],
+    });
+  });
+
+  test('import from base library', () => {
+    const code = `
+      import D "mo:base/Debug";
+      import Nat "mo:base/Nat";
+    `;
+    const ast = mo.parseMotoko(code);
+    // printTree(ast);
+    const completion = new CompletionService();
+    completion.addModule('main.mo', ast);
+    completion.addBaseModule('mo:base/Debug');
+    completion.addBaseModule('mo:base/Nat');
+
+    let symbols = completion.getObjectSymbols('main.mo', 'D', 0, 0);
+    expect(getNames(symbols)).toEqual({
+      functions: ['print', 'trap'],
+    });
+
+    symbols = completion.getObjectSymbols('main.mo', 'Nat', 0, 0);
+    expect(getNames(symbols).functions).toContain('fromText');
   });
 });
 
@@ -305,6 +301,8 @@ function getNames(symbols: ProgramSymbol[]) {
   let functions: string[] = [];
   let objects: string[] = [];
   let classes: string[] = [];
+  let actors: string[] = [];
+  let modules: string[] = [];
 
   for (const symbol of symbols) {
     switch (symbol.kind) {
@@ -320,6 +318,12 @@ function getNames(symbols: ProgramSymbol[]) {
       case 'class':
         classes.push(symbol.name);
         break;
+      case 'actor':
+        actors.push(symbol.name);
+        break;
+      case 'module':
+        modules.push(symbol.name);
+        break;
       default:
         throw new Error(`Unknown symbol kind: ${symbol.kind}`);
     }
@@ -330,12 +334,16 @@ function getNames(symbols: ProgramSymbol[]) {
   functions = functions.sort();
   objects = objects.sort();
   classes = classes.sort();
+  actors = actors.sort();
+  modules = modules.sort();
 
   let names: {
     variables?: string[];
     functions?: string[];
     objects?: string[];
     classes?: string[];
+    actors?: string[];
+    modules?: string[];
   } = {};
   if (variables.length) {
     names.variables = variables;
@@ -348,6 +356,12 @@ function getNames(symbols: ProgramSymbol[]) {
   }
   if (classes.length) {
     names.classes = classes;
+  }
+  if (actors.length) {
+    names.actors = actors;
+  }
+  if (modules.length) {
+    names.modules = modules;
   }
 
   return names;
