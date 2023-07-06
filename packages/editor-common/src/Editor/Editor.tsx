@@ -100,6 +100,7 @@ function EditorInner() {
           model: monaco.editor.createModel(
             file.content,
             editorService.getLanguageForFile(file.path),
+            monaco.Uri.from({ scheme: 'inmemory', path: file.path }),
           ),
         }));
         setFiles(files);

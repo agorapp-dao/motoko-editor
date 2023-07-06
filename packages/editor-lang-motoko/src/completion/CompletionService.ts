@@ -20,6 +20,14 @@ export class CompletionService {
     this.modules.set(moduleName, new Program(moduleName, ast));
   }
 
+  addBaseLibrary() {
+    for (let moduleName of Object.keys(motokoBasePackage.files)) {
+      moduleName = this.normalizeModuleName(moduleName);
+      moduleName = `mo:base/${moduleName}`;
+      this.addBaseModule(moduleName);
+    }
+  }
+
   /**
    * Adds module from the Motoko Base Library.
    *

@@ -12,11 +12,21 @@ export function completion(monaco: Monaco, mo: typeof Mo) {
 }
 
 export class CompletionItemProvider implements languages.CompletionItemProvider {
-  constructor(private monaco: Monaco, private mo: typeof Mo) {}
-
   triggerCharacters = ['.'];
 
+  private completionService;
   private lastTree: Node | undefined;
+
+  constructor(private monaco: Monaco, private mo: typeof Mo) {
+    this.completionService = new CompletionService();
+    // TODO: preload all modules?
+    // this.completionService.addBaseLibrary();
+    this.completionService.addBaseModule('mo:base/Debug');
+    this.completionService.addBaseModule('mo:base/Nat');
+    this.completionService.addBaseModule('mo:base/Nat8');
+    this.completionService.addBaseModule('mo:base/Float');
+    this.completionService.addBaseModule('mo:base/Text');
+  }
 
   provideCompletionItems(
     model: editor.ITextModel,
@@ -66,17 +76,23 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
 
     if (this.lastTree) {
       // AST is available, suggest symbols from code
-      const completionService = new CompletionService(this.lastTree);
+      this.completionService.addModule(model.uri.path, this.lastTree);
+
       let symbols: ProgramSymbol[];
 
       if (!isAfterDot) {
-        symbols = completionService.getSymbols(position.lineNumber, position.column);
+        symbols = this.completionService.getSymbols(
+          model.uri.path,
+          position.lineNumber,
+          position.column,
+        );
       } else {
         const wordBeforeDot = model.getWordUntilPosition({
           lineNumber: dot.range.startLineNumber,
           column: dot.range.startColumn,
         }).word;
-        symbols = completionService.getObjectSymbols(
+        symbols = this.completionService.getObjectSymbols(
+          model.uri.path,
           wordBeforeDot,
           position.lineNumber,
           position.column,
