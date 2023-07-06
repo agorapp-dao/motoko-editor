@@ -1,15 +1,15 @@
+import loader, { Monaco } from '@monaco-editor/loader';
+export type { Monaco } from '@monaco-editor/loader';
 // it is important to not import monaco-editor directly, otherwise it fails with navigator not defined on the server
 import type TMonaco from 'monaco-editor';
 import { editorService } from '../editorService';
 import { useEffect, useState } from 'react';
 
-export type Monaco = typeof TMonaco;
-
 let monaco: Promise<Monaco>;
 
 export async function getMonaco() {
   if (!monaco) {
-    monaco = import('monaco-editor').then(monaco => {
+    monaco = loader.init().then(monaco => {
       for (const plugin of editorService.getLanguagePlugins()) {
         plugin.init(monaco);
       }

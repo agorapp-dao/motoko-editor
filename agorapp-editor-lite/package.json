@@ -8,7 +8,8 @@
     "start": "next start",
     "clean": "rm -rf node_modules && rm -rf public/content-*",
     "lint": "next lint",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
+    "ci-check": "pnpm test && pnpm lint && pnpm build",
     "postinstall": "node ./scripts/link-content.js"
   },
   "dependencies": {
