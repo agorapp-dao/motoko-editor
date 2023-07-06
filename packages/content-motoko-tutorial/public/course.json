@@ -16,9 +16,9 @@
         {
           "name": "Printing values",
           "slug": "printing-values",
-          "content": "02-basics/print-values/lesson.md",
-          "files": ["02-basics/print-values/main.mo"],
-          "solution": "02-basics/print-values/solution.md"
+          "content": "02-basics/printing-values/lesson.md",
+          "files": ["02-basics/printing-values/main.mo"],
+          "solution": "02-basics/printing-values/solution.md"
         },
         {
           "name": "Mutable variables",
@@ -33,13 +33,6 @@
           "content": "02-basics/immutable-variables/lesson.md",
           "files": ["02-basics/immutable-variables/main.mo"],
           "solution": "02-basics/immutable-variables/solution.md"
-        },
-        {
-          "name": "Assigning values",
-          "slug": "assigning-values",
-          "content": "02-basics/assigning-values/lesson.md",
-          "files": ["02-basics/assigning-values/main.mo"],
-          "solution": "02-basics/assigning-values/solution.md"
         },
         {
           "name": "Arithmetic operators",
