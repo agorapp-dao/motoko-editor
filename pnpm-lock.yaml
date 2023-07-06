@@ -177,7 +177,7 @@ importers:
         specifier: 18.0.11
         version: 18.0.11
       monaco-editor:
-        specifier: ^0.36.1
+        specifier: '*'
         version: 0.36.1
       next:
         specifier: 13.2.3
@@ -244,7 +244,7 @@ importers:
         specifier: workspace:^
         version: link:../editor-common
       monaco-editor:
-        specifier: ^0.36.1
+        specifier: '*'
         version: 0.36.1
       motoko:
         specifier: ^3.5.6
@@ -272,7 +272,7 @@ importers:
         specifier: workspace:^
         version: link:../editor-common
       monaco-editor:
-        specifier: ^0.36.1
+        specifier: '*'
         version: 0.36.1
 
 packages:

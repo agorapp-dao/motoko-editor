@@ -15,5 +15,7 @@
   "dependencies": {
     "@agorapp/editor-common": "workspace:^"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "monaco-editor": "*"
+  }
 }

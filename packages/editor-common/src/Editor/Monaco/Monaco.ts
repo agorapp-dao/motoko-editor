@@ -1,7 +1,6 @@
 import loader, { Monaco } from '@monaco-editor/loader';
 export type { Monaco } from '@monaco-editor/loader';
-// it is important to not import monaco-editor directly, otherwise it fails with navigator not defined on the server
-import type TMonaco from 'monaco-editor';
+import type { editor } from 'monaco-editor';
 import { editorService } from '../editorService';
 import { useEffect, useState } from 'react';
 
@@ -30,7 +29,7 @@ export function useMonaco(): Monaco | null {
   return monaco;
 }
 
-export async function monacoDefineTheme(themeData: TMonaco.editor.IStandaloneThemeData) {
+export async function monacoDefineTheme(themeData: editor.IStandaloneThemeData) {
   if (typeof window === 'undefined') {
     // do nothing on server-side
     return;
