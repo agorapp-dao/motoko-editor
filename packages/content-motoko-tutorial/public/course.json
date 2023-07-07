@@ -208,7 +208,10 @@
         },
         {
           "name": "Generic types",
-          "slug": "generic-types"
+          "slug": "generic-types",
+          "content": "05-beyond-basics/generic-types/lesson.md",
+          "files": ["05-beyond-basics/generic-types/main.mo"],
+          "solution": "05-beyond-basics/generic-types/solution.md"
         },
         {
           "name": "Options",
