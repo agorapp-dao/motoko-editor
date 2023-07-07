@@ -7,10 +7,10 @@ let text = "Hello, World!";
 var counter = 0;
 
 for (c in Text.toIter(text)) {
-    if (c == 'l') {
+    if (c == 'o') {
         counter += 1;
     }
 };
 
-D.print("There are " # Nat.toText(counter) # " 'l' characters in the string.");
+D.print("There are " # Nat.toText(counter) # " 'o' characters in the string.");
 ```

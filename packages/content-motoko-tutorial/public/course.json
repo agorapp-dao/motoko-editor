@@ -126,7 +126,10 @@
         },
         {
           "name": "Buffers",
-          "slug": "buffers"
+          "slug": "buffers",
+          "content": "03-types/buffers/lesson.md",
+          "files": ["03-types/buffers/main.mo"],
+          "solution": "03-types/buffers/solution.md"
         }
       ]
     },

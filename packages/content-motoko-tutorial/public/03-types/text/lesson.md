@@ -1,5 +1,5 @@
-In this section, we will look into the `Text` type. This type represents Unicode string. To declare
-the text, simply put the string in double quotes:
+In this section, we will look into the `Text` type, which represents Unicode strings. To declare
+a text variable, simply put the string in double quotes:
 
 ```motoko
 let text = "Hello, world!";
@@ -13,15 +13,15 @@ let lastName = "Doe";
 let fullName = firstName # " " # lastName;
 ```
 
-To get the length of the string, use the `size()` function:
+To determine the length of a text, use the `size()` function:
 
 ```motoko
 let text = "Hello, world!";
 text.size(); // 13
 ```
 
-Standard library includes the [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text)
-module, that contains useful utility functions. Here are some examples:
+The Motoko Base Library includes the [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text)
+module, which contains useful utility functions. Here are some examples:
 
 ```motoko
 import Text "mo:base/Text";
@@ -35,8 +35,8 @@ let words = Text.split("This is a sentence.", #char ' ');
 
 ```
 
-Note that when concatenating strings, you can't mix `Text` and other types (such as `Nat`). You have
-to convert these other types to `Text` first:
+Note that when concatenating strings, you can't mix `Text` and other types (such as `Nat`). You must
+first convert these other types to `Text`:
 
 ```motoko
 import Nat "mo:base/Nat";
@@ -47,7 +47,7 @@ let text = "Counter: " # Nat.toText(counter);
 
 ## Characters
 
-To access the characters in the string, you have several options:
+You have several options when it comes to accessing characters in a string:
 
 ```motoko
 // Iterate over characters in the string
@@ -67,10 +67,11 @@ let c = 'a';
 
 ## Exercise
 
-We have defined the `text` variable for you. Your task is to find out how many `l` characters are
-there in the string and print the result using the `D.print()` function. For text `"Hello, World!"`,
-the output should look like this:
+We have defined the `text` variable for you. Your task is to find out how many `o` characters are
+there in the string and print the result using the `D.print()` function.
+
+For text `"Hello, World!"`, the output should look like this:
 
 ```
-There are 3 'l' characters in the string.
+There are 2 'o' characters in the string.
 ```

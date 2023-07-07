@@ -6,13 +6,13 @@ if (condition1) {
 } else if (condition2) {
   // code to execute if condition2 is true
 } else {
-  // code to execute if condition is false
+  // code to execute if both conditions are false
 };
 ```
 
-The `else` clause is optional. Note that the if expression should be terminated with a semicolon.
+The `else` clause is optional. Also, the if expression should be concluded with a semicolon.
 
-The condition must evaluate to a boolean value:
+The `if` condition must evaluate to a boolean value:
 
 ```motoko
 if (name == "John" and age > 18) {
@@ -20,11 +20,11 @@ if (name == "John" and age > 18) {
 };
 ```
 
-See the [Logical expressions](/editor/motoko-tutorial/logical-expressions) lesson for more detail
-about available operators.
+Refer to the [Logical expressions](../logical-expressions) lesson for additional details about the
+available operators.
 
-Unlike in other languages, the `if` expression is an expression, not a statement. This means that it
-evaluates to a value:
+Unlike in other languages, the `if` expression in Motoko is an expression, not a statement. This
+means that it evaluates to a value:
 
 ```motoko
 let greeting = if (name == "John") {
@@ -44,8 +44,8 @@ let greeting = if (name == "John") "Hello John" else "Hello stranger";
 
 ## Exercise
 
-We have declared a variable `number`. Write a program that will check if a number is positive, negative,
-or zero.
+We have defined a variable `number` on the right. Write a program that will examine whether the
+number is positive, negative, or zero.
 
 The program should output one of the following messages:
 

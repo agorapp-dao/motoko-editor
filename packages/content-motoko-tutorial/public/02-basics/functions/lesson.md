@@ -2,26 +2,38 @@ To declare a function in Motoko, use the `func` keyword:
 
 ```motoko
 func add(a : Nat, b : Nat) : Nat {
-  a + b
+  a + b;
 };
 ```
 
-The `add` function takes two arguments, `a` and `b`, and returns their sum. Ignore the `: Nat` part
+The `add` function takes two parameters, `a` and `b`, and returns their sum. Ignore the `: Nat` part
 for now, this just tells the compiler that this function accepts and returns natural numbers. We
 will talk about types in more detail in the next chapter.
 
-Notice the `;` character we put after the function body. This is required in Motoko. Without it, you
+A function returns the result of the last expression in its body. However, there may be scenarios
+where you wish to exit the function earlier. In such case, use the `return` keyword:
+
+```motoko
+func add(a : Nat, b : Nat) : Nat {
+  if (a == 0) {
+    return b;
+  };
+  a + b;
+};
+```
+
+Don't forget to add a semicolon after the function body. This is required in Motoko. Without it, you
 would not be able to add more statements after the function declaration. Consider this example:
 
 ```motoko
 func add(a : Nat, b : Nat) : Nat {
-  a + b
+  a + b;
 }
 
 let sum = add(1, 2);
 ```
 
-It looks ok at the first glance, but it does not compile:
+While this might seem correct at first glance, it does not compile and returns the following error:
 
 ```
 syntax error [M0001], unexpected token 'let', expected one of token or <phrase> sequence:
@@ -29,7 +41,7 @@ syntax error [M0001], unexpected token 'let', expected one of token or <phrase> 
   ; seplist(<dec>,<semicolon>)
 ```
 
-To fix this, we need to add a `;` after the function body:
+To fix this, we need to append a `;` after the function body:
 
 ```motoko
 func add(a : Nat, b : Nat) : Nat {
@@ -38,8 +50,6 @@ func add(a : Nat, b : Nat) : Nat {
 
 let sum = add(1, 2);
 ```
-
-TODO: return
 
 ## Exercise
 

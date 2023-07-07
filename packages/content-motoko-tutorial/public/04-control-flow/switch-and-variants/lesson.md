@@ -1,4 +1,4 @@
-Switch becomes pretty useful when used together with [Variants](/editor/motoko-tutorial/variants):
+Switch becomes quite useful when used together with [Variants](/editor/motoko-tutorial/variants):
 
 ```motoko
 type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
@@ -18,7 +18,8 @@ func toText(d : Day) : Text {
 toText(#Thu);
 ```
 
-The switch expression has to be exhaustive, i.e. it has to cover all possible values of the variant type:
+The switch expression must be exhaustive, i.e., it must cover all possible values of the variant
+type:
 
 ```motoko
 type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
@@ -32,8 +33,8 @@ func toText(d : Day) : Text {
 };
 ```
 
-But **pattern matching** is what makes switch really powerful. Remember that variant type can hold a
-value. In Motoko this is often used to represent the result of some operation:
+What makes switch truly powerful is **pattern matching**. Recall that a variant type can hold
+a value. In Motoko, this is often used to represent the result of some operation:
 
 ```motoko
 type Result = {
@@ -45,7 +46,7 @@ let resultOk : Result = #ok(42);
 let resultErr : Result = #err("Something went wrong");
 ```
 
-With pattern matching we can easily extract the value from the variant:
+With pattern matching, we can easily extract the value from the variant:
 
 ```motoko
 let result = doSomething();
@@ -58,8 +59,8 @@ switch (result) {
 
 ## Exercise
 
-Complete the implementation of function `processResult. This function should print the result
-of the operation:
+Complete the implementation of the `processResult function. This function should print one of the
+following messages:
 
-1. `Operation successful, received: ` followed by the number
-2. Or `Operation failed with error: ` followed by the error message.
+- `Operation successful, received: ` followed by the number
+- `Operation failed with error: ` followed by the error message.

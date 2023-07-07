@@ -1,17 +1,17 @@
-Array holds a list of values. To declare an array, use square brackets `[]`:
+An array holds a list of values. To declare an array, use square brackets `[]`:
 
 ```motoko
 let days = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ];
 ```
 
-To access the value at a given index, use the `[]` operator:
+To access the value at a specific index, use the `[]` operator:
 
 ```motoko
 let tue = days[1]; // "Tue"
 ```
 
-Array has a size, which is the number of elements it holds. You can access the size using the `size`
-function. If you try to access an element that is out of bounds, the program will crash:
+An array has a size, which refers to the number of elements it holds. You can access the size using
+the `size()` function. If you try to access an element that is out of bounds, the program will crash:
 
 ```motoko
 days[8]; // Error: index out of bounds
@@ -20,8 +20,8 @@ days[8]; // Error: index out of bounds
 days.size(); // 7
 ```
 
-Array is by default immutable - you cannot change the value of an element in the array. To create a
-mutable version of array, use the `var` keyword when declaring the array:
+By default, an array is immutable - you cannot change the value of an element in the array. To create a
+mutable version of the array, use the `var` keyword when declaring it:
 
 ```motoko
 let counters = [var 0, 0, 0];
@@ -33,27 +33,14 @@ counters[2] += 1;
 counters; // [0, 1, 2]
 ```
 
-Even mutable array is immutable in the sense that you cannot change the size of the array. To add
-or remove elements from the array, you have to create a new array. To do that, you can use functions
-from the [Array](https://internetcomputer.org/docs/current/motoko/main/base/Array) module:
-
-```motoko
-import Array "mo:base/Array";
-
-let originalArray = [1, 2, 3];
-// TODO: deprecated, `Array.append` copies its arguments and has linear complexity;
-let newArray = Array.append(originalArray, [4]);
-
-originalArray; // [1, 2, 3]
-newArray; // [1, 2, 3, 4]
-```
+Even a mutable array is immutable in the sense that you cannot change its size. If you require
+a list of values with the ability to grow or shrink, you should use the `Buffer` type instead,
+which we will cover in the next lesson.
 
 ## Exercise
 
-Declare array named `fruits` and populate it with 3 elements: `"apple"`, `"banana"`, `"cherry"`.
-
-Add fourth element to the array.
+Declare an array named `fruits` and populate it with three elements: `"apple"`, `"banana"`, `"cherry"`.
 
 Change the value of the second element to `"pear"`.
 
-Print the size of the array;
+Print the size of the array.

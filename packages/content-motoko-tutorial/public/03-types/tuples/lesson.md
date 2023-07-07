@@ -1,10 +1,10 @@
-A tuple is an ordered sequence of values enclosed in parentheses:
+A tuple is an ordered sequence of values enclosed within parentheses:
 
 ```motoko
 let tuple = (42, true);
 ```
 
-There are several ways to access the values in a tuple:
+There are several ways to access the values within a tuple:
 
 ```motoko
 // dot notation
@@ -16,7 +16,7 @@ let (first, second) = tuple;
 let (_, second) = tuple; // ignore the first value
 ```
 
-Tuple is immutable, you can't change the values in it:
+A tuple is immutable, meaning you cannot modify the values within it:
 
 ```motoko
 tuple.0 := 43; // fails
@@ -29,7 +29,7 @@ a tuple to represent a point in 2D space:
 let point = (20, 15);
 ```
 
-You can also use a tuple to return multiple values from a function:
+Tuples can also be used to return multiple values from a function:
 
 ```motoko
 // this function returns the result and remainder of x / y

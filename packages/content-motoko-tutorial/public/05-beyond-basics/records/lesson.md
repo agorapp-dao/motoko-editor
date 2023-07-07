@@ -7,14 +7,14 @@ let person = {
 };
 ```
 
-You can access the values in a record using dot notation:
+Values within a record can be accessed using dot notation:
 
 ```motoko
 person.age; // 42
 ```
 
-Values in a record are immutable by default, you can't change them. To make a value mutable,
-you have to mark it with the `var` keyword:
+By default, values in a record are immutable, meaning you can't change them. If you want to make a
+value mutable, it needs to be marked with the `var` keyword:
 
 ```motoko
 let person = {
@@ -38,10 +38,13 @@ let person: Person = { name = "Alice"; age = 42; };
 
 ## Exercise
 
-Create a record type for a `Book`. This record should have fields for `title` (string), `author` (string),
-and `publicationYear` (integer).
+Create a record type `Book`. This record should have the following fields:
 
-Write a function `getBookAge` that takes a `Book` record as an argument and returns the age of
-the book (assume current year is 2023).
+- `title` - Name of the book
+- `author` - Author of the book
+- `publicationYear` - Year the book was published
+
+Write a function called `getBookAge()` that takes a `Book` record as an argument and returns the age of
+the book (assume the current year is 2023).
 
 Declare a variable `book` and call the `getBookAge` function with it.

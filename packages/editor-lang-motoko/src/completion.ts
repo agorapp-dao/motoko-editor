@@ -26,6 +26,7 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
     this.completionService.addBaseModule('mo:base/Nat8');
     this.completionService.addBaseModule('mo:base/Float');
     this.completionService.addBaseModule('mo:base/Text');
+    this.completionService.addBaseModule('mo:base/Buffer');
   }
 
   provideCompletionItems(

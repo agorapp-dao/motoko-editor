@@ -1,6 +1,4 @@
-TODO: I should probably explain generics first
-
-In the previous lesson, we have seen that we can represent the error state with an option type:
+In the previous lesson, we saw that we can represent error states with an option type:
 
 ```motoko
 func safeDivide(a : Nat, b: Nat) : ?Nat {
@@ -12,10 +10,11 @@ func safeDivide(a : Nat, b: Nat) : ?Nat {
 };
 ```
 
-Function `safeDivide` returns `null` if you try to divide by zero (this would fail the program otherwise).
+The `safeDivide` function returns `null` if you attempt to divide by zero (which would otherwise
+cause the program to crash).
 
-The disadvantage of this approach is that you do not communicate to the caller what exactly went wrong.
-We can improve this by defining a `Result` type:
+A limitation of this approach is that it doesn't inform the caller specifically about what went
+wrong. We can improve this by defining a `Result` type:
 
 ```motoko
 type Result<Ok, Err> = { #ok : Ok; #err : Err };

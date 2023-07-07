@@ -1,14 +1,16 @@
-Class is like a template for an object. It describes which fields and methods an object will have and
-how to create it:
+A class in Motoko serves as a blueprint for creating objects. It describes the fields and methods
+an object will have and how to create it:
 
 ```motoko
 class Person(_firstName : Text, _lastName : Text) {
+
   public let firstName = _firstName;
   public let lastName = _lastName;
 
   public func getFullName() : Text {
     firstName # " " # lastName;
   };
+
 };
 ```
 
@@ -29,9 +31,11 @@ func greet(p : Person) : Text {
 
 ## Exercise
 
-Create a class `Counter` with a private field `counter` and two public methods `increment()` and
-`get()`. The `increment()` method should increment the counter and the `get()` method should return
-the current value of the counter.
+Create a class `Counter` with the following members:
+
+- A private field `counter`.
+- A public method `increment()` that increments the counter.
+- A public method `get()` that returns the current value of the counter.
 
 Create an instance of the `Counter` class and call the `increment()` method on it twice. Then call
 the `get()` method.

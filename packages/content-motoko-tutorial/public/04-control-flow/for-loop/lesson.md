@@ -1,7 +1,7 @@
-The `for` loop is used to execute a block of code repeatedly. Types in Motoko that can hold
-multiple values usually have a method that return an **iterator**, that can be used to iterate
-over the values. For example, to iterate over the elements of an array, you will use array's `vals()`
-method:
+The `for` loop is used to execute a block of code repeatedly. In Motoko, types that can hold
+multiple values typically have a method that returns an **iterator**. This can be used to iterate
+over the values. For instance, to iterate over the elements of an array, you would use the array's
+`vals()` method:
 
 ```motoko
 import D "mo:base/Debug";
@@ -13,7 +13,7 @@ for (number in numbers.vals()) {
 };
 ```
 
-To iterate over the characters in a string, use `Text.toIter()` method from the
+To iterate over the characters in a string, use the `Text.toIter()` method from the
 [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text#function-toiter) module:
 
 ```motoko
@@ -27,7 +27,7 @@ for (char in Text.toIter(name)) {
 };
 ```
 
-To iterate over the range of numbers, use `Iter.range()` method from the
+To iterate over a range of numbers, use the `Iter.range()` method from the
 [Iter](https://internetcomputer.org/docs/current/motoko/main/base/Iter#class-range) module:
 
 ```motoko
@@ -39,7 +39,7 @@ for (number in Iter.range(1, 10)) {
 };
 ```
 
-TODO: `break` and `continue` statements
+TODO: Does Motoko for have `break` and `continue` statements?
 
 ## Exercise
 
