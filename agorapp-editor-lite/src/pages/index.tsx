@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { fileURLToPath } from 'url';
 import { contentService } from '@agorapp/content-common';
 import { courseService } from '@agorapp/editor-common';
 

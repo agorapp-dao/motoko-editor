@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import { courseService, Editor, editorService } from '@agorapp/editor-common';
 import { contentService } from '@agorapp/content-common';
 import { MotokoEditorPlugin } from '@agorapp/editor-lang-motoko';
-import { SolidityEditorPlugin } from '@agorapp/editor-lang-solidity';
 
 type TEditorPageProps = {
   lessonSlug: string;
@@ -20,7 +19,6 @@ type TEditorPageProps = {
 };
 
 editorService.registerLanguagePlugin(new MotokoEditorPlugin());
-editorService.registerLanguagePlugin(new SolidityEditorPlugin());
 
 export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditorPageProps) {
   const [activeLessonSlug, setActiveLessonSlug] = useState(lessonSlug);

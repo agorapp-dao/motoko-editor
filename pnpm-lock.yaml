@@ -29,18 +29,12 @@ importers:
       '@agorapp/content-motoko-tutorial':
         specifier: workspace:^
         version: link:../packages/content-motoko-tutorial
-      '@agorapp/content-solidity-sample':
-        specifier: workspace:^
-        version: link:../packages/content-solidity-sample
       '@agorapp/editor-common':
         specifier: workspace:^
         version: link:../packages/editor-common
       '@agorapp/editor-lang-motoko':
         specifier: workspace:^
         version: link:../packages/editor-lang-motoko
-      '@agorapp/editor-lang-solidity':
-        specifier: workspace:^
-        version: link:../packages/editor-lang-solidity
       '@emotion/core':
         specifier: ^11.0.0
         version: 11.0.0
@@ -85,7 +79,7 @@ importers:
         version: 13.4.9(eslint@8.35.0)(typescript@4.9.5)
       next:
         specifier: 13.4.9
-        version: 13.4.9(@babel/core@7.22.8)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.9(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
       polished:
         specifier: ^4.2.2
         version: 4.2.2
@@ -181,7 +175,7 @@ importers:
         version: 0.36.1
       next:
         specifier: ^13.4.9
-        version: 13.4.9(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.9(@babel/core@7.22.8)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
