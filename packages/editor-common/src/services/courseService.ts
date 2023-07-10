@@ -37,6 +37,13 @@ class CourseService {
     return `/content/content-${course.slug}/${contentPath}`;
   }
 
+  getCoursePath(courseSlug: string, lessonSlug?: string) {
+    if (!lessonSlug) {
+      return `/course/${courseSlug}`;
+    }
+    return `/course/${courseSlug}/${lessonSlug}`;
+  }
+
   findLessonBySlug(course: TCourse | undefined, lessonSlug: string | undefined) {
     if (!course || !lessonSlug) {
       return undefined;

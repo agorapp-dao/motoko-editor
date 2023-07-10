@@ -48,14 +48,14 @@ export const ControlPanel = () => {
   };
 
   const handleGoToNext = () => {
-    if (nextLesson) {
-      router.push(`/editor/${course.data?.slug}/${nextLesson.slug}`);
+    if (nextLesson && course.data) {
+      router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
     }
   };
 
   const handleGoToPrev = () => {
-    if (prevLesson) {
-      router.push(`/editor/${course.data?.slug}/${prevLesson.slug}`);
+    if (prevLesson && course.data) {
+      router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
     }
   };
 

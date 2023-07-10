@@ -62,7 +62,7 @@ function EditorInner() {
 
   useEffect(() => {
     fullscreen ? handleFullscreen.enter() : handleFullscreen.exit();
-  }, [fullscreen]);
+  }, [fullscreen, handleFullscreen]);
 
   useEffect(() => {
     setShowListOfContents(false);
@@ -116,7 +116,7 @@ function EditorInner() {
       models.forEach(model => model.dispose());
       setTabs([]);
     };
-  }, [course.data, activeLessonSlug]);
+  }, [course.data, activeLessonSlug, monaco, setFiles, setTabs]);
 
   if (!course.data) {
     return <div></div>;

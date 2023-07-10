@@ -41,6 +41,11 @@ const sizeMap: { [key: string]: string } = {
   large: 'md',
 };
 
+const StyledPaper = styled(Paper)`
+  background-color: ${p => p.theme.background};
+  background-image: none;
+`;
+
 const GeneralDialog: React.FC<Props> = ({
   cancelLabel = 'Cancel',
   confirmLabel = 'Confirm',
@@ -88,11 +93,6 @@ const GeneralDialog: React.FC<Props> = ({
   ...rest
 }) => {
   const isSmall = size === 'small';
-
-  const StyledPaper = styled(Paper)`
-    background-color: ${p => p.theme.background};
-    background-image: none;
-  `;
 
   return (
     <Dialog

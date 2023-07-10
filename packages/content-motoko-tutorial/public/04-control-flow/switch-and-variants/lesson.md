@@ -1,4 +1,4 @@
-Switch becomes quite useful when used together with [Variants](/editor/motoko-tutorial/variants):
+Switch becomes quite useful when used together with [Variants](../variants):
 
 ```motoko
 type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};

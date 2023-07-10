@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';
 import { ContentLevel } from './ContentLevel';
 import { EditorContext } from '../EditorContext';
+import { courseService } from '../../services/courseService';
 
 interface TProps {
   item: TLesson;
@@ -26,7 +27,7 @@ export const ContentItem: React.FC<TProps> = ({
 
   const handleClick = (lesson: TLesson) => {
     if (lesson.content) {
-      router.push(`/editor/${courseSlug}/${lesson.slug}`);
+      router.push(courseService.getCoursePath(courseSlug!, lesson.slug));
       handleSelectLesson(lesson.slug);
     } else if (lesson.children?.length) {
       setOpened(!opened);

@@ -62,6 +62,12 @@ class ContentService {
       throw err;
     }
   }
+
+  async listContentPackages(): Promise<string[]> {
+    const nodeModulesDir = path.join(pkgPath, '..');
+    let dirs = await fsp.readdir(nodeModulesDir);
+    return dirs;
+  }
 }
 
 export const contentService = new ContentService();

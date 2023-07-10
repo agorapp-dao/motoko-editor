@@ -6,8 +6,9 @@
   "scripts": {
     "clean": "rm -rf node_modules",
     "test": "jest",
+    "lint": "pnpm eslint src --max-warnings 0",
     "build": "tsc --noEmit",
-    "ci-check": "pnpm build && pnpm test"
+    "ci-check": "pnpm build && pnpm test && pnpm lint"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +32,7 @@
     "@mui/material": "^5.12.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
-    "next": "13.2.3",
+    "next": "^13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^6.0.0-rc.1",
@@ -45,6 +46,8 @@
     "@types/jest": "^29.5.2",
     "@types/styled-components": "^5.1.26",
     "encoding": "^0.1.13",
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.4.9",
     "eslint-config-prettier": "^8.8.0",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0"

@@ -81,7 +81,7 @@ export async function getServerSideProps(
     return {
       redirect: {
         permanent: false,
-        destination: `/editor/${courseSlug}/${firstLesson.slug}`,
+        destination: courseService.getCoursePath(courseSlug, firstLesson.slug),
       },
     };
   }
