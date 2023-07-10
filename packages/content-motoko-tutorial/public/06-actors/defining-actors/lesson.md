@@ -34,7 +34,7 @@ error.
 Messages are represented by async functions. These messages can be sent by by either end users or
 other actors.
 
-There is always only one instance of the actor in the system, making it a [singleton](TODO:link).
+There is always only one instance of the actor in the system, making it a singleton.
 
 Your program is executed on the Internet Computer across multiple nodes. When sending messages to
 actors that change the actor state, a certain amount of time is needed for the nodes to reach

@@ -26,9 +26,21 @@ do {
 While this gives us the same result, there is one important difference. The body of the `do-while`
 loop will always be executed at least once, even if the `while` condition is false.
 
-You can terminate the loop early by using the `break` statement:
+Just like with the `for` loop, you can use `break` and `continue` statements in conjunction with a
+`label` to control the flow of the loop:
 
-TODO: `break` and `continue` statements
+```motoko
+import D "mo:base/Debug";
+
+var counter = 0;
+label counterLoop while (counter < 5) {
+  D.print(debug_show(counter));
+  counter += 1;
+  if (counter == 3) {
+    break counterLoop;
+  };
+}
+```
 
 ## Exercise
 

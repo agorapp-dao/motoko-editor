@@ -39,7 +39,25 @@ for (number in Iter.range(1, 10)) {
 };
 ```
 
-TODO: Does Motoko for have `break` and `continue` statements?
+There are two statements you can use to further control the flow of a `for` loop:
+
+- `break` will exit the loop immediately.
+- `continue` will skip the rest of the current iteration and move on to the next one.
+
+To use these statements, you must assign a label to the loop first. This is done by adding a
+`label <label-name>` statement before the loop:
+
+```motoko
+import D "mo:base/Debug";
+import Iter "mo:base/Iter";
+
+label numberLoop for (number in Iter.range(1, 10)) {
+  if (number == 5) {
+    break numberLoop;
+  };
+  D.print(debug_show(number));
+};
+```
 
 ## Exercise
 

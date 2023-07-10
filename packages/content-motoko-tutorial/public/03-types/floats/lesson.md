@@ -26,8 +26,6 @@ let a = 2.6;
 let b = Float.toInt(a); // 2 : Int
 ```
 
-TODO: does Motoko have something like BigDecimal?
-
 ## Exercise
 
 Define the following variables:

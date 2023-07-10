@@ -4,6 +4,7 @@ to deal with errors: **asynchronous errors**.
 Any asynchronous function has the ability to throw an error:
 
 ```motoko
+import D "mo:base/Debug";
 import Error "mo:base/Error";
 
 func fetchData() : async Data {
@@ -22,8 +23,7 @@ try {
   let data = await fetchData();
   // ...
 } catch (err) {
-  // TODO: how to access the error message?
-  D.print("Failed to fetch data");
+  D.print("Failed to fetch data: " # Error.message(err));
 };
 ```
 
@@ -39,7 +39,7 @@ communicate that the function can potentially return an error.
 Create an asynchronous function `divide()`, which takes two parameters `a` and `b` and returns `a / b`.
 If `b` is zero, the function should throw an error.
 
-Create another asynchronous function `main()` that calls `divide()`. It prints the result, or prints `"Failed"` if
-the error has been thrown.
+Create another asynchronous function `main()` that calls `divide()`. It prints the result, or prints
+the error message if the error has been thrown.
 
 Call the `main()` function to start the program.

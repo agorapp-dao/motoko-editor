@@ -56,8 +56,6 @@ for (c in Text.toIter("abc")) {
 };
 ```
 
-TODO: can I access characters by index?
-
 Note that when working with characters, you are actually working with a different type, called
 `Char`. This type represents a single Unicode character. To create a character, use single quotes:
 

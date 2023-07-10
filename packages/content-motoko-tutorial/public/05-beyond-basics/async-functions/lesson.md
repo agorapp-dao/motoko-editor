@@ -1,5 +1,5 @@
 In Motoko, you can mark a function as asynchronous by using the async keyword. Asynchronous
-functions are operations that complete in the future and they return a promise,
+functions are operations that complete in the future. They return a promise,
 also known as a future value:
 
 ```motoko
@@ -18,8 +18,6 @@ To wait for the value to be available, you can use the `await` keyword:
 ```motoko
 let data = await loadData();
 ```
-
-// TODO: how to represent Future type in Motoko
 
 ## Exercise
 
