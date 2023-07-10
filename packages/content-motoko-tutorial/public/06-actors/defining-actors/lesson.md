@@ -2,9 +2,9 @@ Concurrency in the Internet Computer is based on the **actor model**. In this mo
 independent entity that has the ability to communicate by receiving and sending messages to other
 actors. Each actor can process one message at a time, which means it works in a single-threaded manner.
 
-Multiple actors can operate concurrently on the Internet Computer though. Each actor runs independently
-of the others, but all can work at the same time, which allows for parallel execution of tasks and
-operations.
+Nevertheless, on the Internet Computer, multiple actors can operate concurrently. While each actor
+functions independently from others, they all have the ability to work simultaneously, thereby
+enabling parallel task and operation execution.
 
 In Motoko, actors are defined using the `actor` keyword:
 
@@ -27,18 +27,20 @@ actor Library {
 };
 ```
 
-The Actor has a state, which is defined by the variables declared inside the actor. This state is
-always private, marking it with `public` keyword would result in a compilation error.
+An actor has a state, defined by the variables declared inside the actor. This state is
+always private, and attempting to mark it with the `public` keyword would trigger a compilation
+error.
 
-Messages are represented by the async functions. These messages can be send by end users or other
-actors.
+Messages are represented by async functions. These messages can be sent by by either end users or
+other actors.
 
 There is always only one instance of the actor in the system, making it a [singleton](TODO:link).
 
-Your program is being executed on the Internet Computer on several nodes. When sending messages to
-actors that change actor state, it takes some time for the nodes to reach consensus. You can opt-out
-from this by adding the `query` keyword to the function declaration. In this case the function will
-return immediately with the last known state.
+Your program is executed on the Internet Computer across multiple nodes. When sending messages to
+actors that change the actor state, a certain amount of time is needed for the nodes to reach
+consensus on what the latest state is. You can opt-out from this by adding the `query` keyword to
+the function declaration, which allows the function to return immediately with the last known state
+from an individual node.
 
 ## Exercise
 

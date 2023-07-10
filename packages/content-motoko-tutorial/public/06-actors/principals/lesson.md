@@ -1,8 +1,9 @@
 Your actor will be deployed as a [canister](https://internetcomputer.org/docs/current/concepts/canisters-code)
-on the Internet Computer. This is essentially a public environment, so often you will want to restrict
-who can access your actor.
+on the Internet Computer. This is essentially a public environment, so it's often crucial to
+regulate who has access to your actor.
 
-In Motoko, you can get a caller of the method by adding the `shared` keyword to the function definition:
+In Motoko, you can identify the caller of a method by adding the `shared` keyword to the function
+definition:
 
 ```motoko
 import D "mo:base/Debug";
@@ -19,21 +20,21 @@ actor TokenWallet {
 };
 ```
 
-Method caller is represented by a principal. Use the [Principal](https://internetcomputer.org/docs/current/motoko/main/base/Principal)
+A Method caller is represented by a principal. Use the [Principal](https://internetcomputer.org/docs/current/motoko/main/base/Principal)
 module from the base library to work with principals:
 
 ```motoko
 Principal.toText(caller); // "iakn2-jkjiq-5dcoa"
 ```
 
-Principal can represent either an end user or another actor. You can get actor's principal by calling
-the `Principal.fromActor()`:
+A principal can represent either an end user or another actor. You can get an actor's principal by
+calling the `Principal.fromActor()`:
 
 ```motoko
 Principal.fromActor(TokenWallet); // "nm4y5-zsjiq-5deoa"
 ```
 
-There is also a special anonymous principal:
+Additionally, there is a special anonymous principal:
 
 ```motoko
 import Principal "mo:base/Principal";
@@ -44,5 +45,5 @@ Principal.isAnonymous(anonymous); // true
 
 ## Exercise
 
-Finish the implementation of the `whoAmI` method. It should return the principal of the caller. The
-principal should be returned as a text.
+Complete the implementation of the `whoAmI` method. It should return the caller's principal,
+represented as text.
