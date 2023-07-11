@@ -3,7 +3,7 @@
 import * as S from './Editor.styled';
 import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Fade } from '@mui/material';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { EditorContext, EditorProvider } from './EditorContext';
@@ -59,6 +59,7 @@ function EditorInner() {
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
   const course = courseService.useCourse(courseSlug);
   const handleFullscreen = useFullScreenHandle();
+  const lessonSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fullscreen ? handleFullscreen.enter() : handleFullscreen.exit();
@@ -118,6 +119,12 @@ function EditorInner() {
     };
   }, [course.data, activeLessonSlug, monaco, setFiles, setTabs]);
 
+  useEffect(() => {
+    if (activeLessonSlug && lessonSectionRef.current) {
+      lessonSectionRef.current?.scrollTo(0, 0);
+    }
+  }, [activeLessonSlug, lessonSectionRef]);
+
   if (!course.data) {
     return <div></div>;
   }
@@ -144,7 +151,7 @@ function EditorInner() {
             {activeLesson && (
               <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />
             )}
-            <S.SectionContent>
+            <S.SectionContent ref={lessonSectionRef}>
               <Fade in={showListOfContents} timeout={500} style={{ overflowY: 'auto' }}>
                 <S.OverlayBox>
                   <S.ListOfContents>

@@ -50,12 +50,14 @@ export const ControlPanel = () => {
   const handleGoToNext = () => {
     if (nextLesson && course.data) {
       router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
+      setOutput('');
     }
   };
 
   const handleGoToPrev = () => {
     if (prevLesson && course.data) {
       router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
+      setOutput('');
     }
   };
 
