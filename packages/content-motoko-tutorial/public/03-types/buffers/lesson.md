@@ -14,7 +14,7 @@ let names = Buffer.Buffer<Text>(3);
 `Buffer<Text>` tells the compiler that the buffer will hold values of type `Text`. This notation is
 explained in more detail in the lesson on [Generic types](../generic-types).
 
-There are two buffer properties of a buffer that are sometimes confused with each other:: `size` and
+There are two buffer properties that are sometimes confused with each other - `size` and
 `capacity`:
 
 - `size` refers to the actual number of elements in the buffer. Initially, the buffer is empty, so its size is 0.
@@ -22,7 +22,7 @@ There are two buffer properties of a buffer that are sometimes confused with eac
   initial capacity of 3. When there is no free space left in the buffer, it will be automatically
   resized to accommodate more elements.
 
-You can use functions from the base library to access the size and capacity of the buffer:
+You can use `size()` and `capacity()` functions to access these properties:
 
 ```motoko
 names.size(); // 0

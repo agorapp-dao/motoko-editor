@@ -2,7 +2,7 @@
 import D "mo:base/Debug";
 
 // your code goes here
-func subtract(a : Nat, b : Nat) : Nat {
+func subtract(a : Int, b : Int) : Int {
     a - b
 };
 

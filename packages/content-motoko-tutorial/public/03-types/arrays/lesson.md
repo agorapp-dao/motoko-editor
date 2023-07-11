@@ -43,4 +43,4 @@ Declare an array named `fruits` and populate it with three elements: `"apple"`, 
 
 Change the value of the second element to `"pear"`.
 
-Print the size of the array.
+Print the content and size of the array.

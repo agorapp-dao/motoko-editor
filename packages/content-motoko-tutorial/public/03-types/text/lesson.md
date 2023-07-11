@@ -20,7 +20,7 @@ let text = "Hello, world!";
 text.size(); // 13
 ```
 
-The Motoko Base Library includes the [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text)
+The base library includes the [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text)
 module, which contains useful utility functions. Here are some examples:
 
 ```motoko
@@ -47,11 +47,10 @@ let text = "Counter: " # Nat.toText(counter);
 
 ## Characters
 
-You have several options when it comes to accessing characters in a string:
+You can use the `chars()` function to iterate over the characters in the string:
 
 ```motoko
-// Iterate over characters in the string
-for (c in Text.toIter("abc")) {
+for (c in "abc".chars()) {
   D.print(debug_show(c));
 };
 ```
@@ -72,4 +71,13 @@ For text `"Hello, World!"`, the output should look like this:
 
 ```
 There are 2 'o' characters in the string.
+```
+
+To solve this exercise, you will need to use the `if` expression we will introduce later. For
+now simple condition like this will suffice:
+
+```motoko
+if (text == "Hello, World!") {
+  // do something
+};
 ```

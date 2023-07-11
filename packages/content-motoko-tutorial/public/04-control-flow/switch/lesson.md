@@ -44,7 +44,7 @@ Notice that we have omitted the curly brackets in the `case` clauses. This is po
 
 You are given a text representing a day of the week. Write a program that performs the following tasks:
 
-1. If the day is `Monday`, print `Start of the work week.`
-2. If the day is `Wednesday`, print `Midweek already!`
-3. If the day is `Friday`, print `Yay! Weekend is coming.`
-4. For any other day, print `Just another day.`
+- If the day is `Monday`, print `Start of the work week.`
+- If the day is `Wednesday`, print `Midweek already!`
+- If the day is `Friday`, print `Yay! Weekend is coming.`
+- For any other day, print `Just another day.`

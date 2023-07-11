@@ -1,4 +1,4 @@
-Later in this tutorial, we will introduce the if keyword, which enables us to control the program
+Later in this tutorial, we will introduce the `if` keyword, which enables us to control the program
 flow based on certain conditions.
 
 To create these conditions, you use **relational operators**.

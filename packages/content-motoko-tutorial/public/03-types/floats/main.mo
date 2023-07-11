@@ -1,3 +1,3 @@
-import D "mo:base/Debug";
+import Float "mo:base/Float";
 
 // your code here

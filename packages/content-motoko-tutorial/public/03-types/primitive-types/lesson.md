@@ -7,8 +7,8 @@ Motoko supports a variety of built-in types, including:
 - `Nat` - natural numbers (only positive values or zero)
 - `Blob` - binary blobs
 
-A unique type you will occasionally encounter is the unit type (). This type symbolizes the absence
-of a value (similar to void in other languages). It can be utilized to indicate that a function
+A unique type you will occasionally encounter is the unit type `()`. This type symbolizes the absence
+of a value (similar to `void` in other languages). It can be utilized to indicate that a function
 does not return any value:
 
 ```motoko
@@ -25,4 +25,4 @@ We will be talking about some of these types in more detail in the following sec
 
 ## Exercise
 
-The code on the right does not compile. Can you fix it?
+The code on the right does not run. Can you fix it?

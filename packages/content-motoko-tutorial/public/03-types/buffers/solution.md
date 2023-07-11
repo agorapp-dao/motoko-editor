@@ -10,7 +10,5 @@ cities.add("New York");
 
 D.print("buffer size: " # debug_show(cities.size()));
 D.print("buffer capacity: " # debug_show(cities.capacity()));
-
-let citiesArray = Buffer.toArray(cities);
-D.print("buffer capacity: " # debug_show(citiesArray));
+D.print("buffer content: " # debug_show(Buffer.toArray(cities)));
 ```

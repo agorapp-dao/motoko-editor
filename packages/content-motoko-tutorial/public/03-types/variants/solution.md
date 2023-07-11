@@ -1,6 +1,4 @@
 ```motoko
-import D "mo:base/Debug";
-
 type Shape = {
   #circle;
   #rectangle;
@@ -8,6 +6,4 @@ type Shape = {
 };
 
 let s : Shape = #circle;
-
-D.print(debug_show(s));
 ```

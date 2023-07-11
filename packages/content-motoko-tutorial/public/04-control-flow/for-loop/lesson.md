@@ -13,16 +13,14 @@ for (number in numbers.vals()) {
 };
 ```
 
-To iterate over the characters in a string, use the `Text.toIter()` method from the
-[Text](https://internetcomputer.org/docs/current/motoko/main/base/Text#function-toiter) module:
+To iterate over the characters in a string, use the `chars()` method:
 
 ```motoko
 import D "mo:base/Debug";
-import Text "mo:base/Text";
 
 let name = "John Doe";
 
-for (char in Text.toIter(name)) {
+for (char in name.chars()) {
   D.print(debug_show(char));
 };
 ```

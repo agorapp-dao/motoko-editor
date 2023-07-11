@@ -4,7 +4,7 @@ To define an immutable variable use the `let` keyword:
 let x = 10;
 ```
 
-Immutable value cannot change its value after it's been assigned.
+Immutable variable cannot change its value after it's been assigned.
 
 ## Exercise
 
