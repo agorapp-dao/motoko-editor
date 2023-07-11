@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/agorapp-editor-lite
+WORKDIR /app/motoko-editor
 
 RUN pnpm i --frozen-lockfile
 
@@ -28,16 +28,16 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/agorapp-editor-lite/public ./agorapp-editor-lite/public
+COPY --from=builder /app/motoko-editor/public ./motoko-editor/public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/agorapp-editor-lite/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/agorapp-editor-lite/.next/static ./agorapp-editor-lite/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/motoko-editor/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/motoko-editor/.next/static ./motoko-editor/.next/static
 
 # TODO: content packages are not discovered by output file tracing
-COPY --from=builder --chown=nextjs:nodejs /app/packages/content-common ./agorapp-editor-lite/node_modules/@agorapp/content-common
-COPY --from=builder --chown=nextjs:nodejs /app/packages/content-motoko-tutorial ./agorapp-editor-lite/node_modules/@agorapp/content-motoko-tutorial
+COPY --from=builder --chown=nextjs:nodejs /app/packages/content-common ./motoko-editor/node_modules/@agorapp/content-common
+COPY --from=builder --chown=nextjs:nodejs /app/packages/content-motoko-tutorial ./motoko-editor/node_modules/@agorapp/content-motoko-tutorial
 COPY --from=builder --chown=nextjs:nodejs /app/packages/content-common ./packages/content-common
 COPY --from=builder --chown=nextjs:nodejs /app/packages/content-motoko-tutorial ./packages/content-motoko-tutorial
 
@@ -47,6 +47,6 @@ EXPOSE 3010
 
 ENV PORT 3010
 
-WORKDIR /app/agorapp-editor-lite
+WORKDIR /app/motoko-editor
 
 CMD ["node", "server.js"]

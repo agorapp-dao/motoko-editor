@@ -1,12 +1,12 @@
 {
-  "name": "agorapp-editor-lite",
+  "name": "motoko-editor",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3010",
     "build": "next build",
     "start": "next start",
-    "clean": "rm -rf node_modules && rm -rf public/content",
+    "clean": "rm -rf node_modules && rm -rf public/content && rm -rf .next",
     "lint": "next lint",
     "test": "jest --passWithNoTests",
     "ci-check": "pnpm test && pnpm lint && pnpm build",

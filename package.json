@@ -6,12 +6,12 @@
   "main": "index.js",
   "scripts": {
     "clean": "pnpm run -r clean && rm -rf node_modules",
-    "dev": "pnpm --filter agorapp-editor-lite run dev",
+    "dev": "pnpm --filter motoko-editor run dev",
     "postinstall": "husky install",
     "test": "pnpm run -r test",
     "ci-check": "pnpm run -r ci-check",
-    "docker-build": "docker build -t agorapp-editor-lite .",
-    "docker-run": "docker run -it -p 3010:3010 agorapp-editor-lite"
+    "docker-build": "docker build -t motoko-editor .",
+    "docker-run": "docker run -it -p 3010:3010 motoko-editor"
   },
   "keywords": [],
   "author": "",
