@@ -18,7 +18,6 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
 
   useEffect(() => {
     let editor: editor.IStandaloneCodeEditor;
-    let checkTimeout: any;
     let isMounted = true;
 
     if (monaco && divEl.current) {
@@ -38,33 +37,6 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
         },
       });
 
-      const checkModelDebounced = () => {
-        if (checkTimeout) {
-          clearTimeout(checkTimeout);
-        }
-        checkTimeout = setTimeout(() => {
-          if (!isMounted) {
-            return;
-          }
-
-          // sync opened tab content with files in memory
-          for (const tab of tabs) {
-            const file = files.find(file => file.path === tab.path);
-            if (!file) {
-              throw new Error(`File for tab not found: ${tab.path}`);
-            }
-            file.content = tab.model.getValue();
-          }
-
-          const tab = tabs[activeTab];
-
-          editorService.check(tab.path, files);
-        }, 300);
-      };
-
-      editor.onDidChangeModel(checkModelDebounced);
-      editor.onDidChangeModelContent(checkModelDebounced);
-
       setEditor(editor);
     }
 
@@ -81,6 +53,50 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
     // TODO: keep view state, see https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
     editor.setModel(model);
   }, [editor, model]);
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    let isMounted = true;
+
+    let checkTimeout: any;
+
+    const checkModelDebounced = () => {
+      if (checkTimeout) {
+        clearTimeout(checkTimeout);
+      }
+      checkTimeout = setTimeout(() => {
+        if (!isMounted) {
+          return;
+        }
+
+        // sync opened tab content with files in memory
+        for (const tab of tabs) {
+          const file = files.find(file => file.path === tab.path);
+          if (!file) {
+            throw new Error(`File for tab not found: ${tab.path}`);
+          }
+          if (!tab.model.isDisposed()) {
+            file.content = tab.model.getValue();
+          }
+        }
+
+        const tab = tabs[activeTab];
+
+        editorService.check(tab.path, files);
+      }, 300);
+
+      return () => {
+        isMounted = false;
+        clearTimeout(checkTimeout);
+      };
+    };
+
+    editor.onDidChangeModel(checkModelDebounced);
+    editor.onDidChangeModelContent(checkModelDebounced);
+  }, [activeTab, editor, files, tabs]);
 
   return <S.Code ref={divEl} />;
 };
