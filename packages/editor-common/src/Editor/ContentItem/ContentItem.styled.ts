@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type TProps = {
   level: number;
@@ -46,9 +46,18 @@ export const ActiveLink = styled.button`
   }
 `;
 
-export const Number = styled.div`
-  width: 2rem;
+interface ILevelProps {
+  level: number;
+}
+
+export const Number = styled.div<ILevelProps>`
+  width: 2.4rem;
   text-align: left;
+  ${({ level }) =>
+    level === 1 &&
+    css`
+      width: 1.8rem;
+    `}
 `;
 
 export const Name = styled.div<TProps>`
