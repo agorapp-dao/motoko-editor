@@ -44,10 +44,30 @@ switch (c) {
 };
 ```
 
-TODO: higher-order functions from the Optional and Result modules
+The base library contains the [Result](https://internetcomputer.org/docs/current/motoko/main/base/Result)
+module. It provides a collection of utility functions for working with result types:
 
-- Pattern matching can become tedious and verbose, especially when dealing with multiple optional values. The base library exposes a collection of higher-order functions from the Optional and Result modules to improve the ergonomics of error handling.
-- src: https://internetcomputer.org/docs/current/motoko/main/errors#higher-order-functions
+```motoko
+import Result "mo:base/Result";
+
+// note that we're using the Result type from the base library
+func safeDivide(a : Nat, b: Nat) : Result.Result<Nat, DivideError> {
+  if (b == 0) {
+    #err(#divideByZero);
+  } else {
+    #ok(a / b);
+  }
+};
+
+let c = safeDivide(8, 0);
+
+// convert result to optional value
+Result.toOption(c);
+
+if (Result.isOk(c)) {
+  // ...
+}
+```
 
 ## Exercise
 

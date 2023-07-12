@@ -1,9 +1,9 @@
-Your actor will be deployed as a [canister](https://internetcomputer.org/docs/current/concepts/canisters-code)
+Your actor will be deployed in a [canister](https://internetcomputer.org/docs/current/concepts/canisters-code)
 on the Internet Computer. This is essentially a public environment, so it's often crucial to
 regulate who has access to your actor.
 
-In Motoko, you can identify the caller of a method by adding the `shared` keyword to the function
-definition:
+In Motoko, you can identify the caller of a method by capturing the message params with the `shared`
+keyword:
 
 ```motoko
 import D "mo:base/Debug";

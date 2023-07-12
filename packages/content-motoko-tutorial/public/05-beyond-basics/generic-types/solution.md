@@ -1,4 +1,4 @@
-```
+```motoko
 import D "mo:base/Debug";
 
 class Pair<T>(_first : T, _second : T) {

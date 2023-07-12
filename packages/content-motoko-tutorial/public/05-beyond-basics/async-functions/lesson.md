@@ -9,11 +9,17 @@ func loadData() : async Text {
 
 // loadData() does not return an actual value,
 // but a promise, that can be used later to get
-// the value.
+// the actual value.
 let dataPromise = loadData();
 ```
 
 To wait for the value to be available, you can use the `await` keyword:
+
+```motoko
+let data = await dataPromise;
+```
+
+Or you can `await` the result of function call directly:
 
 ```motoko
 let data = await loadData();

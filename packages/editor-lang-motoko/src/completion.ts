@@ -27,6 +27,9 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
     this.completionService.addBaseModule('mo:base/Float');
     this.completionService.addBaseModule('mo:base/Text');
     this.completionService.addBaseModule('mo:base/Buffer');
+    this.completionService.addBaseModule('mo:base/Option');
+    this.completionService.addBaseModule('mo:base/Result');
+    this.completionService.addBaseModule('mo:base/Time');
   }
 
   provideCompletionItems(

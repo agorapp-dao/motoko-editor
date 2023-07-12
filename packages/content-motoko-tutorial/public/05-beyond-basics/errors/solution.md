@@ -1,4 +1,4 @@
-````motoko
+```motoko
 import D "mo:base/Debug";
 import Error "mo:base/Error";
 
@@ -19,5 +19,5 @@ func main() : async () {
   };
 };
 
-await main();```
-````
+await main();
+```

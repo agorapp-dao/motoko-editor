@@ -31,7 +31,7 @@ An actor has a state, defined by the variables declared inside the actor. This s
 always private, and attempting to mark it with the `public` keyword would trigger a compilation
 error.
 
-Messages are represented by async functions. These messages can be sent by by either end users or
+Messages are represented by async functions. These messages can be sent by either end users or
 other actors.
 
 There is always only one instance of the actor in the system, making it a singleton.
