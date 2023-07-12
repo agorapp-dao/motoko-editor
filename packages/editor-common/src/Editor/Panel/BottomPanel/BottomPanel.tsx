@@ -15,8 +15,8 @@ export const BottomPanel = () => {
   };
 
   return (
-    <Pane>
-      <Box sx={{ width: '100%', flex: '1 1 auto' }}>
+    <Pane style={{ display: 'flex', height: '100%' }}>
+      <Box sx={{ width: '100%', flex: '1 1 auto', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={changeActiveTab}>
             {tabs.map((tab, index) => (
