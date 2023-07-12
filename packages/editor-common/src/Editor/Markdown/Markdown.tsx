@@ -2,6 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import * as S from './Markdown.styled';
 import { MonacoCodeSnippet } from '../Monaco/MonacoCodeSnippet';
+import { MarkdownLink } from './MarkdownLink';
 
 type TProps = {
   children: string;
@@ -29,16 +30,7 @@ export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
           return <S.P>{children}</S.P>;
         },
         a({ href, children }) {
-          return (
-            // TODO - convert to component
-            <>
-              {href && (
-                <S.HrefLink href={href} target="_blank">
-                  {children}
-                </S.HrefLink>
-              )}
-            </>
-          );
+          return <MarkdownLink href={href}>{children}</MarkdownLink>;
         },
       }}
     >

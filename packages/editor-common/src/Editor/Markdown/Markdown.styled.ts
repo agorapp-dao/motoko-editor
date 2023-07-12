@@ -31,11 +31,3 @@ export const P = styled.p`
   display: block;
   padding-top: 1rem;
 `;
-
-export const HrefLink = styled(Link)`
-  color: ${p => p.theme.link};
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
