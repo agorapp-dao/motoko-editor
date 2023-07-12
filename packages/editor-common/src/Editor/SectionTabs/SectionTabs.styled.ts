@@ -16,6 +16,7 @@ export const Logo = styled.div`
   align-items: center;
   justify-items: center;
   text-align: center;
+  cursor: pointer;
 `;
 
 export const Tabs = styled.div`

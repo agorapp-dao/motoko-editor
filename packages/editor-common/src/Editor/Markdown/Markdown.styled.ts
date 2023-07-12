@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Link from 'next/link';
 
 export const Wrapper = styled.div`
@@ -18,12 +18,22 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const H2 = styled.h2`
+interface IH2Props {
+  exercise?: boolean;
+}
+
+export const H2 = styled.h2<IH2Props>`
   width: 100%;
   display: block;
   padding-top: 1rem;
   font-size: 1.3rem;
   color: ${p => p.theme.intenseText};
+  ${({ exercise }) =>
+    exercise &&
+    css`
+      color: ${p => p.theme.primary};
+      border-bottom: 1px solid ${p => p.theme.separator};
+    `}
 `;
 
 export const P = styled.p`

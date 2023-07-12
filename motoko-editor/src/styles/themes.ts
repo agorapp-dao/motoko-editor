@@ -22,6 +22,8 @@ export const theme = {
   lessonLinkHover: rgba(palette.secondary, 0.7),
   link: palette.primary,
   scrollbar: palette.intenseGray,
+  separator: palette.intenseGray,
+  primary: palette.primary,
   // TODO:
   mutedText: '#888',
   text: palette.text,
