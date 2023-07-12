@@ -163,7 +163,7 @@ function EditorInner() {
                   </S.ListOfContents>
                 </S.OverlayBox>
               </Fade>
-              <div style={{ overflowY: showListOfContents ? 'hidden' : 'auto' }}>
+              <div style={{ overflowY: showListOfContents ? 'hidden' : 'unset' }}>
                 {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
                 {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
                 {currentSection === EEditorSectionType.SHARE && <>SHARE</>}

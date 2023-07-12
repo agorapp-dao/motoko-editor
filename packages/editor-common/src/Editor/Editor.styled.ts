@@ -14,9 +14,8 @@ export const SectionContent = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow: auto;
   overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 export const Section = styled.div`
