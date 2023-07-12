@@ -5,9 +5,9 @@ const nextConfig = {
   },
   output: 'standalone',
   transpilePackages: [
-    '@agorapp/content-common',
-    '@agorapp/editor-common',
-    '@agorapp/editor-lang-motoko',
+    '@agorapp-dao/content-common',
+    '@agorapp-dao/editor-common',
+    '@agorapp-dao/editor-lang-motoko',
   ],
 };
 

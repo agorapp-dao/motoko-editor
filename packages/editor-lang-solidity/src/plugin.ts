@@ -1,4 +1,4 @@
-import { IEditorFile, IEditorLanguagePlugin, Monaco } from '@agorapp/editor-common';
+import { IEditorFile, IEditorLanguagePlugin, Monaco } from '@agorapp-dao/editor-common';
 
 export class SolidityEditorPlugin implements IEditorLanguagePlugin {
   language = 'sol';

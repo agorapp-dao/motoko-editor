@@ -1,4 +1,4 @@
-import { TCourse, TLesson } from '@agorapp/content-common';
+import { TCourse, TLesson } from '@agorapp-dao/content-common';
 import { useJson } from '../hooks/useJson';
 import { useText } from '../hooks/useText';
 import { IEditorFile } from '../types/IEditorFile';

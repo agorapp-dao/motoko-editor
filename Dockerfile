@@ -36,8 +36,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/motoko-editor/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/motoko-editor/.next/static ./motoko-editor/.next/static
 
 # TODO: content packages are not discovered by output file tracing
-COPY --from=builder --chown=nextjs:nodejs /app/packages/content-common ./motoko-editor/node_modules/@agorapp/content-common
-COPY --from=builder --chown=nextjs:nodejs /app/packages/content-motoko-tutorial ./motoko-editor/node_modules/@agorapp/content-motoko-tutorial
+COPY --from=builder --chown=nextjs:nodejs /app/packages/content-common ./motoko-editor/node_modules/@agorapp-dao/content-common
+COPY --from=builder --chown=nextjs:nodejs /app/packages/content-motoko-tutorial ./motoko-editor/node_modules/@agorapp-dao/content-motoko-tutorial
 COPY --from=builder --chown=nextjs:nodejs /app/packages/content-common ./packages/content-common
 COPY --from=builder --chown=nextjs:nodejs /app/packages/content-motoko-tutorial ./packages/content-motoko-tutorial
 

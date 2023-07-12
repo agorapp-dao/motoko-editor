@@ -8,7 +8,7 @@ async function main() {
   await fs.mkdir(path.resolve(__dirname, '../public/content'), { recursive: true });
 
   for (const dep of Object.keys(pkg.dependencies)) {
-    if (dep.startsWith('@agorapp/content-')) {
+    if (dep.startsWith('@agorapp-dao/content-')) {
       console.log(`Linking public folder from ${dep}`);
 
       const source = path.resolve(__dirname, '../node_modules', dep, 'public');

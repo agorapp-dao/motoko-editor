@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material';
 import rgba from 'polished/lib/color/rgba';
-import { monacoDefineTheme } from '@agorapp/editor-common';
+import { monacoDefineTheme } from '@agorapp-dao/editor-common';
 
 const palette = {
   darkBg: '#191820',

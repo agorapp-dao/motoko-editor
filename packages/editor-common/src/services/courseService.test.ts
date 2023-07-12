@@ -1,4 +1,4 @@
-import { TCourse } from '@agorapp/content-common';
+import { TCourse } from '@agorapp-dao/content-common';
 import { courseService } from './courseService';
 
 const COURSE: TCourse = {

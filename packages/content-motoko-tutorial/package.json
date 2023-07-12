@@ -1,5 +1,5 @@
 {
-  "name": "@agorapp/content-motoko-tutorial",
+  "name": "@agorapp-dao/content-motoko-tutorial",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@agorapp/content-common": "workspace:^"
+    "@agorapp-dao/content-common": "workspace:^"
   }
 }

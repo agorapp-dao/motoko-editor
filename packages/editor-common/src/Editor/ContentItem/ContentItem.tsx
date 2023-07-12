@@ -1,6 +1,6 @@
 import * as S from './ContentItem.styled';
 import React, { useContext, useState } from 'react';
-import { TLesson } from '@agorapp/content-common';
+import { TLesson } from '@agorapp-dao/content-common';
 import { Collapse } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';

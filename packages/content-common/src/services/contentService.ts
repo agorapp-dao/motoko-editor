@@ -12,7 +12,7 @@ if (!pkgPath) {
 
 class ContentService {
   /**
-   * Gets information about the course from the npm dependencies. Looks for `@agorapp/content-*` packages.
+   * Gets information about the course from the npm dependencies. Looks for `@agorapp-dao/content-*` packages.
    *
    * @param courseSlug
    */
@@ -39,7 +39,7 @@ class ContentService {
   }
 
   /**
-   * Gets course content from the npm dependencies. Looks for `@agorapp/content-*` packages.
+   * Gets course content from the npm dependencies. Looks for `@agorapp-dao/content-*` packages.
    *
    * @param course
    * @param contentPath

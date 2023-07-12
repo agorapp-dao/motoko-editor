@@ -1,6 +1,6 @@
 import * as S from './ContentItem.styled';
 import React from 'react';
-import { TLesson } from '@agorapp/content-common';
+import { TLesson } from '@agorapp-dao/content-common';
 import { ContentItem } from './ContentItem';
 
 interface TProps {

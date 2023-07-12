@@ -1,4 +1,4 @@
-import { IEditorFile, IEditorLanguagePlugin, Monaco } from '@agorapp/editor-common';
+import { IEditorFile, IEditorLanguagePlugin, Monaco } from '@agorapp-dao/editor-common';
 import { configure } from 'motoko/contrib/monaco';
 import mo from 'motoko/lib/versions/moc';
 import motokoBasePackage from 'motoko/packages/latest/base.json';

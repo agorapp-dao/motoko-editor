@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { contentService } from '@agorapp/content-common';
-import { courseService } from '@agorapp/editor-common';
+import { contentService } from '@agorapp-dao/content-common';
+import { courseService } from '@agorapp-dao/editor-common';
 
 type IndexPageProps = {
   contentPackages: string[];

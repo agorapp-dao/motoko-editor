@@ -5,7 +5,7 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
-import { TLesson } from '@agorapp/content-common';
+import { TLesson } from '@agorapp-dao/content-common';
 import { useRouter } from 'next/router';
 import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';

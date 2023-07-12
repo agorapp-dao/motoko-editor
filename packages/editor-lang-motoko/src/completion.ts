@@ -1,5 +1,5 @@
 import { CancellationToken, editor, languages, type Position } from 'monaco-editor';
-import { Monaco } from '@agorapp/editor-common';
+import { Monaco } from '@agorapp-dao/editor-common';
 import Mo from 'motoko/lib/versions/moc';
 import { keywords } from 'motoko/lib/keywords';
 import { typeKeywords } from 'motoko/lib/keywords';

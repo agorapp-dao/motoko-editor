@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { contentService } from '@agorapp/content-common';
+import { contentService } from '@agorapp-dao/content-common';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

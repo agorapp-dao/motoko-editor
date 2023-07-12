@@ -1,5 +1,5 @@
 {
-  "name": "@agorapp/editor-lang-solidity",
+  "name": "@agorapp-dao/editor-lang-solidity",
   "version": "1.0.0",
   "description": "",
   "main": "src/plugin.ts",
@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@agorapp/editor-common": "workspace:^"
+    "@agorapp-dao/editor-common": "workspace:^"
   },
   "peerDependencies": {
     "monaco-editor": "*"

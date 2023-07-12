@@ -23,16 +23,16 @@ importers:
 
   agorapp-editor-lite:
     dependencies:
-      '@agorapp/content-common':
+      '@agorapp-dao/content-common':
         specifier: workspace:^
         version: link:../packages/content-common
-      '@agorapp/content-motoko-tutorial':
+      '@agorapp-dao/content-motoko-tutorial':
         specifier: workspace:^
         version: link:../packages/content-motoko-tutorial
-      '@agorapp/editor-common':
+      '@agorapp-dao/editor-common':
         specifier: workspace:^
         version: link:../packages/editor-common
-      '@agorapp/editor-lang-motoko':
+      '@agorapp-dao/editor-lang-motoko':
         specifier: workspace:^
         version: link:../packages/editor-lang-motoko
       '@emotion/core':
@@ -123,16 +123,16 @@ importers:
 
   motoko-editor:
     dependencies:
-      '@agorapp/content-common':
+      '@agorapp-dao/content-common':
         specifier: workspace:^
         version: link:../packages/content-common
-      '@agorapp/content-motoko-tutorial':
+      '@agorapp-dao/content-motoko-tutorial':
         specifier: workspace:^
         version: link:../packages/content-motoko-tutorial
-      '@agorapp/editor-common':
+      '@agorapp-dao/editor-common':
         specifier: workspace:^
         version: link:../packages/editor-common
-      '@agorapp/editor-lang-motoko':
+      '@agorapp-dao/editor-lang-motoko':
         specifier: workspace:^
         version: link:../packages/editor-lang-motoko
       '@emotion/core':
@@ -229,7 +229,7 @@ importers:
 
   packages/content-motoko-tutorial:
     dependencies:
-      '@agorapp/content-common':
+      '@agorapp-dao/content-common':
         specifier: workspace:^
         version: link:../content-common
 
@@ -237,7 +237,7 @@ importers:
 
   packages/editor-common:
     dependencies:
-      '@agorapp/content-common':
+      '@agorapp-dao/content-common':
         specifier: workspace:^
         version: link:../content-common
       '@emotion/core':
@@ -340,7 +340,7 @@ importers:
 
   packages/editor-lang-motoko:
     dependencies:
-      '@agorapp/editor-common':
+      '@agorapp-dao/editor-common':
         specifier: workspace:^
         version: link:../editor-common
       monaco-editor:
@@ -368,7 +368,7 @@ importers:
 
   packages/editor-lang-solidity:
     dependencies:
-      '@agorapp/editor-common':
+      '@agorapp-dao/editor-common':
         specifier: workspace:^
         version: link:../editor-common
       monaco-editor:
