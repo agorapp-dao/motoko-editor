@@ -1,4 +1,4 @@
-name: Build and Push docker image to gh registry
+name: Build and Push docker image to gh registry & Deploy
 
 env:
   DOCKER_BUILDKIT: 1
@@ -46,3 +46,21 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+
+  prod-deploy:
+    runs-on: ubuntu-latest
+    needs: ["prod-push"]
+
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            echo ${{ secrets.GITHUB_TOKEN }}| docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            docker stop motoko-editor
+            docker rm motoko-editor
+            docker run -d --name motoko-editor -p 3010:3010 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
