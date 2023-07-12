@@ -38,6 +38,11 @@ export const GlobalStyle = createGlobalStyle`
   /** Global definition of scrollbars */
   *::-webkit-scrollbar {
     width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
   }
 
   *::-webkit-scrollbar-thumb {
