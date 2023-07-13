@@ -27,5 +27,15 @@ export async function getServerSideProps() {
   );
   contentPackages = contentPackages.map(cp => cp.substring('content-'.length));
 
+  if (contentPackages.length === 1) {
+    // there is only one course, redirect to it
+    return {
+      redirect: {
+        permanent: false,
+        destination: courseService.getCoursePath(contentPackages[0]),
+      },
+    };
+  }
+
   return { props: { contentPackages } };
 }
