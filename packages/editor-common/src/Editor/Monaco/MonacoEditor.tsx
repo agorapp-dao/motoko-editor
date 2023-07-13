@@ -96,6 +96,7 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
 
     editor.onDidChangeModel(checkModelDebounced);
     editor.onDidChangeModelContent(checkModelDebounced);
+    checkModelDebounced();
   }, [activeTab, editor, files, tabs]);
 
   return <S.Code ref={divEl} />;
