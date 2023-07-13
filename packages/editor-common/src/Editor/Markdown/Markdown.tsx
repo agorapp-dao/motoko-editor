@@ -28,7 +28,7 @@ export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
           const exercise = !!(
             children[0] && children[0].toString().toLowerCase() === EXERCISE_TITLE.toLowerCase()
           );
-          return <S.H2 exercise={exercise}>{children}</S.H2>;
+          return <S.H2 $exercise={exercise}>{children}</S.H2>;
         },
         p({ children }) {
           return <S.P>{children}</S.P>;

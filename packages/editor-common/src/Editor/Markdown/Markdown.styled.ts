@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 `;
 
 interface IH2Props {
-  exercise?: boolean;
+  $exercise?: boolean;
 }
 
 export const H2 = styled.h2<IH2Props>`
@@ -28,8 +28,8 @@ export const H2 = styled.h2<IH2Props>`
   padding-top: 1rem;
   font-size: 1.3rem;
   color: ${p => p.theme.intenseText};
-  ${({ exercise }) =>
-    exercise &&
+  ${({ $exercise }) =>
+    $exercise &&
     css`
       color: ${p => p.theme.primary};
       border-bottom: 1px solid ${p => p.theme.separator};
