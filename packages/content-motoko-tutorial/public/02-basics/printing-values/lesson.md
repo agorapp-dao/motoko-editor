@@ -30,7 +30,7 @@ let tuple = ("Hello", "World");
 D.print(debug_show(tuple));
 ```
 
-### Exercise
+## Exercise
 
 We have defined the `numbers` variable, that contains an array of numbers. Print the contents of
 this variable to console.

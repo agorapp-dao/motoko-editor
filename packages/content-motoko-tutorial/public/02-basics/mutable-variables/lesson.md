@@ -14,7 +14,7 @@ use the `:=` operator:
 x := 20;
 ```
 
-### Exercise
+## Exercise
 
 Define the variable `balance` with an initial value of 50. Then add 100 to it. Program should output
 `Current balance: 150`.
