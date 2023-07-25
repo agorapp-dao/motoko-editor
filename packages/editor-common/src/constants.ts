@@ -1,5 +1,7 @@
 export enum EEditorSectionType {
   LESSON = 'lesson',
   SHARE = 'share',
-  TREE = 'tree',
+  CODE = 'code',
 }
+
+export const MOBILE_TRIGGER_WIDTH = 768;

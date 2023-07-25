@@ -27,6 +27,17 @@ export const Section = styled.div`
   border-right: ${p => p.theme.panelSeparator};
 `;
 
+export const OverlaySection = styled.div`
+  position: absolute;
+  top: 0;
+  left: 48px;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  background-color: ${p => p.theme.background};
+`;
+
 export const RightPane = styled.div`
   display: flex;
   flex-direction: column;
