@@ -21,12 +21,15 @@ import { useMonaco } from './Monaco/Monaco';
 import { IEditorTab } from '../types/IEditorTab';
 import { editorService } from './editorService';
 import type { editor } from 'monaco-editor';
+import { useMobile } from '../hooks/useMobile';
 
 type EditorProps = {
   courseSlug: string;
   activeLessonSlug: string | undefined;
   setActiveLessonSlug: (slug: string) => void;
 };
+
+const THEORY_DEFAULT_WIDTH = 600;
 
 export function Editor({ courseSlug, activeLessonSlug, setActiveLessonSlug }: EditorProps) {
   return (
@@ -45,6 +48,7 @@ function EditorInner() {
   const [showListOfContents, setShowListOfContents] = useState(true);
   const {
     currentSection,
+    setCurrentSection,
     courseSlug,
     activeLessonSlug,
     setActiveLessonSlug,
@@ -55,7 +59,8 @@ function EditorInner() {
     activeTab,
   } = React.useContext(EditorContext);
 
-  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([600, Infinity]);
+  const { mobile } = useMobile();
+  const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([THEORY_DEFAULT_WIDTH, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
   const course = courseService.useCourse(courseSlug);
   const handleFullscreen = useFullScreenHandle();
@@ -68,6 +73,16 @@ function EditorInner() {
   useEffect(() => {
     setShowListOfContents(false);
   }, [currentSection]);
+
+  useEffect(() => {
+    if (mobile) {
+      setPanelSizeHorizontal([0, Infinity]);
+      setCurrentSection(EEditorSectionType.CODE);
+    } else {
+      setPanelSizeHorizontal([THEORY_DEFAULT_WIDTH, Infinity]);
+      setCurrentSection(EEditorSectionType.LESSON);
+    }
+  }, [mobile, setPanelSizeHorizontal, setCurrentSection]);
 
   const toggleListOfContents = () => {
     setShowListOfContents(prev => !prev);
@@ -131,6 +146,40 @@ function EditorInner() {
 
   const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
 
+  const theorySection = (
+    <S.Section>
+      {activeLesson && (
+        <LessonHeader
+          title={activeLesson.name}
+          handleClick={toggleListOfContents}
+          handleClose={
+            mobile
+              ? () => {
+                  setCurrentSection(EEditorSectionType.CODE);
+                }
+              : undefined
+          }
+        />
+      )}
+      <S.SectionContent ref={lessonSectionRef}>
+        <Fade in={showListOfContents} timeout={500} style={{ overflowY: 'auto' }}>
+          <S.OverlayBox>
+            <S.ListOfContents>
+              <ContentLevel
+                lessons={course.data.lessons}
+                level={1}
+                handleSelectLesson={handleSelectLesson}
+              />
+            </S.ListOfContents>
+          </S.OverlayBox>
+        </Fade>
+        <div style={{ overflowY: showListOfContents ? 'hidden' : 'unset' }}>
+          {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
+        </div>
+      </S.SectionContent>
+    </S.Section>
+  );
+
   return (
     <FullScreen handle={handleFullscreen} className="fullscreen">
       {courseSlug && activeLessonSlug && (
@@ -140,6 +189,9 @@ function EditorInner() {
         />
       )}
       <SectionTabs></SectionTabs>
+      {mobile && currentSection !== EEditorSectionType.CODE && (
+        <S.OverlaySection>{theorySection}</S.OverlaySection>
+      )}
       <SplitPane
         split="vertical"
         sizes={panelSizeHorizontal}
@@ -147,29 +199,7 @@ function EditorInner() {
         sashRender={(_, active) => <SashContent active={active} type="vscode" />}
       >
         <Pane minSize={500} maxSize="50%">
-          <S.Section>
-            {activeLesson && (
-              <LessonHeader title={activeLesson.name} handleClick={toggleListOfContents} />
-            )}
-            <S.SectionContent ref={lessonSectionRef}>
-              <Fade in={showListOfContents} timeout={500} style={{ overflowY: 'auto' }}>
-                <S.OverlayBox>
-                  <S.ListOfContents>
-                    <ContentLevel
-                      lessons={course.data.lessons}
-                      level={1}
-                      handleSelectLesson={handleSelectLesson}
-                    />
-                  </S.ListOfContents>
-                </S.OverlayBox>
-              </Fade>
-              <div style={{ overflowY: showListOfContents ? 'hidden' : 'unset' }}>
-                {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
-                {/*{currentSection === EEditorSectionType.TREE && <SectionTree />}*/}
-                {currentSection === EEditorSectionType.SHARE && <>SHARE</>}
-              </div>
-            </S.SectionContent>
-          </S.Section>
+          {!mobile && theorySection}
         </Pane>
         <S.RightPane>
           <SplitPane

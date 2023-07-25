@@ -2,8 +2,16 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 0.2rem 1rem;
+  padding: 0.2rem 0 0.2rem 1rem;
   border-bottom: ${p => p.theme.panelSeparator};
+  display: flex;
+  flex-direction: row;
+`;
+
+export const IconWrapper = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: end;
 `;
 
 export const ButtonContent = styled.div`

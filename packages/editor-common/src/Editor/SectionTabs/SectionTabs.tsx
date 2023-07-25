@@ -1,15 +1,16 @@
 import { Box, Icon, IconButton, Tab, Tabs } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
-import BackupIcon from '@mui/icons-material/Backup';
 import { styled } from '@mui/material/styles';
 import * as S from './SectionTabs.styled';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import CodeIcon from '@mui/icons-material/Code';
 import { EEditorSectionType } from '../../constants';
 import { EditorContext } from '../EditorContext';
 import { AgorAppIcon } from '../../constants/assets';
 import { SettingsDialog } from '../SettingsDialog/SettingsDialog';
 import { AuthorDialog } from '../../components/AuthorDialog/AuthorDialog';
+import { useMobile } from '../../hooks/useMobile';
 
 interface StyledTabProps {
   icon?: string | React.ReactElement;
@@ -38,6 +39,7 @@ const AntTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} /
 }));
 
 export const SectionTabs = () => {
+  const { mobile } = useMobile();
   const { currentSection, setCurrentSection } = useContext(EditorContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [authorDialogOpen, setAuthorDialogOpen] = useState(false);
@@ -65,8 +67,7 @@ export const SectionTabs = () => {
             sx={{ borderRight: 0 }}
           >
             <AntTab icon={<ImportContactsIcon />} value={EEditorSectionType.LESSON} />
-            {/*<AntTab icon={<FolderOpenIcon/>} value={EEditorSectionType.TREE}/>*/}
-            <AntTab icon={<BackupIcon />} value={EEditorSectionType.SHARE} />
+            {mobile && <AntTab icon={<CodeIcon />} value={EEditorSectionType.CODE} />}
           </Tabs>
         </Box>
       </S.Tabs>
