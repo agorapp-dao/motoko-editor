@@ -125,6 +125,17 @@ function EditorInner() {
     }
   }, [activeLessonSlug, lessonSectionRef]);
 
+  const resetCode = async () => {
+    if (!course.data || !activeLessonSlug || !monaco) {
+      return;
+    }
+    const files = await courseService.getLessonFiles(course.data, activeLessonSlug);
+    setFiles(files);
+    files.forEach(file => {
+      tabs.find(tab => tab.path === file.path)?.model.setValue(file.content);
+    });
+  };
+
   if (!course.data) {
     return <div></div>;
   }
@@ -181,7 +192,7 @@ function EditorInner() {
             <Pane>
               <S.Code>
                 <SectionCode />
-                <ControlPanel />
+                <ControlPanel handleResetCode={resetCode} />
               </S.Code>
             </Pane>
             <BottomPanel />
