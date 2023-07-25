@@ -1,5 +1,4 @@
 import mo from 'motoko/lib/versions/moc';
-import { printTree } from './utils/printTree';
 import { CompletionService } from './CompletionService';
 import { ProgramSymbol } from './Program';
 
@@ -9,11 +8,10 @@ describe('CompletionService', () => {
       let varA = "hello";
       let varB = "world";
     `;
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
-    // completion.printScopes('main.mo');
+    const completion = new CompletionService(mo);
+    completion.printAst(code);
+    completion.addModule('main.mo', code);
+    completion.printScopes('main.mo');
 
     const symbols = completion.getSymbols('main.mo', 0, 0);
     expect(getNames(symbols)).toEqual({
@@ -26,10 +24,9 @@ describe('CompletionService', () => {
       var varA = "hello";
       var varB = "world";
     `;
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(code);
+    completion.addModule('main.mo', code);
     // completion.printScopes('main.mo');
 
     const symbols = completion.getSymbols('main.mo', 0, 0);
@@ -47,10 +44,9 @@ describe('CompletionService', () => {
       
       };
     `;
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(code);
+    completion.addModule('main.mo', code);
     // completion.printScopes('main.mo');
 
     // global scope
@@ -81,9 +77,9 @@ describe('CompletionService', () => {
         let varA = "local"
       };
     `;
-    const ast = mo.parseMotoko(code);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(code);
+    completion.addModule('main.mo', code);
     // completion.printScopes('main.mo');
 
     const symbols = completion.getSymbols('main.mo', 5, 0);
@@ -110,10 +106,9 @@ describe('CompletionService', () => {
       };
     `;
 
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(code);
+    completion.addModule('main.mo', code);
     // completion.printScopes('main.mo');
 
     // globally only `obj` is available
@@ -157,10 +152,9 @@ describe('CompletionService', () => {
       let obj = MyClass();
     `;
 
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(code);
+    completion.addModule('main.mo', code);
     // completion.printScopes('main.mo');
 
     // globally only `obj` and `MyClass` is available
@@ -204,10 +198,9 @@ describe('CompletionService', () => {
       };
     `;
 
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(code);
+    completion.addModule('main.mo', code);
     // completion.printScopes('main.mo');
 
     // globally only `MyActor` is available
@@ -242,18 +235,16 @@ describe('CompletionService', () => {
         public func publicFunc() { };
       };
     `;
-    const moduleAst = mo.parseMotoko(moduleCode);
-    // printTree(moduleAst);
-
     const mainCode = `
       import MyModule "MyModule";
     `;
-    const mainAst = mo.parseMotoko(mainCode);
-    // printTree(mainAst);
 
-    let completion = new CompletionService();
-    completion.addModule('main.mo', mainAst);
-    completion.addModule('MyModule.mo', moduleAst);
+    let completion = new CompletionService(mo);
+    completion.addModule('main.mo', mainCode);
+    completion.addModule('MyModule.mo', moduleCode);
+    // completion.printAst(mainCode);
+    // completion.printAst(moduleCode);
+
     // completion.printScopes('main.mo');
 
     let symbols = completion.getObjectSymbols('main.mo', 'MyModule', 0, 0);
@@ -263,9 +254,9 @@ describe('CompletionService', () => {
     });
 
     // make sure that it doesn't matter in which order you add the modules
-    completion = new CompletionService();
-    completion.addModule('MyModule.mo', moduleAst);
-    completion.addModule('main.mo', mainAst);
+    completion = new CompletionService(mo);
+    completion.addModule('MyModule.mo', moduleCode);
+    completion.addModule('main.mo', mainCode);
 
     symbols = completion.getObjectSymbols('main.mo', 'MyModule', 0, 0);
     expect(getNames(symbols)).toEqual({
@@ -279,10 +270,9 @@ describe('CompletionService', () => {
       import D "mo:base/Debug";
       import Nat "mo:base/Nat";
     `;
-    const ast = mo.parseMotoko(code);
-    // printTree(ast);
-    const completion = new CompletionService();
-    completion.addModule('main.mo', ast);
+    const completion = new CompletionService(mo);
+    // completion.printAst(mainCode);
+    completion.addModule('main.mo', code);
     completion.addBaseModule('mo:base/Debug');
     completion.addBaseModule('mo:base/Nat');
 

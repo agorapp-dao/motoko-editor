@@ -3,7 +3,6 @@ import { Monaco } from '@agorapp-dao/editor-common';
 import Mo from 'motoko/lib/versions/moc';
 import { keywords } from 'motoko/lib/keywords';
 import { typeKeywords } from 'motoko/lib/keywords';
-import { Node } from 'motoko/lib/ast';
 import { CompletionService } from './completion/CompletionService';
 import { ProgramSymbol } from './completion/Program';
 
@@ -15,10 +14,9 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
   triggerCharacters = ['.'];
 
   private completionService;
-  private lastTree: Node | undefined;
 
   constructor(private monaco: Monaco, private mo: typeof Mo) {
-    this.completionService = new CompletionService();
+    this.completionService = new CompletionService(mo);
     // TODO: preload all modules?
     // this.completionService.addBaseLibrary();
     this.completionService.addBaseModule('mo:base/Debug');
@@ -40,9 +38,14 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
   ): languages.ProviderResult<languages.CompletionList> {
     const { monaco, mo } = this;
 
-    try {
-      this.lastTree = mo.parseMotoko(model.getValue());
-    } catch (err) {}
+    const models = monaco.editor.getModels();
+    for (const model of models) {
+      try {
+        this.completionService.addModule(model.uri.path, model.getValue());
+      } catch (err) {
+        // ignore parsing error
+      }
+    }
 
     let suggestions: languages.CompletionItem[] = [];
 
@@ -78,86 +81,81 @@ export class CompletionItemProvider implements languages.CompletionItemProvider 
       );
     }
 
-    if (this.lastTree) {
-      // AST is available, suggest symbols from code
-      this.completionService.addModule(model.uri.path, this.lastTree);
+    let symbols: ProgramSymbol[];
 
-      let symbols: ProgramSymbol[];
+    if (!isAfterDot) {
+      symbols = this.completionService.getSymbols(
+        model.uri.path,
+        position.lineNumber,
+        position.column,
+      );
+    } else {
+      const wordBeforeDot = model.getWordUntilPosition({
+        lineNumber: dot.range.startLineNumber,
+        column: dot.range.startColumn,
+      }).word;
+      symbols = this.completionService.getObjectSymbols(
+        model.uri.path,
+        wordBeforeDot,
+        position.lineNumber,
+        position.column,
+      );
+    }
 
-      if (!isAfterDot) {
-        symbols = this.completionService.getSymbols(
-          model.uri.path,
-          position.lineNumber,
-          position.column,
-        );
-      } else {
-        const wordBeforeDot = model.getWordUntilPosition({
-          lineNumber: dot.range.startLineNumber,
-          column: dot.range.startColumn,
-        }).word;
-        symbols = this.completionService.getObjectSymbols(
-          model.uri.path,
-          wordBeforeDot,
-          position.lineNumber,
-          position.column,
-        );
-      }
-
-      for (const symbol of symbols) {
-        switch (symbol.kind) {
-          case 'variable':
-            suggestions.push({
-              label: symbol.name,
-              kind: monaco.languages.CompletionItemKind.Variable,
-              insertText: symbol.name,
-              range,
-            });
-            break;
-          case 'function':
-            suggestions.push({
-              label: symbol.name,
-              kind: monaco.languages.CompletionItemKind.Function,
-              insertText: symbol.name + '($1)',
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              range,
-            });
-            break;
-          case 'class':
-            suggestions.push({
-              label: symbol.name,
-              kind: monaco.languages.CompletionItemKind.Constructor,
-              insertText: symbol.name + '($1)',
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              range,
-            });
-            break;
-          case 'object':
-            suggestions.push({
-              label: symbol.name,
-              kind: monaco.languages.CompletionItemKind.Variable,
-              insertText: symbol.name,
-              range,
-            });
-            break;
-          case 'actor':
-            suggestions.push({
-              label: symbol.name,
-              kind: monaco.languages.CompletionItemKind.Variable,
-              insertText: symbol.name,
-              range,
-            });
-            break;
-          case 'module':
-            suggestions.push({
-              label: symbol.name,
-              kind: monaco.languages.CompletionItemKind.Module,
-              insertText: symbol.name,
-              range,
-            });
-            break;
-          default:
-            throw new Error(`Unknown symbol kind: ${symbol.kind}`);
-        }
+    for (const symbol of symbols) {
+      switch (symbol.kind) {
+        case 'variable':
+          suggestions.push({
+            label: symbol.name,
+            kind: monaco.languages.CompletionItemKind.Variable,
+            insertText: symbol.name,
+            range,
+          });
+          break;
+        case 'function':
+          suggestions.push({
+            label: symbol.name,
+            kind: monaco.languages.CompletionItemKind.Function,
+            insertText: symbol.name + '($1)',
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            range,
+          });
+          break;
+        case 'class':
+          suggestions.push({
+            label: symbol.name,
+            kind: monaco.languages.CompletionItemKind.Constructor,
+            insertText: symbol.name + '($1)',
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+            range,
+          });
+          break;
+        case 'object':
+          suggestions.push({
+            label: symbol.name,
+            kind: monaco.languages.CompletionItemKind.Variable,
+            insertText: symbol.name,
+            range,
+          });
+          break;
+        case 'actor':
+          suggestions.push({
+            label: symbol.name,
+            kind: monaco.languages.CompletionItemKind.Variable,
+            insertText: symbol.name,
+            range,
+          });
+          break;
+        case 'module':
+          suggestions.push({
+            label: symbol.name,
+            kind: monaco.languages.CompletionItemKind.Module,
+            insertText: symbol.name,
+            range,
+          });
+          break;
+        default:
+          throw new Error(`Unknown symbol kind: ${symbol.kind}`);
       }
     }
 
