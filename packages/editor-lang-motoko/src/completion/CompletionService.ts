@@ -3,20 +3,24 @@ import motokoBasePackage from 'motoko/packages/latest/base.json';
 import { Node } from 'motoko/lib/ast';
 import { ProgramScope, ProgramSymbol, Program } from './Program';
 import { printScopes } from './utils/printScopes';
+import Mo from 'motoko';
+import { printAst } from './utils/printAst';
 
 export class CompletionService {
   private modules = new Map<String, Program>();
 
-  constructor() {}
+  constructor(private mo: typeof Mo) {}
 
   /**
    * Adds new module to the completion service. If a module already exists, it gets replaced.
    *
    * @param moduleName  Name of the module. (Typically file name.)
-   * @param ast   Abstract syntax tree of the module.
+   * @param content  Module source code.
    */
-  addModule(moduleName: string, ast: Node) {
+  addModule(moduleName: string, content: string) {
+    console.debug('Adding module', moduleName);
     moduleName = this.normalizeModuleName(moduleName);
+    const ast = mo.parseMotoko(content);
     this.modules.set(moduleName, new Program(moduleName, ast));
   }
 
@@ -36,8 +40,7 @@ export class CompletionService {
   addBaseModule(moduleName: string) {
     let filename = moduleName.replace('mo:base/', '');
     filename += '.mo';
-    const ast = mo.parseMotoko((motokoBasePackage as any).files[filename].content);
-    this.addModule(moduleName, ast);
+    this.addModule(moduleName, (motokoBasePackage as any).files[filename].content);
   }
 
   getSymbols(moduleName: string, row: number, column: number): ProgramSymbol[] {
@@ -167,5 +170,10 @@ export class CompletionService {
     if (module) {
       printScopes(module.scope);
     }
+  }
+
+  printAst(code: string) {
+    const ast = this.mo.parseMotoko(code);
+    printAst(ast);
   }
 }

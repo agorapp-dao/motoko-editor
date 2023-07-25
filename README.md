@@ -5,7 +5,7 @@ pnpm install
 pnpm dev
 ```
 
-## Run with docker
+## Run with Docker
 
 ```
 pnpm docker-build
