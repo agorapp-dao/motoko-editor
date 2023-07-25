@@ -61,7 +61,11 @@ export const SectionTabs = () => {
           <Tabs
             orientation="vertical"
             variant="scrollable"
-            value={currentSection}
+            value={
+              !mobile && currentSection === EEditorSectionType.CODE
+                ? EEditorSectionType.LESSON
+                : currentSection
+            }
             onChange={changeSection}
             aria-label="Navigation menu"
             sx={{ borderRight: 0 }}
