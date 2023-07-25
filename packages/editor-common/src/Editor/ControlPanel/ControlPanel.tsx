@@ -11,9 +11,14 @@ import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
 import { editorService } from '../editorService';
 
-export const ControlPanel = () => {
+interface IControlPanelProps {
+  handleResetCode: () => void;
+}
+
+export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
   const router = useRouter();
-  const { files, tabs, setOutput, courseSlug, activeLessonSlug } = useContext(EditorContext);
+  const { files, setFiles, tabs, setOutput, courseSlug, activeLessonSlug } =
+    useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
   const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
@@ -73,7 +78,7 @@ export const ControlPanel = () => {
       >
         RUN
       </Button>
-      <IconButton aria-label="delete">
+      <IconButton aria-label="reset" onClick={handleResetCode}>
         <DeleteOutlineRoundedIcon />
       </IconButton>
       <IconButton aria-label="back" onClick={handleGoToPrev} disabled={!prevLesson || running}>
