@@ -1,7 +1,7 @@
 To declare a function in Motoko, use the `func` keyword:
 
 ```motoko
-func add(a : Int, b : Int) : Nat {
+func add(a : Int, b : Int) : Int {
   a + b;
 };
 ```
