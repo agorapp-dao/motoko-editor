@@ -5,7 +5,6 @@ import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { Fade } from '@mui/material';
-import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { EditorContext, EditorProvider } from './EditorContext';
 import { courseService } from '../services/courseService';
 import { SectionTabs } from './SectionTabs/SectionTabs';
@@ -52,7 +51,6 @@ function EditorInner() {
     courseSlug,
     activeLessonSlug,
     setActiveLessonSlug,
-    fullscreen,
     setFiles,
     tabs,
     setTabs,
@@ -63,12 +61,7 @@ function EditorInner() {
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([THEORY_DEFAULT_WIDTH, Infinity]);
   const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
   const course = courseService.useCourse(courseSlug);
-  const handleFullscreen = useFullScreenHandle();
   const lessonSectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fullscreen ? handleFullscreen.enter() : handleFullscreen.exit();
-  }, [fullscreen, handleFullscreen]);
 
   useEffect(() => {
     setShowListOfContents(false);
@@ -192,7 +185,7 @@ function EditorInner() {
   );
 
   return (
-    <FullScreen handle={handleFullscreen} className="fullscreen">
+    <>
       {courseSlug && activeLessonSlug && (
         <FeedbackBtn
           userCode={tabs[activeTab]?.model.getValue()}
@@ -229,6 +222,6 @@ function EditorInner() {
           </SplitPane>
         </S.RightPane>
       </SplitPane>
-    </FullScreen>
+    </>
   );
 }
