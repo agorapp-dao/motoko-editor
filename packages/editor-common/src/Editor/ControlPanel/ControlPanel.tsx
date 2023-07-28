@@ -7,9 +7,15 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { TLesson } from '@agorapp-dao/content-common';
 import { useRouter } from 'next/router';
-import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
 import { editorService } from '../editorService';
+import {
+  useEditorActions,
+  useEditorActiveLessonSlug,
+  useEditorCourseSlug,
+  useEditorFiles,
+  useEditorTabs,
+} from '../EditorStore';
 
 interface IControlPanelProps {
   handleResetCode: () => void;
@@ -17,8 +23,11 @@ interface IControlPanelProps {
 
 export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
   const router = useRouter();
-  const { files, setFiles, tabs, setOutput, courseSlug, activeLessonSlug } =
-    useContext(EditorContext);
+  const courseSlug = useEditorCourseSlug();
+  const activeLessonSlug = useEditorActiveLessonSlug();
+  const files = useEditorFiles();
+  const tabs = useEditorTabs();
+  const actions = useEditorActions();
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
   const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
@@ -46,7 +55,7 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
         file.content = tab.model.getValue();
       }
       const output = await editorService.run(course.data.language, files);
-      setOutput(output);
+      actions.setOutput(output);
     } finally {
       setRunning(false);
     }
@@ -55,14 +64,14 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
   const handleGoToNext = () => {
     if (nextLesson && course.data) {
       router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
-      setOutput('');
+      actions.setOutput('');
     }
   };
 
   const handleGoToPrev = () => {
     if (prevLesson && course.data) {
       router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
-      setOutput('');
+      actions.setOutput('');
     }
   };
 

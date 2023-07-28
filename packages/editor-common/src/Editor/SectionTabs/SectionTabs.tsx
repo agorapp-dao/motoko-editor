@@ -6,11 +6,11 @@ import * as S from './SectionTabs.styled';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CodeIcon from '@mui/icons-material/Code';
 import { EEditorSectionType } from '../../constants';
-import { EditorContext } from '../EditorContext';
 import { AgorAppIcon } from '../../constants/assets';
 import { SettingsDialog } from '../SettingsDialog/SettingsDialog';
 import { AuthorDialog } from '../../components/AuthorDialog/AuthorDialog';
 import { useMobile } from '../../hooks/useMobile';
+import { useEditorActions, useEditorCurrentSection } from '../EditorStore';
 
 interface StyledTabProps {
   icon?: string | React.ReactElement;
@@ -40,12 +40,13 @@ const AntTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} /
 
 export const SectionTabs = () => {
   const { mobile } = useMobile();
-  const { currentSection, setCurrentSection } = useContext(EditorContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [authorDialogOpen, setAuthorDialogOpen] = useState(false);
+  const currentSection = useEditorCurrentSection();
+  const actions = useEditorActions();
 
   const changeSection = (event: React.SyntheticEvent, section: EEditorSectionType) => {
-    setCurrentSection(section);
+    actions.setCurrentSection(section);
   };
 
   return (

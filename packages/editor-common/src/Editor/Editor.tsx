@@ -5,7 +5,6 @@ import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { Fade } from '@mui/material';
-import { EditorContext, EditorProvider } from './EditorContext';
 import { courseService } from '../services/courseService';
 import { SectionTabs } from './SectionTabs/SectionTabs';
 import { LessonHeader } from './LessonHeader/LessonHeader';
@@ -21,41 +20,40 @@ import { IEditorTab } from '../types/IEditorTab';
 import { editorService } from './editorService';
 import type { editor } from 'monaco-editor';
 import { useMobile } from '../hooks/useMobile';
+import {
+  EditorStoreProvider,
+  useEditorActions,
+  useEditorActiveLessonSlug,
+  useEditorActiveTab,
+  useEditorCourseSlug,
+  useEditorCurrentSection,
+  useEditorTabs,
+} from './EditorStore';
 
 type EditorProps = {
   courseSlug: string;
   activeLessonSlug: string | undefined;
-  setActiveLessonSlug: (slug: string) => void;
 };
 
 const THEORY_DEFAULT_WIDTH = 600;
 
-export function Editor({ courseSlug, activeLessonSlug, setActiveLessonSlug }: EditorProps) {
+export function Editor({ courseSlug, activeLessonSlug }: EditorProps) {
   return (
-    <EditorProvider
-      courseSlug={courseSlug}
-      activeLessonSlug={activeLessonSlug}
-      setActiveLessonSlug={setActiveLessonSlug}
-    >
+    <EditorStoreProvider courseSlug={courseSlug} activeLessonSlug={activeLessonSlug}>
       <EditorInner />
-    </EditorProvider>
+    </EditorStoreProvider>
   );
 }
 
 function EditorInner() {
   const monaco = useMonaco();
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const {
-    currentSection,
-    setCurrentSection,
-    courseSlug,
-    activeLessonSlug,
-    setActiveLessonSlug,
-    setFiles,
-    tabs,
-    setTabs,
-    activeTab,
-  } = React.useContext(EditorContext);
+  const courseSlug = useEditorCourseSlug();
+  const activeLessonSlug = useEditorActiveLessonSlug();
+  const tabs = useEditorTabs();
+  const activeTab = useEditorActiveTab();
+  const currentSection = useEditorCurrentSection();
+  const actions = useEditorActions();
 
   const { mobile } = useMobile();
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([THEORY_DEFAULT_WIDTH, Infinity]);
@@ -70,25 +68,18 @@ function EditorInner() {
   useEffect(() => {
     if (mobile) {
       setPanelSizeHorizontal([0, Infinity]);
-      setCurrentSection(EEditorSectionType.CODE);
+      actions.setCurrentSection(EEditorSectionType.CODE);
     } else {
       setPanelSizeHorizontal([THEORY_DEFAULT_WIDTH, Infinity]);
-      setCurrentSection(EEditorSectionType.LESSON);
+      actions.setCurrentSection(EEditorSectionType.LESSON);
     }
-  }, [mobile, setPanelSizeHorizontal, setCurrentSection]);
+  }, [mobile, setPanelSizeHorizontal, actions]);
 
   const toggleListOfContents = () => {
     setShowListOfContents(prev => !prev);
   };
 
   const handleSelectLesson = (slug: string) => {
-    setActiveLessonSlug(slug);
-    if (course.data) {
-      const lesson = courseService.findLessonBySlug(course.data, slug);
-      if (lesson) {
-        setActiveLessonSlug(lesson.slug);
-      }
-    }
     setShowListOfContents(false);
   };
 
@@ -112,8 +103,8 @@ function EditorInner() {
             monaco.Uri.from({ scheme: 'inmemory', path: file.path }),
           ),
         }));
-        setFiles(files);
-        setTabs(tabs);
+        actions.setFiles(files);
+        actions.setTabs(tabs);
         models = tabs.map(tab => tab.model);
       }
     };
@@ -123,9 +114,9 @@ function EditorInner() {
     return () => {
       isMounted = false;
       models.forEach(model => model.dispose());
-      setTabs([]);
+      actions.setTabs([]);
     };
-  }, [course.data, activeLessonSlug, monaco, setFiles, setTabs]);
+  }, [course.data, activeLessonSlug, monaco, actions]);
 
   useEffect(() => {
     if (activeLessonSlug && lessonSectionRef.current) {
@@ -138,7 +129,7 @@ function EditorInner() {
       return;
     }
     const files = await courseService.getLessonFiles(course.data, activeLessonSlug);
-    setFiles(files);
+    actions.setFiles(files);
     files.forEach(file => {
       tabs.find(tab => tab.path === file.path)?.model.setValue(file.content);
     });
@@ -159,7 +150,7 @@ function EditorInner() {
           handleClose={
             mobile
               ? () => {
-                  setCurrentSection(EEditorSectionType.CODE);
+                  actions.setCurrentSection(EEditorSectionType.CODE);
                 }
               : undefined
           }

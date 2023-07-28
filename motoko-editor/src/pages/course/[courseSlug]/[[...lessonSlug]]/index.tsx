@@ -21,14 +21,6 @@ type TEditorPageProps = {
 editorService.registerLanguagePlugin(new MotokoEditorPlugin());
 
 export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditorPageProps) {
-  const [activeLessonSlug, setActiveLessonSlug] = useState(lessonSlug);
-  const router = useRouter();
-
-  useEffect(() => {
-    const slug = router.query.lessonSlug ? router.query.lessonSlug[0] : '';
-    setActiveLessonSlug(slug);
-  }, [router.query.lessonSlug]);
-
   return (
     <SWRConfig value={{ fallback }}>
       <MuiThemeProvider theme={muiDarkTheme}>
@@ -36,11 +28,7 @@ export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditor
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <S.Main>
-            <Editor
-              courseSlug={courseSlug}
-              activeLessonSlug={activeLessonSlug}
-              setActiveLessonSlug={setActiveLessonSlug}
-            />
+            <Editor courseSlug={courseSlug} activeLessonSlug={lessonSlug} />
           </S.Main>
         </ThemeProvider>
       </MuiThemeProvider>

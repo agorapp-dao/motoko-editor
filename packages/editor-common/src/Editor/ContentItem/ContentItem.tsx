@@ -5,8 +5,8 @@ import { Collapse } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';
 import { ContentLevel } from './ContentLevel';
-import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
+import { useEditorCourseSlug } from '../EditorStore';
 
 interface TProps {
   item: TLesson;
@@ -21,7 +21,7 @@ export const ContentItem: React.FC<TProps> = ({
   baseIndex,
   handleSelectLesson,
 }: TProps) => {
-  const { courseSlug } = useContext(EditorContext);
+  const courseSlug = useEditorCourseSlug();
   const [opened, setOpened] = useState(true);
   const router = useRouter();
 

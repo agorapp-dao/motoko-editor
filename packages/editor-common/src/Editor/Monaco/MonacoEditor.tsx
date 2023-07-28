@@ -2,9 +2,13 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import type { editor } from 'monaco-editor';
 import * as S from './MonacoEditor.styled';
 import { useMonaco } from './Monaco';
-import { EditorContext } from '../EditorContext';
 import { editorService } from '../editorService';
-import { IEditorFile } from '../../types/IEditorFile';
+import {
+  useEditorActiveTab,
+  useEditorFiles,
+  useEditorFontSize,
+  useEditorTabs,
+} from '../EditorStore';
 
 export interface MonacoEditorProps {
   model?: editor.ITextModel;
@@ -14,7 +18,10 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
   const monaco = useMonaco();
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | undefined>(undefined);
   const divEl = useRef<HTMLDivElement>(null);
-  const { fontSize, files, tabs, activeTab } = useContext(EditorContext);
+  const fontSize = useEditorFontSize();
+  const activeTab = useEditorActiveTab();
+  const files = useEditorFiles();
+  const tabs = useEditorTabs();
 
   useEffect(() => {
     let editor: editor.IStandaloneCodeEditor;

@@ -1,14 +1,14 @@
 import { Pane } from 'split-pane-react';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import * as S from './BottomPanel.styled';
 import { SectionOutput } from '../../Section/SectionOutput/SectionOutput';
-import { EditorContext } from '../../EditorContext';
+import { useEditorOutput } from '../../EditorStore';
 
 export const BottomPanel = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [tabs, setTabs] = useState([{ name: 'Output' }]);
-  const { output } = useContext(EditorContext);
+  const output = useEditorOutput();
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);

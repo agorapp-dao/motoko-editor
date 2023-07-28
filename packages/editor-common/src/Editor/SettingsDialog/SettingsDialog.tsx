@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
 import { TextField } from '@mui/material';
-import { EditorContext } from '../EditorContext';
 import GeneralDialog from '../../components/General/Dialog/GeneralDialog';
+import { useEditorActions, useEditorFontSize } from '../EditorStore';
 
 type TProps = {
   open: boolean;
@@ -9,7 +8,8 @@ type TProps = {
 };
 
 export const SettingsDialog: React.FC<TProps> = ({ open, handleClose }: TProps) => {
-  const { fontSize, setFontSize } = useContext(EditorContext);
+  const fontSize = useEditorFontSize();
+  const actions = useEditorActions();
 
   return (
     <GeneralDialog
@@ -29,7 +29,7 @@ export const SettingsDialog: React.FC<TProps> = ({ open, handleClose }: TProps) 
             shrink: true,
           }}
           value={fontSize}
-          onChange={e => setFontSize(parseInt(e.target.value))}
+          onChange={e => actions.setFontSize(parseInt(e.target.value))}
         />
       </>
     </GeneralDialog>

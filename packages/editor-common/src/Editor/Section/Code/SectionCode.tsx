@@ -1,15 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Box, Tabs } from '@mui/material';
-import { EditorContext } from '../../EditorContext';
 import { PanelTab } from '../../../components/PanelTab/PanelTab';
 import { FullscreenControl } from '../../../components/FullscreenControl/FullscreenControl';
 import { MonacoEditor } from '../../Monaco/MonacoEditor';
+import { useEditorActions, useEditorActiveTab, useEditorTabs } from '../../EditorStore';
 
 export const SectionCode = () => {
-  const { tabs, activeTab, setActiveTab } = useContext(EditorContext);
+  const tabs = useEditorTabs();
+  const activeTab = useEditorActiveTab();
+  const actions = useEditorActions();
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
+    actions.setActiveTab(newValue);
   };
 
   if (!tabs.length) {

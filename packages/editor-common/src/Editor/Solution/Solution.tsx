@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import * as S from './Solution.styled';
 import { Button } from '@mui/material';
-import { EditorContext } from '../EditorContext';
 import { Markdown } from '../Markdown/Markdown';
+import { useEditorActiveLessonSlug } from '../EditorStore';
 
 export interface SolutionProps {
   content: string;
@@ -10,7 +10,7 @@ export interface SolutionProps {
 
 export const Solution = ({ content }: SolutionProps) => {
   const [shown, setShown] = useState(false);
-  const { activeLessonSlug } = useContext(EditorContext);
+  const activeLessonSlug = useEditorActiveLessonSlug();
 
   useEffect(() => {
     // reset solution state when lesson changes
