@@ -1,16 +1,11 @@
-import { SWRConfig } from 'swr';
-import { ThemeProvider } from 'styled-components';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { muiDarkTheme, theme } from '@/src/styles/themes';
-import { CssBaseline } from '@mui/material';
 import * as S from '@/src/styles/global.styled';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import React, { useEffect, useState } from 'react';
-import { GlobalStyle } from '@/src/styles/global.styled';
 import { useRouter } from 'next/router';
 import { courseService, Editor, editorService } from '@agorapp-dao/editor-common';
 import { contentService } from '@agorapp-dao/content-common';
 import { MotokoEditorPlugin } from '@agorapp-dao/editor-lang-motoko';
+import { SWRConfig } from 'swr';
 
 type TEditorPageProps = {
   lessonSlug: string;
@@ -31,19 +26,13 @@ export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditor
 
   return (
     <SWRConfig value={{ fallback }}>
-      <MuiThemeProvider theme={muiDarkTheme}>
-        <CssBaseline />
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <S.Main>
-            <Editor
-              courseSlug={courseSlug}
-              activeLessonSlug={activeLessonSlug}
-              setActiveLessonSlug={setActiveLessonSlug}
-            />
-          </S.Main>
-        </ThemeProvider>
-      </MuiThemeProvider>
+      <S.Main>
+        <Editor
+          courseSlug={courseSlug}
+          activeLessonSlug={activeLessonSlug}
+          setActiveLessonSlug={setActiveLessonSlug}
+        />
+      </S.Main>
     </SWRConfig>
   );
 }
