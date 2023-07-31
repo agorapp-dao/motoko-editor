@@ -1,0 +1,19 @@
+{
+  "canisters": {
+    "hello_ic_frontend": {
+      "frontend": {
+        "entrypoint": "out.index.html"
+      },
+      "source": ["out"],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

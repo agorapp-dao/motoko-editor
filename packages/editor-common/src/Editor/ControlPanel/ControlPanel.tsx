@@ -16,8 +16,7 @@ interface IControlPanelProps {
 }
 
 export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
-  const router = useRouter();
-  const { files, setFiles, tabs, setOutput, courseSlug, activeLessonSlug } =
+  const { files, setFiles, tabs, setOutput, courseSlug, activeLessonSlug, setActiveLessonSlug } =
     useContext(EditorContext);
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
@@ -54,14 +53,14 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
 
   const handleGoToNext = () => {
     if (nextLesson && course.data) {
-      router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
+      setActiveLessonSlug(nextLesson.slug);
       setOutput('');
     }
   };
 
   const handleGoToPrev = () => {
     if (prevLesson && course.data) {
-      router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
+      setActiveLessonSlug(prevLesson.slug);
       setOutput('');
     }
   };

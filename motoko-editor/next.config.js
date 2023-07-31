@@ -3,7 +3,7 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  output: 'standalone',
+  output: 'export',
   transpilePackages: [
     '@agorapp-dao/content-common',
     '@agorapp-dao/editor-common',

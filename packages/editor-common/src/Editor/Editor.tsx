@@ -22,18 +22,14 @@ import { editorService } from './editorService';
 import type { editor } from 'monaco-editor';
 import { useMobile } from '../hooks/useMobile';
 
-type EditorProps = {
-  courseSlug: string;
-  activeLessonSlug: string | undefined;
-  setActiveLessonSlug: (slug: string) => void;
-};
-
 const THEORY_DEFAULT_WIDTH = 600;
 
-export function Editor({ courseSlug, activeLessonSlug, setActiveLessonSlug }: EditorProps) {
+export function Editor() {
+  const [activeLessonSlug, setActiveLessonSlug] = useState('introduction');
+
   return (
     <EditorProvider
-      courseSlug={courseSlug}
+      courseSlug="motoko-tutorial"
       activeLessonSlug={activeLessonSlug}
       setActiveLessonSlug={setActiveLessonSlug}
     >

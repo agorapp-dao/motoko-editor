@@ -1,41 +1,33 @@
-import Link from 'next/link';
-import { contentService } from '@agorapp-dao/content-common';
-import { courseService } from '@agorapp-dao/editor-common';
+import { SWRConfig } from 'swr';
+import { ThemeProvider } from 'styled-components';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { muiDarkTheme, theme } from '@/src/styles/themes';
+import { CssBaseline } from '@mui/material';
+import * as S from '@/src/styles/global.styled';
+import { GlobalStyle } from '@/src/styles/global.styled';
+import { Editor, editorService } from '@agorapp-dao/editor-common';
+import { MotokoEditorPlugin } from '@agorapp-dao/editor-lang-motoko';
 
-type IndexPageProps = {
-  contentPackages: string[];
+type TEditorPageProps = {
+  lessonSlug: string;
+  courseSlug: string;
+  fallback: { [key: string]: any };
 };
 
-export default function IndexPage({ contentPackages }: IndexPageProps) {
+editorService.registerLanguagePlugin(new MotokoEditorPlugin());
+
+export default function EditorPage({}: TEditorPageProps) {
   return (
-    <div>
-      <ul>
-        {contentPackages.map(cp => (
-          <li key={cp}>
-            <Link href={`${courseService.getCoursePath(cp)}`}>{cp}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <SWRConfig>
+      <MuiThemeProvider theme={muiDarkTheme}>
+        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <S.Main>
+            <Editor />
+          </S.Main>
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </SWRConfig>
   );
-}
-
-export async function getServerSideProps() {
-  let contentPackages = await contentService.listContentPackages();
-  contentPackages = contentPackages.filter(
-    cp => cp.startsWith('content-') && cp !== 'content-common',
-  );
-  contentPackages = contentPackages.map(cp => cp.substring('content-'.length));
-
-  if (contentPackages.length === 1) {
-    // there is only one course, redirect to it
-    return {
-      redirect: {
-        permanent: false,
-        destination: courseService.getCoursePath(contentPackages[0]),
-      },
-    };
-  }
-
-  return { props: { contentPackages } };
 }

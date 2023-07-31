@@ -21,13 +21,12 @@ export const ContentItem: React.FC<TProps> = ({
   baseIndex,
   handleSelectLesson,
 }: TProps) => {
-  const { courseSlug } = useContext(EditorContext);
+  const { courseSlug, setActiveLessonSlug } = useContext(EditorContext);
   const [opened, setOpened] = useState(true);
-  const router = useRouter();
 
   const handleClick = (lesson: TLesson) => {
     if (lesson.content) {
-      router.push(courseService.getCoursePath(courseSlug!, lesson.slug));
+      setActiveLessonSlug(lesson.slug);
       handleSelectLesson(lesson.slug);
     } else if (lesson.children?.length) {
       setOpened(!opened);

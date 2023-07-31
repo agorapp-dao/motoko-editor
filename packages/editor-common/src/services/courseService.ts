@@ -10,7 +10,7 @@ class CourseService {
    */
   useCourse(courseSlug: string | undefined) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useJson<TCourse>(`/api/course/${courseSlug}`);
+    return useJson<TCourse>(`/content/content-motoko-tutorial/course.json`);
   }
 
   /**
