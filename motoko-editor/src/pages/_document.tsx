@@ -20,10 +20,6 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
     <Html lang="en" prefix="og: http://ogp.me/ns#">
       <Head>
-        <meta
-          name="google-site-verification"
-          content="IWA9gqV_no85ABkhAqzTQ_GOqTqja7CgoUbvaqPGX-A"
-        />
         {/* Insertion point for client. This connects with createEmotionCache.ts */}
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
