@@ -10,24 +10,21 @@ while (counter < 5) {
 }
 ```
 
-In the previous example, we evaluate the while condition at the beginning of the loop block.
-We can also evaluate the condition at the end of the loop using a `do-while` loop:
+In the previous example, we evaluate the while condition at the beginning of the loop block. We can also evaluate the condition at the end of the loop using a `loop-while`:
 
 ```motoko
 import D "mo:base/Debug";
 
 var counter = 0;
-do {
+loop {
   D.print(debug_show(counter));
   counter += 1;
 } while (counter < 5);
 ```
 
-While this gives us the same result, there is one important difference. The body of the `do-while`
-loop will always be executed at least once, even if the `while` condition is false.
+While this gives us the same result, there is one important difference. The body of the `loop-while` loop will always be executed at least once, even if the `while` condition is false.
 
-Just like with the `for` loop, you can use `break` and `continue` statements in conjunction with a
-`label` to control the flow of the loop:
+Just like with the `for` loop, you can use `break` and `continue` statements in conjunction with a `label` to control the flow of the loop:
 
 ```motoko
 import D "mo:base/Debug";

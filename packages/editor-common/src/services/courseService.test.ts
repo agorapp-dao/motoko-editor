@@ -4,7 +4,10 @@ import { courseService } from './courseService';
 const COURSE: TCourse = {
   name: 'Motoko Tutorial',
   slug: 'motoko-tutorial',
-  language: 'motoko',
+  plugin: '@agorapp-dao/editor-plugin-motoko',
+  config: {
+    output: true,
+  },
   lessons: [
     {
       name: 'Introduction',

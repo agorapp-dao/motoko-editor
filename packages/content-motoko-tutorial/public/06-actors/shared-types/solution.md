@@ -1,7 +1,6 @@
 ```motoko
 import Buffer "mo:base/Buffer";
 
-// your code here
 actor Library {
 
   let books = Buffer.Buffer<Text>(0);

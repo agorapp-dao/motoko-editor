@@ -1,9 +1,9 @@
 ```motoko
 let fullName = do {
-    let firstName = "John";
-    let lastName = "Doe";
+  let firstName = "John";
+  let lastName = "Doe";
 
-    firstName # " " # lastName;
+  firstName # " " # lastName
 };
 
 fullName;

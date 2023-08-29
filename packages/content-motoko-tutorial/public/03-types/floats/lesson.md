@@ -11,13 +11,9 @@ Be cautious when working with floats, as their behavior can sometimes be surpris
 let a = 0.3; // 0.299_999_999_999_999_99 : Float
 ```
 
-The discrepancy above arises because some numbers cannot be precisely represented in the binary
-format used to store these numbers in memory. This issue is not unique to Motoko. Refer to the
-[Floating-Point Guide](https://floating-point-gui.de/basic/) to learn more about this topic.
+The discrepancy above arises because some numbers cannot be precisely represented in the binary format used to store these numbers in memory. This issue is not unique to Motoko. Refer to the [Floating-Point Guide](https://floating-point-gui.de/basic/) to learn more about this topic.
 
-The `Float` type is not directly compatible with `Int` or `Nat`. To convert it to these types, use
-functions from the [Float](https://internetcomputer.org/docs/current/motoko/main/base/Float) module
-in the base library:
+The `Float` type is not directly compatible with `Int` or `Nat`. To convert it to these types, use functions from the [Float](https://internetcomputer.org/docs/current/motoko/main/base/Float) module in the base library:
 
 ```motoko
 import Float "mo:base/Float";

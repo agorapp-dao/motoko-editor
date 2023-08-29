@@ -3,7 +3,7 @@ import D "mo:base/Debug";
 
 // your code goes here
 func subtract(a : Int, b : Int) : Int {
-    a - b
+  a - b
 };
 
 let diff = subtract(10, 6);

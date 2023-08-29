@@ -1,6 +1,4 @@
-Actors interact with the outside world through messages. These messages are handled by actors via
-defined async functions. Given that messages are transmitted over the network, there are certain
-restrictions on the types that can be used for the parameters and return values of these functions.
+Actors interact with the outside world through messages. These messages are handled by actors via defined async functions. Given that messages are transmitted over the network, there are certain restrictions on the types that can be used for the parameters and return values of these functions.
 
 Motoko limits you to using the so-called **shared types** in the public functions of actors:
 

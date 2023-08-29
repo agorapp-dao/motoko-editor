@@ -20,11 +20,9 @@ if (name == "John" and age > 18) {
 };
 ```
 
-Refer to the [Logical expressions](../logical-expressions) lesson for additional details about the
-available operators.
+Refer to the [Logical expressions](../logical-expressions) lesson for additional details about the available operators.
 
-Unlike in other languages, the `if` expression in Motoko is an expression, not a statement. This
-means that it evaluates to a value:
+Unlike in other languages, the `if` expression in Motoko is an expression, not a statement. This means that it evaluates to a value:
 
 ```motoko
 let greeting = if (name == "John") {
@@ -44,8 +42,7 @@ let greeting = if (name == "John") "Hello John" else "Hello stranger";
 
 ## Exercise
 
-We have defined a variable `number` on the right. Write a program that will examine whether the
-number is positive, negative, or zero.
+We have defined a variable `number` on the right. Write a program that will examine whether the number is positive, negative, or zero.
 
 The program should output one of the following messages:
 

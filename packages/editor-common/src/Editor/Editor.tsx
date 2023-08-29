@@ -4,8 +4,7 @@ import * as S from './Editor.styled';
 import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { Fade } from '@mui/material';
-import { EditorContext, EditorProvider } from './EditorContext';
+import { Box, Grid } from '@mui/material';
 import { courseService } from '../services/courseService';
 import { SectionTabs } from './SectionTabs/SectionTabs';
 import { LessonHeader } from './LessonHeader/LessonHeader';
@@ -14,81 +13,116 @@ import { EEditorSectionType } from '../constants';
 import { SectionLesson } from './Section/Lesson/SectionLesson';
 import { SectionCode } from './Section/Code/SectionCode';
 import { ControlPanel } from './ControlPanel/ControlPanel';
-import { BottomPanel } from './Panel/BottomPanel/BottomPanel';
-import { FeedbackBtn } from '../components/Feeback/FeedbackBtn';
-import { useMonaco } from './Monaco/Monaco';
-import { IEditorTab } from '../types/IEditorTab';
+import { BottomPanel } from './BottomPanel/BottomPanel';
+import { monacoDefineTheme, useMonaco } from './Monaco/Monaco';
+import { TEditorTab } from '../types/TEditorTab';
 import { editorService } from './editorService';
 import type { editor } from 'monaco-editor';
 import { useMobile } from '../hooks/useMobile';
+import { EditorStoreProvider, useEditorActions, useEditorStore } from './EditorStore';
+import { useEditorPlugin } from './Monaco/useEditorPlugin';
+import { TEditorConfig } from '../types/TEditorConfig';
+import { darkTheme } from '@agorapp-dao/react-common';
+import { OverlayWithLessonHeader } from './OverlayWithLessonHeader/OverlayWithLessonHeader';
 
 type EditorProps = {
   courseSlug: string;
-  activeLessonSlug: string | undefined;
-  setActiveLessonSlug: (slug: string) => void;
+  activeLessonSlug: string;
+  apiUrl?: string;
+  config?: TEditorConfig;
+  authenticated?: boolean;
 };
 
 const THEORY_DEFAULT_WIDTH = 600;
 
-export function Editor({ courseSlug, activeLessonSlug, setActiveLessonSlug }: EditorProps) {
+monacoDefineTheme({
+  base: 'vs-dark',
+  inherit: true,
+  // TODO polish color scheme
+  rules: [
+    { token: 'custom-info', foreground: 'a3a7a9', background: 'ffffff' },
+    { token: 'custom-error', foreground: 'ee4444' },
+    { token: 'custom-notice', foreground: '1055af' },
+    { token: 'custom-date', foreground: '20aa20' },
+  ],
+  colors: {
+    'editor.foreground': '#FFFFFF',
+    'editor.background': darkTheme.background,
+  },
+});
+
+export function Editor({
+  courseSlug,
+  activeLessonSlug,
+  apiUrl,
+  config,
+  authenticated,
+}: EditorProps) {
+  // inject missing config values
+  let cfg = config || {};
+  if (!cfg.topOffset) {
+    cfg.topOffset = 0;
+  }
+  if (typeof cfg.enableLessonsWithProgress === 'undefined') {
+    cfg.enableLessonsWithProgress = false;
+  }
+
   return (
-    <EditorProvider
+    <EditorStoreProvider
       courseSlug={courseSlug}
       activeLessonSlug={activeLessonSlug}
-      setActiveLessonSlug={setActiveLessonSlug}
+      apiUrl={apiUrl}
+      config={cfg}
     >
-      <EditorInner />
-    </EditorProvider>
+      <EditorInner authenticated={authenticated} />
+    </EditorStoreProvider>
   );
 }
 
-function EditorInner() {
+type TEditorInner = {
+  authenticated?: boolean;
+};
+
+function EditorInner({ authenticated }: TEditorInner) {
   const monaco = useMonaco();
+  const plugin = useEditorPlugin();
   const [showListOfContents, setShowListOfContents] = useState(true);
-  const {
-    currentSection,
-    setCurrentSection,
-    courseSlug,
-    activeLessonSlug,
-    setActiveLessonSlug,
-    setFiles,
-    tabs,
-    setTabs,
-    activeTab,
-  } = React.useContext(EditorContext);
+  const store = useEditorStore();
+  const actions = useEditorActions();
 
   const { mobile } = useMobile();
   const [panelSizeHorizontal, setPanelSizeHorizontal] = useState([THEORY_DEFAULT_WIDTH, Infinity]);
-  const [panelSizeVertical, setPanelSizeVertical] = useState([Infinity, 250]);
-  const course = courseService.useCourse(courseSlug);
+  const course = courseService.useCourse();
   const lessonSectionRef = useRef<HTMLDivElement>(null);
+  const leftPanelElementRef = useRef<HTMLDivElement>(null);
+  const lessonHeaderElementRef = useRef<HTMLDivElement>(null);
+
+  // overload config if enableLessonsWithProgress is set directly as input prop of Editor component
+  useEffect(() => {
+    if (!store.config.enableLessonsWithProgress && course?.data?.config.enableLessonsWithProgress) {
+      store.actions.setEnableLessonsWithProgress(true);
+    }
+  }, [store.actions, store.config, course]);
 
   useEffect(() => {
     setShowListOfContents(false);
-  }, [currentSection]);
+  }, [store.currentSection]);
+
+  useEffect(() => {
+    store.actions.setAuthenticated(!!authenticated);
+  }, [store.actions, authenticated]);
 
   useEffect(() => {
     if (mobile) {
       setPanelSizeHorizontal([0, Infinity]);
-      setCurrentSection(EEditorSectionType.CODE);
+      actions.setCurrentSection(EEditorSectionType.CODE);
     } else {
       setPanelSizeHorizontal([THEORY_DEFAULT_WIDTH, Infinity]);
-      setCurrentSection(EEditorSectionType.LESSON);
+      actions.setCurrentSection(EEditorSectionType.LESSON);
     }
-  }, [mobile, setPanelSizeHorizontal, setCurrentSection]);
-
-  const toggleListOfContents = () => {
-    setShowListOfContents(prev => !prev);
-  };
+  }, [mobile, setPanelSizeHorizontal, actions]);
 
   const handleSelectLesson = (slug: string) => {
-    setActiveLessonSlug(slug);
-    if (course.data) {
-      const lesson = courseService.findLessonBySlug(course.data, slug);
-      if (lesson) {
-        setActiveLessonSlug(lesson.slug);
-      }
-    }
     setShowListOfContents(false);
   };
 
@@ -97,23 +131,32 @@ function EditorInner() {
     let models: editor.ITextModel[] = [];
 
     const fetchFiles = async () => {
-      if (!course.data || !activeLessonSlug || !monaco) {
+      if (!course.data || !store.activeLessonSlug || !monaco || !plugin) {
         return;
       }
 
-      const files = await courseService.getLessonFiles(course.data, activeLessonSlug);
+      const files = await courseService.getLessonFiles(course.data, store.activeLessonSlug);
 
       if (isMounted) {
-        const tabs: IEditorTab[] = files.map(file => ({
+        const tabs: TEditorTab[] = files.map(file => ({
           path: file.path,
           model: monaco.editor.createModel(
             file.content,
-            editorService.getLanguageForFile(file.path),
-            monaco.Uri.from({ scheme: 'inmemory', path: file.path }),
+            editorService.getLanguageForFile(plugin, file.path),
+            monaco.Uri.from({ scheme: 'file', path: file.path }),
           ),
         }));
-        setFiles(files);
-        setTabs(tabs);
+        actions.setFiles(files);
+        actions.setTabs(tabs);
+
+        const lesson = courseService.findLessonBySlug(course.data, store.activeLessonSlug);
+        if (lesson?.defaultFile) {
+          const tabIndex = tabs.findIndex(tab => tab.path.endsWith(lesson.defaultFile!));
+          if (tabIndex !== -1) {
+            actions.setActiveTab(tabIndex);
+          }
+        }
+
         models = tabs.map(tab => tab.model);
       }
     };
@@ -123,24 +166,24 @@ function EditorInner() {
     return () => {
       isMounted = false;
       models.forEach(model => model.dispose());
-      setTabs([]);
+      actions.setTabs([]);
     };
-  }, [course.data, activeLessonSlug, monaco, setFiles, setTabs]);
+  }, [course.data, store.activeLessonSlug, monaco, actions, plugin]);
 
   useEffect(() => {
-    if (activeLessonSlug && lessonSectionRef.current) {
+    if (store.activeLessonSlug && lessonSectionRef.current) {
       lessonSectionRef.current?.scrollTo(0, 0);
     }
-  }, [activeLessonSlug, lessonSectionRef]);
+  }, [store.activeLessonSlug, lessonSectionRef]);
 
   const resetCode = async () => {
-    if (!course.data || !activeLessonSlug || !monaco) {
+    if (!course.data || !store.activeLessonSlug || !monaco) {
       return;
     }
-    const files = await courseService.getLessonFiles(course.data, activeLessonSlug);
-    setFiles(files);
+    const files = await courseService.getLessonFiles(course.data, store.activeLessonSlug);
+    actions.setFiles(files);
     files.forEach(file => {
-      tabs.find(tab => tab.path === file.path)?.model.setValue(file.content);
+      store.tabs.find(tab => tab.path === file.path)?.model.setValue(file.content);
     });
   };
 
@@ -148,80 +191,100 @@ function EditorInner() {
     return <div></div>;
   }
 
-  const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
+  const activeLesson = courseService.findLessonBySlug(course.data, store.activeLessonSlug);
+
+  const lessonHeader = activeLesson && (
+    <div ref={lessonHeaderElementRef}>
+      <LessonHeader
+        courseTitle={course.data.name}
+        lessonTitle={activeLesson.name}
+        lessonNumber={activeLesson.$lessonNumber}
+        opened={store.currentSection === EEditorSectionType.TABLE_OF_CONTENTS}
+        handleClick={() => {
+          if (store.currentSection === EEditorSectionType.TABLE_OF_CONTENTS) {
+            actions.setCurrentSection(EEditorSectionType.CODE);
+          } else {
+            actions.setCurrentSection(EEditorSectionType.TABLE_OF_CONTENTS);
+          }
+        }}
+      />
+    </div>
+  );
 
   const theorySection = (
     <S.Section>
-      {activeLesson && (
-        <LessonHeader
-          title={activeLesson.name}
-          handleClick={toggleListOfContents}
-          handleClose={
-            mobile
-              ? () => {
-                  setCurrentSection(EEditorSectionType.CODE);
-                }
-              : undefined
-          }
-        />
-      )}
+      {!mobile && lessonHeader}
       <S.SectionContent ref={lessonSectionRef}>
-        <Fade in={showListOfContents} timeout={500} style={{ overflowY: 'auto' }}>
-          <S.OverlayBox>
-            <S.ListOfContents>
-              <ContentLevel
-                lessons={course.data.lessons}
-                level={1}
-                handleSelectLesson={handleSelectLesson}
-              />
-            </S.ListOfContents>
-          </S.OverlayBox>
-        </Fade>
-        <div style={{ overflowY: showListOfContents ? 'hidden' : 'unset' }}>
-          {currentSection === EEditorSectionType.LESSON && <SectionLesson />}
+        <div style={{ overflowY: 'auto' }}>
+          <SectionLesson />
         </div>
       </S.SectionContent>
     </S.Section>
   );
 
+  const listOfContents = (
+    <S.ListOfContents>
+      <ContentLevel
+        lessons={course.data.lessons}
+        level={1}
+        handleSelectLesson={handleSelectLesson}
+        enableLessonsWithProgress={store.config.enableLessonsWithProgress}
+      />
+    </S.ListOfContents>
+  );
+
   return (
     <>
-      {courseSlug && activeLessonSlug && (
-        <FeedbackBtn
-          userCode={tabs[activeTab]?.model.getValue()}
-          slug={`${courseSlug}/${activeLessonSlug}`}
+      <SectionTabs></SectionTabs>
+      {mobile && store.currentSection === EEditorSectionType.LESSON && (
+        <OverlayWithLessonHeader
+          lessonHeader={lessonHeader}
+          content={theorySection}
+          offsetLeft={leftPanelElementRef.current?.offsetWidth}
         />
       )}
-      <SectionTabs></SectionTabs>
-      {mobile && currentSection !== EEditorSectionType.CODE && (
-        <S.OverlaySection>{theorySection}</S.OverlaySection>
+      {store.currentSection === EEditorSectionType.TABLE_OF_CONTENTS && (
+        <OverlayWithLessonHeader
+          lessonHeader={lessonHeader}
+          content={listOfContents}
+          offsetLeft={leftPanelElementRef.current?.offsetWidth}
+        />
       )}
-      <SplitPane
-        split="vertical"
-        sizes={panelSizeHorizontal}
-        onChange={setPanelSizeHorizontal}
-        sashRender={(_, active) => <SashContent active={active} type="vscode" />}
-      >
-        <Pane minSize={500} maxSize="50%">
-          {!mobile && theorySection}
-        </Pane>
-        <S.RightPane>
-          <SplitPane
-            split="horizontal"
-            sizes={panelSizeVertical}
-            onChange={setPanelSizeVertical}
-            sashRender={(_, active) => <SashContent active={active} type="vscode" />}
-          >
-            <Pane>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {mobile && lessonHeader}
+        <SplitPane
+          split="vertical"
+          sizes={panelSizeHorizontal}
+          onChange={setPanelSizeHorizontal}
+          sashRender={(_, active) => (
+            <SashContent
+              active={active}
+              type="vscode"
+              className={`sash-wrap-line ${active ? 'active' : 'inactive'}`}
+            >
+              <span className="line" />
+              <span />
+            </SashContent>
+          )}
+        >
+          <Pane minSize={500} maxSize="50%">
+            <Box sx={{ display: 'flex', height: '100%' }} ref={leftPanelElementRef}>
+              {!mobile && theorySection}
+            </Box>
+          </Pane>
+          <Pane>
+            <S.RightPane sx={{ pl: { sm: 0, md: 4 } }}>
               <S.Code>
                 <SectionCode />
-                <ControlPanel handleResetCode={resetCode} />
               </S.Code>
-            </Pane>
-            <BottomPanel />
-          </SplitPane>
-        </S.RightPane>
-      </SplitPane>
+              <S.BottomPanel>
+                <ControlPanel handleResetCode={resetCode} />
+                <BottomPanel />
+              </S.BottomPanel>
+            </S.RightPane>
+          </Pane>
+        </SplitPane>
+      </div>
     </>
   );
 }

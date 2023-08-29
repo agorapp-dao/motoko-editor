@@ -7,9 +7,12 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { TLesson } from '@agorapp-dao/content-common';
 import { useRouter } from 'next/router';
-import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
 import { editorService } from '../editorService';
+import { useEditorActions, useEditorStore } from '../EditorStore';
+import { useEditorPlugin } from '../Monaco/useEditorPlugin';
+import { AgButton } from '@agorapp-dao/react-common/src/components/AgButton';
+import { useMobile } from '../../hooks/useMobile';
 
 interface IControlPanelProps {
   handleResetCode: () => void;
@@ -17,19 +20,22 @@ interface IControlPanelProps {
 
 export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
   const router = useRouter();
-  const { files, setFiles, tabs, setOutput, courseSlug, activeLessonSlug } =
-    useContext(EditorContext);
+  const plugin = useEditorPlugin();
+  const store = useEditorStore();
+  const actions = useEditorActions();
   const [running, setRunning] = useState(false);
   const [nextLesson, setNextLesson] = useState<TLesson | undefined>(undefined);
   const [prevLesson, setPrevLesson] = useState<TLesson | undefined>(undefined);
-  const course = courseService.useCourse(courseSlug);
+  const course = courseService.useCourse();
+  const { progress, invalidateProgress } = courseService.useCourseProgress();
+  const { mobile } = useMobile();
 
   useEffect(() => {
-    if (course.data && activeLessonSlug) {
-      setNextLesson(courseService.nextLesson(course.data, activeLessonSlug));
-      setPrevLesson(courseService.prevLesson(course.data, activeLessonSlug));
+    if (course.data && store.activeLessonSlug) {
+      setNextLesson(courseService.nextLesson(course.data, store.activeLessonSlug));
+      setPrevLesson(courseService.prevLesson(course.data, store.activeLessonSlug));
     }
-  }, [activeLessonSlug, course]);
+  }, [store.activeLessonSlug, course]);
 
   const handleRunCode = async () => {
     if (!course.data) {
@@ -38,15 +44,35 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
 
     setRunning(true);
     try {
-      for (const tab of tabs) {
-        const file = files.find(f => f.path === tab.path);
+      for (const tab of store.tabs) {
+        const file = store.files.find(f => f.path === tab.path);
         if (!file) {
           throw new Error(`File ${tab.path} not found`);
         }
         file.content = tab.model.getValue();
       }
-      const output = await editorService.run(course.data.language, files);
-      setOutput(output);
+
+      if (course.data.config.tests) {
+        const res = await editorService.test(
+          plugin!,
+          store.courseSlug!,
+          store.activeLessonSlug,
+          store.files,
+        );
+        actions.setTestResults(res);
+        if (res.passed && store.config.onLessonComplete) {
+          await store.config.onLessonComplete('1.1');
+        }
+        invalidateProgress();
+      } else {
+        const output = await editorService.run(
+          plugin!,
+          store.courseSlug!,
+          store.activeLessonSlug,
+          store.files,
+        );
+        actions.setOutput(output);
+      }
     } finally {
       setRunning(false);
     }
@@ -55,45 +81,49 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
   const handleGoToNext = () => {
     if (nextLesson && course.data) {
       router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
-      setOutput('');
+      actions.setOutput('');
     }
   };
 
   const handleGoToPrev = () => {
     if (prevLesson && course.data) {
       router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
-      setOutput('');
+      actions.setOutput('');
     }
   };
 
+  const nextDisabled =
+    !nextLesson ||
+    running ||
+    (progress[store.activeLessonSlug] &&
+      progress[store.activeLessonSlug]?.status !== 'FINISHED' &&
+      store.config.enableLessonsWithProgress);
+
   return (
     <S.Wrapper>
-      <Button
+      <AgButton
         onClick={handleRunCode}
-        variant="contained"
         startIcon={
           running ? <CircularProgress color="secondary" size={14} /> : <PlayArrowRoundedIcon />
         }
-        sx={{ borderRadius: '1.6rem' }}
       >
         RUN
-      </Button>
+      </AgButton>
       <IconButton aria-label="reset" onClick={handleResetCode}>
         <DeleteOutlineRoundedIcon />
       </IconButton>
       <IconButton aria-label="back" onClick={handleGoToPrev} disabled={!prevLesson || running}>
         <NavigateBeforeRoundedIcon />
       </IconButton>
-      <Button
+      <AgButton
         onClick={handleGoToNext}
-        variant="contained"
-        disabled={!nextLesson || running}
-        color={nextLesson ? 'primary' : 'secondary'}
-        endIcon={<NavigateNextRoundedIcon />}
-        sx={{ borderRadius: '1.6rem' }}
+        color={nextLesson && !nextDisabled ? 'primary' : 'secondary'}
+        disabled={nextDisabled}
+        endIcon={!mobile && <NavigateNextRoundedIcon />}
       >
-        NEXT
-      </Button>
+        {!mobile && 'NEXT'}
+        {mobile && <NavigateNextRoundedIcon />}
+      </AgButton>
     </S.Wrapper>
   );
 };

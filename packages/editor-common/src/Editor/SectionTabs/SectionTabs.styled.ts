@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { SECTION_TABS_WIDTH } from '../../constants';
 
 export const Wrapper = styled.div`
-  border-right: ${p => p.theme.panelSeparator};
-  width: 3rem;
+  width: ${SECTION_TABS_WIDTH}px;
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding-top: 1rem;
+  border-right: 1px solid ${p => p.theme.secondary};
 `;
 
 export const Logo = styled.div`

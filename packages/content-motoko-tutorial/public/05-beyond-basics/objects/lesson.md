@@ -25,8 +25,7 @@ let obj = object {
 obj.sum(); // 3
 ```
 
-Variables and functions defined on the object are sometimes referred to as object members. Functions
-defined on the object are called methods.
+Variables and functions defined on the object are sometimes referred to as object members. Functions defined on the object are called methods.
 
 Each object member has a visibility associated with it:
 
@@ -54,8 +53,7 @@ c.increment();
 c.getCount(); // 1
 ```
 
-In the example you can't access the `counter` field directly, because it's private to the object. To
-access it, you must use the public `getCount()` function.
+In the example you can't access the `counter` field directly, because it's private to the object. To access it, you must use the public `getCount()` function.
 
 ## Exercise
 

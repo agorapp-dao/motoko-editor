@@ -7,9 +7,7 @@ Motoko supports a variety of built-in types, including:
 - `Nat` - natural numbers (only positive values or zero)
 - `Blob` - binary blobs
 
-A unique type you will occasionally encounter is the unit type `()`. This type symbolizes the absence
-of a value (similar to `void` in other languages). It can be utilized to indicate that a function
-does not return any value:
+A unique type you will occasionally encounter is the unit type `()`. This type symbolizes the absence of a value (similar to `void` in other languages). It can be utilized to indicate that a function does not return any value:
 
 ```motoko
 func printNumber(a : Nat) : () {

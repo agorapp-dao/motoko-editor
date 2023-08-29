@@ -8,18 +8,13 @@ export const Wrapper = styled.div<TProps>`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-left: ${p => p.level * 0.3}rem;
+  padding: 0 ${p => p.level * 0.3}rem;
 `;
 
-interface RowProps {
-  $noContent?: boolean;
-}
-
-export const Row = styled.div<RowProps>`
+export const Row = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  color: ${p => (p.$noContent ? p.theme.mutedText : p.theme.intenseText)};
+  align-items: start;
 `;
 
 export const ActiveLink = styled.button`
@@ -30,6 +25,7 @@ export const ActiveLink = styled.button`
   cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  color: #fff;
 
   &:hover {
     background: ${p => p.theme.lessonLinkHover};
@@ -63,4 +59,9 @@ export const Number = styled.div<ILevelProps>`
 export const Name = styled.div<TProps>`
   flex: 1 1 auto;
   text-align: left;
+`;
+
+export const Status = styled.div`
+  width: 30px;
+  margin-right: 1rem;
 `;

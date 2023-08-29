@@ -2,11 +2,11 @@ import { AppProps } from 'next/app';
 import React from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
-import { muiDarkTheme, theme } from '@/src/styles/themes';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from 'styled-components';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { GlobalStyle } from '@/src/styles/global.styled';
+import { darkTheme, muiDarkTheme } from '@agorapp-dao/react-common';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -20,7 +20,7 @@ const MyApp = ({ Component, emotionCache = clientSideEmotionCache, ...rest }: My
     <CacheProvider value={emotionCache}>
       <MuiThemeProvider theme={muiDarkTheme}>
         <CssBaseline />
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
           <GlobalStyle />
           <Component {...pageProps} />
         </ThemeProvider>

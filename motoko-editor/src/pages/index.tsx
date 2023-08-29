@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { contentService } from '@agorapp-dao/content-common';
 import { courseService } from '@agorapp-dao/editor-common';
 
+courseService.baseUrl = '/course';
+
 type IndexPageProps = {
   contentPackages: string[];
 };

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import Link from 'next/link';
+import { darken } from '@mui/material';
 
 export const Wrapper = styled.div`
   ul {
@@ -15,6 +15,18 @@ export const Wrapper = styled.div`
   hr {
     margin: 16px 0;
     color: ${p => p.theme.secondary};
+  }
+
+  h3 {
+    width: 100%;
+    display: block;
+    padding-top: 1rem;
+    font-size: 1.1rem;
+    color: ${p => p.theme.intenseText};
+  }
+
+  strong {
+    color: ${p => darken(p.theme.intenseText, 0.2)};
   }
 `;
 
@@ -32,7 +44,7 @@ export const H2 = styled.h2<IH2Props>`
     $exercise &&
     css`
       color: ${p => p.theme.primary};
-      border-bottom: 1px solid ${p => p.theme.separator};
+      border-bottom: 1px solid #363445;
     `}
 `;
 

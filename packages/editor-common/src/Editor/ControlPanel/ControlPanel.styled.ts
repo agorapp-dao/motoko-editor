@@ -10,5 +10,5 @@ export const Wrapper = styled.div`
   position: absolute;
   padding: 0.5rem;
   margin: 1rem;
-  bottom: 0;
+  top: -75px;
 `;

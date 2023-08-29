@@ -22,8 +22,7 @@ A tuple is immutable, meaning you cannot modify the values within it:
 tuple.0 := 43; // fails
 ```
 
-Tuples are useful for grouping two or more related pieces of information. For example, you can use
-a tuple to represent a point in 2D space:
+Tuples are useful for grouping two or more related pieces of information. For example, you can use a tuple to represent a point in 2D space:
 
 ```motoko
 let point = (20, 15);

@@ -6,29 +6,25 @@ import { ContentItem } from './ContentItem';
 interface TProps {
   lessons: TLesson[];
   level: number;
-  baseIndex?: string;
   handleSelectLesson: (slug: string) => void;
+  enableLessonsWithProgress?: boolean;
 }
 
 export const ContentLevel: React.FC<TProps> = ({
   lessons,
   level,
-  baseIndex,
   handleSelectLesson,
+  enableLessonsWithProgress,
 }: TProps) => {
-  function createIndex(index: number, baseIndex?: string) {
-    return (baseIndex ? `${baseIndex}.` : '') + index;
-  }
-
   return (
     <S.Wrapper level={level}>
       {lessons.map((item, index) => (
-        <div key={index}>
+        <div key={item.slug}>
           <ContentItem
             item={item}
             level={level}
-            baseIndex={createIndex(index + 1, baseIndex)}
             handleSelectLesson={handleSelectLesson}
+            enableLessonsWithProgress={enableLessonsWithProgress}
           />
         </div>
       ))}

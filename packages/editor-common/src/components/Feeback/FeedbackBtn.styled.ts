@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  position: fixed;
-  right: 0;
-  bottom: 10rem;
-  z-index: 10;
+  height: 150px;
 `;
 
 export const Rotate = styled.div`
@@ -17,14 +14,8 @@ export const Rotate = styled.div`
 export const InnerWrapper = styled.div`
   opacity: 0.7;
   cursor: pointer;
-  color: #fff;
-  font-weight: 900;
   position: absolute;
-  right: 0;
-  top: -42px;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  right: 20px;
+  top: -20px;
   padding: 4px 6px;
-  border: 1px solid #ffffff26;
-  background: ${p => p.theme.blockBg};
 `;

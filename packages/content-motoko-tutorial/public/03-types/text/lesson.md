@@ -1,5 +1,4 @@
-In this section, we will look into the `Text` type, which represents Unicode strings. To declare
-a text variable, simply put the string in double quotes:
+In this section, we will look into the `Text` type, which represents Unicode strings. To declare a text variable, simply put the string in double quotes:
 
 ```motoko
 let text = "Hello, world!";
@@ -20,8 +19,7 @@ let text = "Hello, world!";
 text.size(); // 13
 ```
 
-The base library includes the [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text)
-module, which contains useful utility functions. Here are some examples:
+The base library includes the [Text](https://internetcomputer.org/docs/current/motoko/main/base/Text) module, which contains useful utility functions. Here are some examples:
 
 ```motoko
 import Text "mo:base/Text";
@@ -35,8 +33,7 @@ let words = Text.split("This is a sentence.", #char ' ');
 
 ```
 
-Note that when concatenating strings, you can't mix `Text` and other types (such as `Nat`). You must
-first convert these other types to `Text`:
+Note that when concatenating strings, you can't mix `Text` and other types (such as `Nat`). You must first convert these other types to `Text`:
 
 ```motoko
 import Nat "mo:base/Nat";
@@ -55,8 +52,7 @@ for (c in "abc".chars()) {
 };
 ```
 
-Note that when working with characters, you are actually working with a different type, called
-`Char`. This type represents a single Unicode character. To create a character, use single quotes:
+Note that when working with characters, you are actually working with a different type, called `Char`. This type represents a single Unicode character. To create a character, use single quotes:
 
 ```motoko
 let c = 'a';
@@ -64,8 +60,7 @@ let c = 'a';
 
 ## Exercise
 
-We have defined the `text` variable for you. Your task is to find out how many `o` characters are
-there in the string and print the result using the `D.print()` function.
+We have defined the `text` variable for you. Your task is to find out how many `o` characters are there in the string and print the result using the `D.print()` function.
 
 For text `"Hello, World!"`, the output should look like this:
 
@@ -73,8 +68,7 @@ For text `"Hello, World!"`, the output should look like this:
 There are 2 'o' characters in the string.
 ```
 
-To solve this exercise, you will need to use the `if` expression we will introduce later. For
-now simple condition like this will suffice:
+To solve this exercise, you will need to use the `if` expression we will introduce later. For now simple condition like this will suffice:
 
 ```motoko
 if (text == "Hello, World!") {

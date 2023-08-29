@@ -1,11 +1,8 @@
+import { SWRConfig } from 'swr';
 import * as S from '@/src/styles/global.styled';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { courseService, Editor, editorService } from '@agorapp-dao/editor-common';
 import { contentService } from '@agorapp-dao/content-common';
-import { MotokoEditorPlugin } from '@agorapp-dao/editor-lang-motoko';
-import { SWRConfig } from 'swr';
 
 type TEditorPageProps = {
   lessonSlug: string;
@@ -13,25 +10,26 @@ type TEditorPageProps = {
   fallback: { [key: string]: any };
 };
 
-editorService.registerLanguagePlugin(new MotokoEditorPlugin());
+courseService.baseUrl = '/course';
+
+editorService.pluginLoader = async (pluginName: string) => {
+  let pluginModule;
+  switch (pluginName) {
+    case '@agorapp-dao/editor-plugin-motoko':
+      pluginModule = await import('@agorapp-dao/editor-plugin-motoko');
+      break;
+
+    default:
+      throw new Error(`Plugin ${pluginName} not found`);
+  }
+  return pluginModule.default;
+};
 
 export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditorPageProps) {
-  const [activeLessonSlug, setActiveLessonSlug] = useState(lessonSlug);
-  const router = useRouter();
-
-  useEffect(() => {
-    const slug = router.query.lessonSlug ? router.query.lessonSlug[0] : '';
-    setActiveLessonSlug(slug);
-  }, [router.query.lessonSlug]);
-
   return (
     <SWRConfig value={{ fallback }}>
       <S.Main>
-        <Editor
-          courseSlug={courseSlug}
-          activeLessonSlug={activeLessonSlug}
-          setActiveLessonSlug={setActiveLessonSlug}
-        />
+        <Editor courseSlug={courseSlug} activeLessonSlug={lessonSlug} />
       </S.Main>
     </SWRConfig>
   );
@@ -53,11 +51,15 @@ export async function getServerSideProps(
 
   const fallback: { [key: string]: any } = {};
 
-  const course = await contentService.getCourse(courseSlug);
+  const course = await contentService.getCourseFromFile(courseSlug);
   if (!course) {
     throw new Error(`Course ${courseSlug} not found`);
   }
-  fallback[`/api/course/${courseSlug}`] = course;
+  const courseJsonPath = courseService.getContentPath(course, 'course.json');
+  if (!courseJsonPath) {
+    throw new Error(`Course ${courseSlug}: course.json not found`);
+  }
+  fallback[courseJsonPath] = course;
 
   let lessonSlug = ctx.params.lessonSlug?.length ? ctx.params.lessonSlug[0] : undefined;
   if (!lessonSlug) {
@@ -77,7 +79,7 @@ export async function getServerSideProps(
   if (lesson?.content) {
     const contentPath = courseService.getContentPath(course, lesson.content);
     if (contentPath) {
-      fallback[contentPath] = await contentService.getContent(course, lesson.content);
+      fallback[contentPath] = await contentService.getContentFromFile(course, lesson.content);
     }
   }
 

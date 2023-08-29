@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { EditorContext } from '../../EditorContext';
 import { courseService } from '../../../services/courseService';
 import { Markdown } from '../../Markdown/Markdown';
 import { Solution } from '../../Solution/Solution';
+import { useEditorStore } from '../../EditorStore';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -23,9 +23,9 @@ function TabPanel(props: TabPanelProps) {
 
 export const SectionLesson = () => {
   const [lessonTab, setLessonTab] = useState(0);
-  const { courseSlug, activeLessonSlug } = useContext(EditorContext);
-  const course = courseService.useCourse(courseSlug);
-  const activeLesson = courseService.findLessonBySlug(course.data, activeLessonSlug);
+  const store = useEditorStore();
+  const course = courseService.useCourse();
+  const activeLesson = courseService.findLessonBySlug(course.data, store.activeLessonSlug);
   const markdown = courseService.useContent(course.data, activeLesson?.content);
   const solutionMarkdown = courseService.useContent(course.data, activeLesson?.solution);
 
