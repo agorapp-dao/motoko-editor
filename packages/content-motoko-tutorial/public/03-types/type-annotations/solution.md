@@ -5,5 +5,4 @@ func greet(name : Text) : Text {
 
 let name = "World";
 greet(name);
-
 ```

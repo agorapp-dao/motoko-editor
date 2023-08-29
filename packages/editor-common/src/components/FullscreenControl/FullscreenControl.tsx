@@ -1,13 +1,12 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IconButton } from '@mui/material';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-import { EditorContext } from '../../Editor/EditorContext';
 
 export const FullscreenControl = () => {
-  const { fullscreen, setFullscreen } = useContext(EditorContext);
+  const [fullscreen, setFullscreen] = useState(false);
 
-  const toggleFullscreen = useCallback(() => {
+  const toggleFullscreen = () => {
     const newState = !fullscreen;
     setFullscreen(newState);
     if (newState) {
@@ -15,7 +14,7 @@ export const FullscreenControl = () => {
     } else {
       document.exitFullscreen();
     }
-  }, [fullscreen, setFullscreen]);
+  };
 
   useEffect(() => {
     const fullscreenchange = () => {
@@ -27,7 +26,7 @@ export const FullscreenControl = () => {
     return () => {
       document.removeEventListener('fullscreenchange', fullscreenchange);
     };
-  }, [setFullscreen]);
+  }, []);
 
   return (
     <IconButton aria-label="fullscreen" onClick={toggleFullscreen}>

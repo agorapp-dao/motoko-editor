@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from './Solution.styled';
-import { Button } from '@mui/material';
-import { EditorContext } from '../EditorContext';
 import { Markdown } from '../Markdown/Markdown';
+import { useEditorStore } from '../EditorStore';
+import { AgButton } from '@agorapp-dao/react-common';
 
 export interface SolutionProps {
   content: string;
@@ -10,20 +10,22 @@ export interface SolutionProps {
 
 export const Solution = ({ content }: SolutionProps) => {
   const [shown, setShown] = useState(false);
-  const { activeLessonSlug } = useContext(EditorContext);
+  const editorStore = useEditorStore();
 
   useEffect(() => {
     // reset solution state when lesson changes
     setShown(false);
-  }, [activeLessonSlug]);
+  }, [editorStore.activeLessonSlug]);
 
   return (
     <S.Wrapper>
+      <S.H2>Solution</S.H2>
       {!shown ? (
-        <Button onClick={() => setShown(true)}>Show solution</Button>
+        <AgButton color="secondary" onClick={() => setShown(true)}>
+          Show solution
+        </AgButton>
       ) : (
         <>
-          <h3>Solution</h3>
           <Markdown>{content}</Markdown>
         </>
       )}

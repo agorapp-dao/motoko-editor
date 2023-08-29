@@ -5,21 +5,20 @@ type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
 
 func toText(d : Day) : Text {
   switch d {
-     case (#Sun) "Sunday";
-     case (#Mon) "Monday";
-     case (#Tue) "Tuesday";
-     case (#Wed) "Wednesday";
-     case (#Thu) "Thursday";
-     case (#Fri) "Friday";
-     case (#Sat) "Saturday";
-   };
+    case (#Sun) "Sunday";
+    case (#Mon) "Monday";
+    case (#Tue) "Tuesday";
+    case (#Wed) "Wednesday";
+    case (#Thu) "Thursday";
+    case (#Fri) "Friday";
+    case (#Sat) "Saturday"
+  }
 };
 
 toText(#Thu);
 ```
 
-The switch expression must be exhaustive, i.e., it must cover all possible values of the variant
-type:
+The switch expression must be exhaustive, i.e., it must cover all possible values of the variant type:
 
 ```motoko
 type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
@@ -27,14 +26,13 @@ type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
 func toText(d : Day) : Text {
   // fails with `this switch does not cover value ...`
   switch d {
-     case (#Sun) "Sunday";
-     case (#Mon) "Monday";
-   };
+    case (#Sun) "Sunday";
+    case (#Mon) "Monday"
+  }
 };
 ```
 
-What makes switch truly powerful is **pattern matching**. Recall that a variant type can hold
-a value. In Motoko, this is often used to represent the result of some operation:
+What makes switch truly powerful is **pattern matching**. Recall that a variant type can hold a value. In Motoko, this is often used to represent the result of some operation:
 
 ```motoko
 type Result = {
@@ -59,8 +57,7 @@ switch (result) {
 
 ## Exercise
 
-Complete the implementation of the `processResult function. This function should print one of the
-following messages:
+Complete the implementation of the `processResult function. This function should print one of the following messages:
 
 - `Operation successful, received: ` followed by the number
 - `Operation failed with error: ` followed by the error message.

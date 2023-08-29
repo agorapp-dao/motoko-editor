@@ -1,10 +1,11 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { editor } from 'monaco-editor';
 import * as S from './MonacoEditor.styled';
 import { useMonaco } from './Monaco';
-import { EditorContext } from '../EditorContext';
 import { editorService } from '../editorService';
-import { IEditorFile } from '../../types/IEditorFile';
+import { useEditorStore } from '../EditorStore';
+import { courseService } from '../../services/courseService';
+import { useEditorPlugin } from './useEditorPlugin';
 
 export interface MonacoEditorProps {
   model?: editor.ITextModel;
@@ -12,9 +13,11 @@ export interface MonacoEditorProps {
 
 export const MonacoEditor = ({ model }: MonacoEditorProps) => {
   const monaco = useMonaco();
+  const plugin = useEditorPlugin();
   const [editor, setEditor] = useState<editor.IStandaloneCodeEditor | undefined>(undefined);
   const divEl = useRef<HTMLDivElement>(null);
-  const { fontSize, files, tabs, activeTab } = useContext(EditorContext);
+  const store = useEditorStore();
+  const course = courseService.useCourse();
 
   useEffect(() => {
     let editor: editor.IStandaloneCodeEditor;
@@ -25,9 +28,12 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
         model: null,
         theme: 'editorTheme',
         automaticLayout: true,
-        fontSize: fontSize,
+        fontSize: store.fontSize,
         minimap: {
           enabled: false,
+        },
+        scrollbar: {
+          verticalScrollbarSize: 7,
         },
         tabSize: 2,
         suggest: {
@@ -37,6 +43,23 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
         },
       });
 
+      const e = editor as any;
+
+      // TODO: https://github.com/microsoft/monaco-editor/issues/2000
+      const editorService = e._codeEditorService;
+      const openEditorBase = editorService.openCodeEditor.bind(editorService);
+      editorService.openCodeEditor = async (input: any, source: any) => {
+        const result = await openEditorBase(input, source);
+        if (result === null) {
+          const model = monaco.editor.getModel(input.resource);
+          const newTab = store.tabs.findIndex(tab => tab.model === model);
+          if (newTab) {
+            store.actions.setActiveTab(newTab);
+          }
+        }
+        return result; // always return the base result
+      };
+
       setEditor(editor);
     }
 
@@ -44,7 +67,7 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
       isMounted = false;
       editor?.dispose();
     };
-  }, [monaco, divEl, fontSize]);
+  }, [monaco, divEl, store.fontSize]);
 
   useEffect(() => {
     if (!editor || !model) {
@@ -68,13 +91,13 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
         clearTimeout(checkTimeout);
       }
       checkTimeout = setTimeout(() => {
-        if (!isMounted) {
+        if (!isMounted || !course.data || !plugin) {
           return;
         }
 
         // sync opened tab content with files in memory
-        for (const tab of tabs) {
-          const file = files.find(file => file.path === tab.path);
+        for (const tab of store.tabs) {
+          const file = store.files.find(file => file.path === tab.path);
           if (!file) {
             throw new Error(`File for tab not found: ${tab.path}`);
           }
@@ -83,9 +106,9 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
           }
         }
 
-        const tab = tabs[activeTab];
+        const tab = store.tabs[store.activeTab];
 
-        editorService.check(tab.path, files);
+        editorService.check(plugin, tab.path, store.files);
       }, 300);
 
       return () => {
@@ -97,7 +120,7 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
     editor.onDidChangeModel(checkModelDebounced);
     editor.onDidChangeModelContent(checkModelDebounced);
     checkModelDebounced();
-  }, [activeTab, editor, files, tabs]);
+  }, [store.activeTab, editor, store.files, store.tabs, course.data, plugin]);
 
   return <S.Code ref={divEl} />;
 };

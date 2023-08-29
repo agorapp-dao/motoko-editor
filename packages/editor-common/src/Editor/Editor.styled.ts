@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+import { Box } from '@mui/material';
+import styled, { css } from 'styled-components';
+import { SECTION_TABS_WIDTH } from '../constants';
 
 export const OverlayBox = styled.div`
   position: absolute;
@@ -25,21 +27,30 @@ export const Section = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  border-right: ${p => p.theme.panelSeparator};
+  padding-right: 4px;
 `;
 
-export const OverlaySection = styled.div`
+interface IOverlaySectionProps {
+  $top?: number;
+}
+
+export const OverlaySection = styled.div<IOverlaySectionProps>`
   position: absolute;
-  top: 0;
-  left: 48px;
+  top: 168px;
+  left: ${SECTION_TABS_WIDTH}px;
   right: 0;
   bottom: 0;
   z-index: 1000;
   display: flex;
   background-color: ${p => p.theme.background};
+  ${({ $top }) =>
+    $top &&
+    css`
+      top: ${$top}px;
+    `}
 `;
 
-export const RightPane = styled.div`
+export const RightPane = styled(Box)`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -49,12 +60,17 @@ export const Code = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-bottom: ${p => p.theme.panelSeparator};
   overflow: hidden;
+  position: relative;
+`;
+
+export const BottomPanel = styled.div`
+  position: relative;
 `;
 
 export const ListOfContents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 1rem 0;
 `;

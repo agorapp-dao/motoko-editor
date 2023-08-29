@@ -1,5 +1,4 @@
-A class in Motoko serves as a blueprint for creating objects. It describes the fields and methods
-an object will have and how to create it:
+A class in Motoko serves as a blueprint for creating objects. It describes the fields and methods an object will have and how to create it:
 
 ```motoko
 class Person(_firstName : Text, _lastName : Text) {
@@ -37,5 +36,4 @@ Create a class `Counter` with the following members:
 - A public method `increment()` that increments the counter.
 - A public method `get()` that returns the current value of the counter.
 
-Create an instance of the `Counter` class and call the `increment()` method on it twice. Then call
-the `get()` method.
+Create an instance of the `Counter` class and call the `increment()` method on it twice. Then call the `get()` method.

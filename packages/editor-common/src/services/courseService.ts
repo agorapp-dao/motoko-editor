@@ -1,16 +1,73 @@
 import { TCourse, TLesson } from '@agorapp-dao/content-common';
 import { useJson } from '../hooks/useJson';
 import { useText } from '../hooks/useText';
-import { IEditorFile } from '../types/IEditorFile';
+import { TEditorFile } from '../types/TEditorFile';
+import { useEditorStore } from '../Editor/EditorStore';
+import { TCourseProgress } from '@agorapp-dao/content-common/src/types/TCourseProgress';
+import { useEffect, useState } from 'react';
 
 class CourseService {
+  baseUrl = '';
+
   /**
    * Fetches information about the specified course.
    * @param courseSlug
    */
-  useCourse(courseSlug: string | undefined) {
+  useCourse() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useJson<TCourse>(`/api/course/${courseSlug}`);
+    const store = useEditorStore();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useJson<TCourse>(
+      `/content2/content-${store.courseSlug}/course.json`,
+      (data: TCourse) => {
+        data.lessons = this.assignLessonNumbers(data.lessons);
+        return data;
+      },
+    );
+  }
+
+  assignLessonNumbers(lessons: TLesson[], parentIndex?: string) {
+    lessons.forEach((lesson, index) => {
+      lesson.$lessonNumber = (parentIndex ? `${parentIndex}` : ``) + `${index + 1}.`;
+      if (lesson.children) {
+        this.assignLessonNumbers(lesson.children, lesson.$lessonNumber);
+      }
+    });
+    return lessons;
+  }
+
+  useCourseProgress() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [progress, setProgress] = useState<TCourseProgress>({});
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const store = useEditorStore();
+    const apiUrl = store.apiUrl || '/api';
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data, mutate } = useJson<any>(`${apiUrl}/course/${store.courseSlug}`);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (data) {
+        const progress_: TCourseProgress = {};
+        // TODO: types for Agora API
+        for (const lesson of data.lessons) {
+          progress_[lesson.slug] = {
+            status: lesson.progress?.status,
+          };
+        }
+        setProgress(progress_);
+      }
+    }, [data]);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+
+    return {
+      progress,
+      invalidateProgress: () => {
+        mutate();
+      },
+    };
   }
 
   /**
@@ -34,14 +91,18 @@ class CourseService {
       return undefined;
     }
 
-    return `/content/content-${course.slug}/${contentPath}`;
+    return `/content2/content-${course.slug}/${contentPath}`;
   }
 
   getCoursePath(courseSlug: string, lessonSlug?: string) {
-    if (!lessonSlug) {
-      return `/course/${courseSlug}`;
+    if (!this.baseUrl) {
+      throw new Error(`courseService.baseUrl not set!`);
     }
-    return `/course/${courseSlug}/${lessonSlug}`;
+
+    if (!lessonSlug) {
+      return `${courseService.baseUrl}/${courseSlug}`;
+    }
+    return `${courseService.baseUrl}/${courseSlug}/${lessonSlug}`;
   }
 
   findLessonBySlug(course: TCourse | undefined, lessonSlug: string | undefined) {
@@ -110,7 +171,7 @@ class CourseService {
     return lessons[currentLessonIndex + delta];
   }
 
-  async getLessonFiles(course: TCourse, lessonSlug: string): Promise<IEditorFile[]> {
+  async getLessonFiles(course: TCourse, lessonSlug: string): Promise<TEditorFile[]> {
     const lesson = this.findLessonBySlug(course, lessonSlug);
     if (!lesson) {
       throw new Error(`Lesson ${lessonSlug} not found in course ${course.slug}`);
@@ -124,7 +185,7 @@ class CourseService {
       lesson.files.map(file => courseService.fetchContent(course, file)),
     );
 
-    const files: IEditorFile[] = lesson.files.map((file, index) => ({
+    const files: TEditorFile[] = lesson.files.map((file, index) => ({
       path: file,
       content: contents[index] || '',
     }));

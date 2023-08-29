@@ -1,5 +1,4 @@
 ```motoko
-// your code here
 let person = object {
   public let firstName = "John";
   public let lastName = "Doe";

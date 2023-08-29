@@ -1,9 +1,6 @@
-Your actor will be deployed in a [canister](https://internetcomputer.org/docs/current/concepts/canisters-code)
-on the Internet Computer. This is essentially a public environment, so it's often crucial to
-regulate who has access to your actor.
+Your actor will be deployed in a [canister](https://internetcomputer.org/docs/current/concepts/canisters-code) on the Internet Computer. This is essentially a public environment, so it's often crucial to regulate who has access to your actor.
 
-In Motoko, you can identify the caller of a method by capturing the message params with the `shared`
-keyword:
+In Motoko, you can identify the caller of a method by capturing the message params with the `shared` keyword:
 
 ```motoko
 import D "mo:base/Debug";
@@ -27,8 +24,7 @@ module from the base library to work with principals:
 Principal.toText(caller); // "iakn2-jkjiq-5dcoa"
 ```
 
-A principal can represent either an end user or another actor. You can get an actor's principal by
-calling the `Principal.fromActor()`:
+A principal can represent either an end user or another actor. You can get an actor's principal by calling the `Principal.fromActor()`:
 
 ```motoko
 Principal.fromActor(TokenWallet); // "nm4y5-zsjiq-5deoa"
@@ -45,5 +41,4 @@ Principal.isAnonymous(anonymous); // true
 
 ## Exercise
 
-Complete the implementation of the `whoAmI` method. It should return the caller's principal,
-represented as text.
+Complete the implementation of the `whoAmI` method. It should return the caller's principal, represented as text.

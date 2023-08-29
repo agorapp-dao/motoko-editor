@@ -1,19 +1,15 @@
 import loader, { Monaco } from '@monaco-editor/loader';
 export type { Monaco } from '@monaco-editor/loader';
 import type { editor } from 'monaco-editor';
-import { editorService } from '../editorService';
 import { useEffect, useState } from 'react';
 
 let monaco: Promise<Monaco>;
 
 export async function getMonaco() {
   if (!monaco) {
-    monaco = loader.init().then(monaco => {
-      for (const plugin of editorService.getLanguagePlugins()) {
-        plugin.init(monaco);
-      }
-      return monaco;
-    });
+    loader.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.0/min/vs' } });
+    // loader.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.41.0/min/vs' } });
+    monaco = loader.init();
   }
 
   return monaco;

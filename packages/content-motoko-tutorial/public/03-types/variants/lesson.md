@@ -6,8 +6,7 @@ type Day = {#Sun; #Mon; #Tue; #Wed; #Thu; #Fri; #Sat};
 let day : Day = #Wed;
 ```
 
-You can assign a type to each option. This is useful when you want to store additional information in
-the variant:
+You can assign a type to each option. This is useful when you want to store additional information in the variant:
 
 ```motoko
 type Result = {

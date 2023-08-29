@@ -1,16 +1,16 @@
-import { Box, Icon, IconButton, Tab, Tabs } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import { Box, IconButton, Tab, Tabs } from '@mui/material';
+import React, { useState } from 'react';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import { styled } from '@mui/material/styles';
 import * as S from './SectionTabs.styled';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CodeIcon from '@mui/icons-material/Code';
 import { EEditorSectionType } from '../../constants';
-import { EditorContext } from '../EditorContext';
-import { AgorAppIcon } from '../../constants/assets';
 import { SettingsDialog } from '../SettingsDialog/SettingsDialog';
-import { AuthorDialog } from '../../components/AuthorDialog/AuthorDialog';
 import { useMobile } from '../../hooks/useMobile';
+import { useEditorActions, useEditorStore } from '../EditorStore';
+import { FeedbackBtn } from '../../components/Feeback/FeedbackBtn';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 interface StyledTabProps {
   icon?: string | React.ReactElement;
@@ -40,46 +40,52 @@ const AntTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} /
 
 export const SectionTabs = () => {
   const { mobile } = useMobile();
-  const { currentSection, setCurrentSection } = useContext(EditorContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [authorDialogOpen, setAuthorDialogOpen] = useState(false);
+  const store = useEditorStore();
+  const actions = useEditorActions();
 
   const changeSection = (event: React.SyntheticEvent, section: EEditorSectionType) => {
-    setCurrentSection(section);
+    actions.setCurrentSection(section);
   };
 
   return (
     <S.Wrapper>
-      <AuthorDialog open={authorDialogOpen} handleClose={() => setAuthorDialogOpen(false)} />
-      <S.Logo onClick={() => setAuthorDialogOpen(state => !state)}>
-        <Icon sx={{ fontSize: 40 }} style={{ width: '100%', lineHeight: 0 }}>
-          <img src={AgorAppIcon} height={35} width={35} alt="AgorApp" />
-        </Icon>
-      </S.Logo>
       <S.Tabs>
         <Box sx={{ flexGrow: 1, display: 'flex', height: 224 }}>
           <Tabs
             orientation="vertical"
             variant="scrollable"
             value={
-              !mobile && currentSection === EEditorSectionType.CODE
+              !mobile && store.currentSection === EEditorSectionType.CODE
                 ? EEditorSectionType.LESSON
-                : currentSection
+                : store.currentSection
             }
             onChange={changeSection}
             aria-label="Navigation menu"
             sx={{ borderRight: 0 }}
           >
+            <AntTab
+              icon={<FormatListBulletedIcon />}
+              value={EEditorSectionType.TABLE_OF_CONTENTS}
+            />
             <AntTab icon={<ImportContactsIcon />} value={EEditorSectionType.LESSON} />
             {mobile && <AntTab icon={<CodeIcon />} value={EEditorSectionType.CODE} />}
           </Tabs>
         </Box>
       </S.Tabs>
+      {store.courseSlug && store.activeLessonSlug && (
+        <FeedbackBtn
+          userCode={store.tabs[store.activeTab]?.model.getValue()}
+          slug={`${store.courseSlug}/${store.activeLessonSlug}`}
+        />
+      )}
       <S.Settings>
         <SettingsDialog open={settingsOpen} handleClose={() => setSettingsOpen(false)} />
-        <IconButton aria-label="settings" onClick={() => setSettingsOpen(state => !state)}>
-          <SettingsRoundedIcon />
-        </IconButton>
+        <Box sx={{ textAlign: 'center' }}>
+          <IconButton aria-label="settings" onClick={() => setSettingsOpen(state => !state)}>
+            <SettingsRoundedIcon />
+          </IconButton>
+        </Box>
       </S.Settings>
     </S.Wrapper>
   );

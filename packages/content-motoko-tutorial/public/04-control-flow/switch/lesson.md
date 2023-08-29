@@ -17,9 +17,7 @@ switch (name) {
 };
 ```
 
-In the example above, the switch expression matches the value of the `name` variable against the
-values provided in the `case` clauses. If the value matches, the code within the corresponding
-clause is executed.
+In the example above, the switch expression matches the value of the `name` variable against the values provided in the `case` clauses. If the value matches, the code within the corresponding clause is executed.
 
 The `_` case is the default case, and will be executed if none of the other cases match.
 
@@ -37,8 +35,7 @@ let greeting = switch (name) {
 D.print(greeting);
 ```
 
-Notice that we have omitted the curly brackets in the `case` clauses. This is possible because each
-`case` clause contains a single expression.
+Notice that we have omitted the curly brackets in the `case` clauses. This is possible because each `case` clause contains a single expression.
 
 ## Exercise
 

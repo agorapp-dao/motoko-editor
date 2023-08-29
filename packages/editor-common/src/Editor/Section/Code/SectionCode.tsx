@@ -1,34 +1,44 @@
-import React, { useContext } from 'react';
-import { Box, Tabs } from '@mui/material';
-import { EditorContext } from '../../EditorContext';
+import React from 'react';
+import { Box, Tabs, useMediaQuery } from '@mui/material';
 import { PanelTab } from '../../../components/PanelTab/PanelTab';
 import { FullscreenControl } from '../../../components/FullscreenControl/FullscreenControl';
 import { MonacoEditor } from '../../Monaco/MonacoEditor';
+import { useEditorStore } from '../../EditorStore';
+import { useTheme } from '@mui/material/styles';
 
 export const SectionCode = () => {
-  const { tabs, activeTab, setActiveTab } = useContext(EditorContext);
+  const store = useEditorStore();
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const changeActiveTab = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
+    store.actions.setActiveTab(newValue);
   };
 
-  if (!tabs.length) {
+  if (!store.tabs.length) {
     return <div></div>;
   }
 
   return (
     <>
       <Box display="flex" flexDirection="row">
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', flex: '1 1 auto' }}>
-          <Tabs value={activeTab} onChange={changeActiveTab}>
-            {tabs?.map((tab, index) => (
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: theme => theme.palette.secondary.main,
+            flex: '1 1 auto',
+          }}
+        >
+          <Tabs value={store.activeTab} onChange={changeActiveTab}>
+            {store.tabs?.map((tab, index) => (
               <PanelTab label={tab.path} key={index} value={index} />
             ))}
           </Tabs>
         </Box>
-        <FullscreenControl />
+        {!isMobile && <FullscreenControl />}
       </Box>
-      <MonacoEditor model={tabs[activeTab]?.model} />
+      <MonacoEditor model={store.tabs[store.activeTab]?.model} />
     </>
   );
 };

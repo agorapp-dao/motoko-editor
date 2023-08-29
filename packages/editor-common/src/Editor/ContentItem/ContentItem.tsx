@@ -1,46 +1,69 @@
 import * as S from './ContentItem.styled';
-import React, { useContext, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { TLesson } from '@agorapp-dao/content-common';
 import { Collapse } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/router';
 import { ContentLevel } from './ContentLevel';
-import { EditorContext } from '../EditorContext';
 import { courseService } from '../../services/courseService';
+import { useEditorStore } from '../EditorStore';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 interface TProps {
   item: TLesson;
   level: number;
-  baseIndex?: string;
   handleSelectLesson: (slug: string) => void;
+  enableLessonsWithProgress?: boolean;
 }
 
 export const ContentItem: React.FC<TProps> = ({
   item,
   level,
-  baseIndex,
   handleSelectLesson,
+  enableLessonsWithProgress,
 }: TProps) => {
-  const { courseSlug } = useContext(EditorContext);
+  const store = useEditorStore();
   const [opened, setOpened] = useState(true);
   const router = useRouter();
+  const { progress } = courseService.useCourseProgress();
+
+  const status = progress[item.slug]?.status;
+  const linkEnabled =
+    !enableLessonsWithProgress ||
+    (enableLessonsWithProgress && (status === 'FINISHED' || status === 'STARTED'));
 
   const handleClick = (lesson: TLesson) => {
-    if (lesson.content) {
-      router.push(courseService.getCoursePath(courseSlug!, lesson.slug));
+    if (lesson.content && linkEnabled) {
+      router.push(courseService.getCoursePath(store.courseSlug!, lesson.slug));
       handleSelectLesson(lesson.slug);
     } else if (lesson.children?.length) {
       setOpened(!opened);
     }
   };
 
-  const noContent = !item.content && !item.children?.length;
+  const linkStyle = useMemo(() => {
+    if (enableLessonsWithProgress) {
+      const clickEnabled = status === 'FINISHED' || status === 'STARTED';
+      return {
+        cursor: clickEnabled ? 'pointer' : 'default',
+        color: clickEnabled ? '#fff' : 'inherit',
+      };
+    }
+    return {};
+  }, [status, enableLessonsWithProgress]);
 
   return (
     <>
-      <S.ActiveLink onClick={() => handleClick(item)}>
-        <S.Row $noContent={noContent}>
-          <S.Number level={level}>{baseIndex}</S.Number>
+      <S.ActiveLink onClick={() => handleClick(item)} disabled={!linkEnabled} style={linkStyle}>
+        <S.Row>
+          <S.Status>
+            <div>
+              {status === 'FINISHED' && <TaskAltIcon />}
+              {status === 'STARTED' && <PlayArrowIcon />}
+            </div>
+          </S.Status>
+          <S.Number level={level}>{item.$lessonNumber}</S.Number>
           <S.Name level={level}>{item.name}</S.Name>
           {item.children?.length && (
             <ExpandMoreIcon
@@ -58,8 +81,8 @@ export const ContentItem: React.FC<TProps> = ({
             <ContentLevel
               lessons={item.children}
               level={level + 1}
-              baseIndex={baseIndex}
               handleSelectLesson={handleSelectLesson}
+              enableLessonsWithProgress={enableLessonsWithProgress}
             />
           </div>
         </Collapse>
@@ -67,3 +90,10 @@ export const ContentItem: React.FC<TProps> = ({
     </>
   );
 };
+
+interface TProps {
+  item: TLesson;
+  level: number;
+  handleSelectLesson: (slug: string) => void;
+  enableLessonsWithProgress?: boolean;
+}

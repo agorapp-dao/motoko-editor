@@ -17,9 +17,7 @@ let a = 0xff; // 255 : Nat
 
 ## Bounded integers
 
-`Nat` and `Int` do not have an upper limit on their values. The System will allocate as much
-memory as needed to store the value. However, this may not always be desirable, especially in
-blockchain applications, where memory and blockchain space are limited.
+`Nat` and `Int` do not have an upper limit on their values. The System will allocate as much memory as needed to store the value. However, this may not always be desirable, especially in blockchain applications, where memory and blockchain space are limited.
 
 For this reason, Motoko provides bounded types that have a fixed size:
 
@@ -34,9 +32,7 @@ To use these types, you must explicitly declare them:
 let a : Nat8 = 64;
 ```
 
-Note that `Nat8` and `Nat` are different types, despite both representing natural numbers. To
-convert between them, you need to use the `Nat8.toNat()` and `Nat8.fromNat()` functions from the
-[base library](https://internetcomputer.org/docs/current/motoko/main/base/Nat8):
+Note that `Nat8` and `Nat` are different types, despite both representing natural numbers. To convert between them, you need to use the `Nat8.toNat()` and `Nat8.fromNat()` functions from the [base library](https://internetcomputer.org/docs/current/motoko/main/base/Nat8):
 
 ```motoko
 import Nat8 "mo:base/Nat8";

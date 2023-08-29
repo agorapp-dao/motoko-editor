@@ -1,52 +1,50 @@
-import { IEditorLanguagePlugin } from '../types/IEditorLanguagePlugin';
-import { IEditorFile } from '../types/IEditorFile';
+import { IEditorPlugin } from '../types/IEditorPlugin';
+import { TEditorFile } from '../types/TEditorFile';
+import { TTestResponse } from '../types/TTestResponse';
+
+export type PluginLoader = (pluginName: string) => Promise<new () => IEditorPlugin>;
+
+const emptyPluginLoader: PluginLoader = async pluginName => {
+  throw new Error(
+    `Cannot load plugin ${pluginName}. No pluginLoader has been provided. Set editorService.pluginLoader first.`,
+  );
+};
 
 class EditorService {
-  private languagePlugins: { [key: string]: IEditorLanguagePlugin } = {};
+  pluginLoader: PluginLoader = emptyPluginLoader;
 
-  /**
-   * Maps file extensions to lang plugins that handle them.
-   * @private
-   */
-  private fileExtensions: { [key: string]: string } = {};
-
-  registerLanguagePlugin(plugin: IEditorLanguagePlugin) {
-    this.languagePlugins[plugin.language] = plugin;
-
-    for (const fileExtension of plugin.fileExtensions) {
-      this.fileExtensions[fileExtension] = plugin.language;
+  registerPlugin(plugin: IEditorPlugin) {
+    for (const ext of Object.keys(plugin.fileExtensions)) {
+      const lang = plugin.fileExtensions[ext];
     }
   }
 
-  getLanguagePlugin(language: string) {
-    if (!this.languagePlugins[language]) {
-      throw new Error(`Language plugin for ${language} not found`);
-    }
-    return this.languagePlugins[language];
-  }
-
-  getLanguagePlugins(): IEditorLanguagePlugin[] {
-    return Object.values(this.languagePlugins);
-  }
-
-  getLanguageForFile(filePath: string): string {
+  getLanguageForFile(plugin: IEditorPlugin, filePath: string): string {
     const fileExtension = filePath.split('.').pop();
-    return fileExtension ? this.fileExtensions[fileExtension] : 'text/plain';
+    return fileExtension ? plugin.fileExtensions[fileExtension] : 'text/plain';
   }
 
-  async run(language: string, files: IEditorFile[]): Promise<string> {
-    const plugin = editorService.getLanguagePlugin(language);
-    const output = await plugin.run(files);
+  async run(
+    plugin: IEditorPlugin,
+    courseSlug: string,
+    lessonSlug: string | undefined,
+    files: TEditorFile[],
+  ): Promise<string> {
+    const output = await plugin.run(courseSlug, lessonSlug, files);
     return output;
   }
 
-  async check(filePath: string, files: IEditorFile[]): Promise<void> {
-    const language = this.getLanguageForFile(filePath);
-    if (!language) {
-      return;
-    }
+  async test(
+    plugin: IEditorPlugin,
+    courseSlug: string,
+    lessonSlug: string | undefined,
+    files: TEditorFile[],
+  ): Promise<TTestResponse> {
+    const res = await plugin.test(courseSlug, lessonSlug, files);
+    return res;
+  }
 
-    const plugin = editorService.getLanguagePlugin(language);
+  async check(plugin: IEditorPlugin, filePath: string, files: TEditorFile[]): Promise<void> {
     await plugin.check(filePath, files);
   }
 }
