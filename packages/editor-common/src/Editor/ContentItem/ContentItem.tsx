@@ -9,6 +9,7 @@ import { courseService } from '../../services/courseService';
 import { useEditorStore } from '../EditorStore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import LockIcon from '@mui/icons-material/Lock';
 
 interface TProps {
   item: TLesson;
@@ -61,6 +62,7 @@ export const ContentItem: React.FC<TProps> = ({
             <div>
               {status === 'FINISHED' && <TaskAltIcon />}
               {status === 'STARTED' && <PlayArrowIcon />}
+              {!status && enableLessonsWithProgress && <LockIcon />}
             </div>
           </S.Status>
           <S.Number level={level}>{item.$lessonNumber}</S.Number>

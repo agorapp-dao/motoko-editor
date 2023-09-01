@@ -67,7 +67,7 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
       isMounted = false;
       editor?.dispose();
     };
-  }, [monaco, divEl, store.fontSize]);
+  }, [monaco, divEl, store.fontSize, store.tabs, store.actions]);
 
   useEffect(() => {
     if (!editor || !model) {

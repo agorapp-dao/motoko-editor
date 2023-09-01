@@ -51,5 +51,7 @@ export const H2 = styled.h2<IH2Props>`
 export const P = styled.p`
   width: 100%;
   display: block;
-  padding-top: 1rem;
+  padding-top: 0;
+  margin: 0;
+  margin-bottom: 1rem;
 `;

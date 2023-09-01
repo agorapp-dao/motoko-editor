@@ -10,6 +10,9 @@ const nextConfig = {
     '@agorapp-dao/editor-plugin-motoko',
     '@agorapp-dao/react-common',
   ],
+  env: {
+    REACT_APP_GA_TRACKING_CODE: process.env.REACT_APP_GA_TRACKING_CODE,
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
     // Use the client static directory in the server bundle and prod mode
     // Fixes `Error occurred prerendering page "/"`

@@ -4,7 +4,7 @@ import * as S from './Editor.styled';
 import SplitPane, { Pane, SashContent } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { courseService } from '../services/courseService';
 import { SectionTabs } from './SectionTabs/SectionTabs';
 import { LessonHeader } from './LessonHeader/LessonHeader';
@@ -23,7 +23,9 @@ import { EditorStoreProvider, useEditorActions, useEditorStore } from './EditorS
 import { useEditorPlugin } from './Monaco/useEditorPlugin';
 import { TEditorConfig } from '../types/TEditorConfig';
 import { darkTheme } from '@agorapp-dao/react-common';
+import { EAnalyticsActions, EAnalyticsCategories, UserAnalytics } from '@agorapp-dao/react-common';
 import { OverlayWithLessonHeader } from './OverlayWithLessonHeader/OverlayWithLessonHeader';
+import AgDialogProvider from '@agorapp-dao/react-common/src/components/AgDialogProvider';
 
 type EditorProps = {
   courseSlug: string;
@@ -74,7 +76,9 @@ export function Editor({
       apiUrl={apiUrl}
       config={cfg}
     >
-      <EditorInner authenticated={authenticated} />
+      <AgDialogProvider>
+        <EditorInner authenticated={authenticated} />
+      </AgDialogProvider>
     </EditorStoreProvider>
   );
 }
@@ -115,7 +119,7 @@ function EditorInner({ authenticated }: TEditorInner) {
   useEffect(() => {
     if (mobile) {
       setPanelSizeHorizontal([0, Infinity]);
-      actions.setCurrentSection(EEditorSectionType.CODE);
+      actions.setCurrentSection(EEditorSectionType.LESSON);
     } else {
       setPanelSizeHorizontal([THEORY_DEFAULT_WIDTH, Infinity]);
       actions.setCurrentSection(EEditorSectionType.LESSON);
@@ -180,6 +184,11 @@ function EditorInner({ authenticated }: TEditorInner) {
     if (!course.data || !store.activeLessonSlug || !monaco) {
       return;
     }
+    const userAnalytics = new UserAnalytics();
+    userAnalytics.sendGAEvent({
+      category: EAnalyticsCategories.EDITOR,
+      action: EAnalyticsActions.RESET_CODE,
+    });
     const files = await courseService.getLessonFiles(course.data, store.activeLessonSlug);
     actions.setFiles(files);
     files.forEach(file => {

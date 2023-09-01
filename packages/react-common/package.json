@@ -15,7 +15,7 @@
   "license": "ISC",
   "peerDependencies": {
     "@mui/icons-material": "^5.14.3",
-    "@mui/material": "^5.14.5",
+    "@mui/material": "^5.14.2",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/system": "^5.14.0",
     "@types/react": "^18.0.28",
@@ -27,7 +27,6 @@
   },
   "devDependencies": {
     "@mui/icons-material": "^5.14.3",
-    "@mui/material": "^5.14.5",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/system": "^5.14.0",
     "@swc/core": "^1.3.66",

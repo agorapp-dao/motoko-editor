@@ -14,13 +14,16 @@ export const FeedbackBtn = ({ userCode, slug }: TProps) => {
     // https://docs.github.com/en/github-ae@latest/issues/tracking-your-work-with-issues/creating-an-issue
     const queryParams: string[] = [];
 
-    const title = `feedback: ${slug}`;
+    const title = `${slug} - feedback`;
     queryParams.push(`title=${encodeURIComponent(title)}`);
 
     const body = `
-I have following feedback:
+**Problem**:
 
-My code is:
+Describe your problem and steps to reproduce it. 
+
+**My code**:
+
 \`\`\`
 ${userCode}
 \`\`\``;
