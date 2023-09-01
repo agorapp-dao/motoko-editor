@@ -1,16 +1,16 @@
 import { Box, IconButton, Tab, Tabs } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import { styled } from '@mui/material/styles';
 import * as S from './SectionTabs.styled';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CodeIcon from '@mui/icons-material/Code';
 import { EEditorSectionType } from '../../constants';
-import { SettingsDialog } from '../SettingsDialog/SettingsDialog';
 import { useMobile } from '../../hooks/useMobile';
 import { useEditorActions, useEditorStore } from '../EditorStore';
 import { FeedbackBtn } from '../../components/Feeback/FeedbackBtn';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { useSettingsDialog } from '../../hooks/dialog/useSettingsDialog';
 
 interface StyledTabProps {
   icon?: string | React.ReactElement;
@@ -40,7 +40,7 @@ const AntTab = styled((props: StyledTabProps) => <Tab disableRipple {...props} /
 
 export const SectionTabs = () => {
   const { mobile } = useMobile();
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const { showSettingsDialog } = useSettingsDialog();
   const store = useEditorStore();
   const actions = useEditorActions();
 
@@ -80,9 +80,8 @@ export const SectionTabs = () => {
         />
       )}
       <S.Settings>
-        <SettingsDialog open={settingsOpen} handleClose={() => setSettingsOpen(false)} />
         <Box sx={{ textAlign: 'center' }}>
-          <IconButton aria-label="settings" onClick={() => setSettingsOpen(state => !state)}>
+          <IconButton aria-label="settings" onClick={() => showSettingsDialog()}>
             <SettingsRoundedIcon />
           </IconButton>
         </Box>

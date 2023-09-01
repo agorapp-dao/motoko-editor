@@ -43,8 +43,8 @@ export const LessonHeader: React.FC<TProps> = ({
         }}
       >
         <Box sx={{ flexGrow: 1 }}>
-          <h1 style={{ fontSize: '22px', margin: 0, lineHeight: '1.5rem', marginBottom: '0.5rem' }}>
-            {courseTitle}
+          <h1 style={{ margin: 0, lineHeight: '1.5rem', marginBottom: '0.5rem' }}>
+            <Box sx={{ fontSize: { xs: '1.2rem', sm: '1.4rem' } }}>{courseTitle}</Box>
           </h1>
           <Box
             sx={{
@@ -62,7 +62,9 @@ export const LessonHeader: React.FC<TProps> = ({
                   color: '#00c172',
                 }}
               >
-                {lessonNumber} {lessonTitle}
+                <Box sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}>
+                  <span style={{ fontWeight: 'normal' }}>{lessonNumber}</span> {lessonTitle}
+                </Box>
               </h2>
             </Box>
           </Box>

@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app';
+import Script from 'next/script';
 import React from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
@@ -25,6 +26,19 @@ const MyApp = ({ Component, emotionCache = clientSideEmotionCache, ...rest }: My
           <Component {...pageProps} />
         </ThemeProvider>
       </MuiThemeProvider>
+      <Script
+        id="ga-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.REACT_APP_GA_TRACKING_CODE}');
+          `,
+        }}
+        defer
+      />
     </CacheProvider>
   );
 };

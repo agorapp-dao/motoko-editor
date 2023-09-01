@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import * as S from './Solution.styled';
 import { Markdown } from '../Markdown/Markdown';
-import { useEditorStore } from '../EditorStore';
+import { useEditorActions, useEditorStore } from '../EditorStore';
 import { AgButton } from '@agorapp-dao/react-common';
+import CodeIcon from '@mui/icons-material/Code';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { EEditorSectionType } from '../../constants';
+import { useMobile } from '../../hooks/useMobile';
 
 export interface SolutionProps {
   content: string;
@@ -11,6 +15,8 @@ export interface SolutionProps {
 export const Solution = ({ content }: SolutionProps) => {
   const [shown, setShown] = useState(false);
   const editorStore = useEditorStore();
+  const actions = useEditorActions();
+  const { mobile } = useMobile();
 
   useEffect(() => {
     // reset solution state when lesson changes
@@ -19,9 +25,18 @@ export const Solution = ({ content }: SolutionProps) => {
 
   return (
     <S.Wrapper>
+      {mobile && (
+        <AgButton
+          startIcon={<CodeIcon />}
+          color="secondary"
+          onClick={() => actions.setCurrentSection(EEditorSectionType.CODE)}
+        >
+          Go to code
+        </AgButton>
+      )}
       <S.H2>Solution</S.H2>
       {!shown ? (
-        <AgButton color="secondary" onClick={() => setShown(true)}>
+        <AgButton startIcon={<HelpOutlineIcon />} color="secondary" onClick={() => setShown(true)}>
           Show solution
         </AgButton>
       ) : (

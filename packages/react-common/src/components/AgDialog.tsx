@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   ButtonProps,
   DialogProps,
   DialogTitle,
@@ -14,8 +13,9 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import styled from 'styled-components';
+import { AgButton } from './AgButton';
 
-interface Props extends Omit<DialogProps, 'title'> {
+export interface TAgDialogProps extends Omit<DialogProps, 'title'> {
   title?: string | React.ReactNode;
   children?: React.ReactNode;
   actions?: React.ReactNode;
@@ -49,7 +49,7 @@ const DefaultStyledPaper = styled(Paper)`
   max-height: 80vh;
 `;
 
-const AgDialog: React.FC<Props> = ({
+const AgDialog: React.FC<TAgDialogProps> = ({
   cancelLabel = 'Cancel',
   confirmLabel = 'Confirm',
   children = null,
@@ -87,9 +87,9 @@ const AgDialog: React.FC<Props> = ({
         </div>
       )}
       {showClose && (
-        <Button disabled={isFetching} onClick={onCancel} variant="outlined">
+        <AgButton disabled={isFetching} onClick={onCancel} color="secondary">
           {cancelLabel}
-        </Button>
+        </AgButton>
       )}
       {showConfirm &&
         (() => {
@@ -104,10 +104,9 @@ const AgDialog: React.FC<Props> = ({
           return variant === 'destructive' ? (
             <div>{confirmLabel}</div>
           ) : (
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            <Button color="primary" {...props}>
+            <AgButton {...props} color="primary">
               {confirmLabel}
-            </Button>
+            </AgButton>
           );
         })()}
     </>
@@ -133,7 +132,7 @@ const AgDialog: React.FC<Props> = ({
       {...rest}
     >
       {(title || subtitle) && (
-        <DialogTitle style={{ padding: '5px', paddingLeft: '24px' }}>
+        <DialogTitle style={{ padding: '5px' }}>
           <div
             style={{
               width: '100%',

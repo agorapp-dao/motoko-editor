@@ -1,6 +1,6 @@
 import * as S from './ControlPanel.styled';
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, CircularProgress, IconButton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { CircularProgress, IconButton } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import NavigateBeforeRoundedIcon from '@mui/icons-material/NavigateBeforeRounded';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
@@ -12,6 +12,7 @@ import { editorService } from '../editorService';
 import { useEditorActions, useEditorStore } from '../EditorStore';
 import { useEditorPlugin } from '../Monaco/useEditorPlugin';
 import { AgButton } from '@agorapp-dao/react-common/src/components/AgButton';
+import { EAnalyticsActions, EAnalyticsCategories, UserAnalytics } from '@agorapp-dao/react-common';
 import { useMobile } from '../../hooks/useMobile';
 
 interface IControlPanelProps {
@@ -38,6 +39,13 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
   }, [store.activeLessonSlug, course]);
 
   const handleRunCode = async () => {
+    const userAnalytics = new UserAnalytics();
+    userAnalytics.sendGAEvent({
+      category: EAnalyticsCategories.EDITOR,
+      action: EAnalyticsActions.RUN_CODE,
+    });
+
+    // TODO: ask what is the rationale behind this check
     if (!course.data) {
       return;
     }
@@ -61,7 +69,12 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
         );
         actions.setTestResults(res);
         if (res.passed && store.config.onLessonComplete) {
-          await store.config.onLessonComplete('1.1');
+          const activeLesson = courseService.findLessonBySlug(course.data, store.activeLessonSlug);
+          await store.config.onLessonComplete(
+            activeLesson?.$lessonNumber,
+            !!prevLesson,
+            !!nextLesson,
+          );
         }
         invalidateProgress();
       } else {
@@ -80,6 +93,11 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
 
   const handleGoToNext = () => {
     if (nextLesson && course.data) {
+      const userAnalytics = new UserAnalytics();
+      userAnalytics.sendGAEvent({
+        category: EAnalyticsCategories.EDITOR,
+        action: EAnalyticsActions.GO_TO_NEXT_LESSON,
+      });
       router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
       actions.setOutput('');
     }
@@ -87,6 +105,11 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
 
   const handleGoToPrev = () => {
     if (prevLesson && course.data) {
+      const userAnalytics = new UserAnalytics();
+      userAnalytics.sendGAEvent({
+        category: EAnalyticsCategories.EDITOR,
+        action: EAnalyticsActions.GO_TO_PREVIOUS_LESSON,
+      });
       router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
       actions.setOutput('');
     }

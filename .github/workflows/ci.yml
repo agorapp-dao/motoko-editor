@@ -5,6 +5,7 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  REACT_APP_GA_TRACKING_CODE: ${{secrets.REACT_APP_GA_TRACKING_CODE}}
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -71,6 +72,12 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create .env file
+      run: |
+        cd motoko-editor
+        touch .env
+        echo "REACT_APP_GA_TRACKING_CODE=${REACT_APP_GA_TRACKING_CODE}" > .env
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta
