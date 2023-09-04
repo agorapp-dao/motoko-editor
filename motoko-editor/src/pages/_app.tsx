@@ -19,13 +19,11 @@ const MyApp = ({ Component, emotionCache = clientSideEmotionCache, ...rest }: My
   const { pageProps } = rest;
   return (
     <CacheProvider value={emotionCache}>
-      <MuiThemeProvider theme={muiDarkTheme}>
-        <CssBaseline />
-        <ThemeProvider theme={darkTheme}>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </MuiThemeProvider>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.REACT_APP_GA_TRACKING_CODE}`}
+        defer
+      />
       <Script
         id="ga-init"
         strategy="afterInteractive"
@@ -39,6 +37,13 @@ const MyApp = ({ Component, emotionCache = clientSideEmotionCache, ...rest }: My
         }}
         defer
       />
+      <MuiThemeProvider theme={muiDarkTheme}>
+        <CssBaseline />
+        <ThemeProvider theme={darkTheme}>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </MuiThemeProvider>
     </CacheProvider>
   );
 };
