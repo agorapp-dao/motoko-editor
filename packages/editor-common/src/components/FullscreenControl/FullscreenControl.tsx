@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import { EAnalyticsActions, EAnalyticsCategories, UserAnalytics } from '@agorapp-dao/react-common';
@@ -42,9 +42,19 @@ export const FullscreenControl = () => {
   }, []);
 
   return (
-    <IconButton aria-label="fullscreen" onClick={toggleFullscreen}>
-      {!fullscreen && <FullscreenIcon />}
-      {fullscreen && <FullscreenExitIcon />}
-    </IconButton>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        borderBottom: 1,
+        borderColor: theme => theme.palette.secondary.main,
+      }}
+    >
+      <IconButton aria-label="fullscreen" onClick={toggleFullscreen}>
+        {!fullscreen && <FullscreenIcon />}
+        {fullscreen && <FullscreenExitIcon />}
+      </IconButton>
+    </Box>
   );
 };
