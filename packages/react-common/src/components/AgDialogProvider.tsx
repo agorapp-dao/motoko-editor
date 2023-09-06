@@ -55,7 +55,7 @@ const DialogProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <AgDialog {...options} open={open} onClose={handleCancel} onConfirm={handleConfirm} />
-      <DialogContext.Provider value={actions}>{children}</DialogContext.Provider>;
+      <DialogContext.Provider value={actions}>{children}</DialogContext.Provider>
     </>
   );
 };
