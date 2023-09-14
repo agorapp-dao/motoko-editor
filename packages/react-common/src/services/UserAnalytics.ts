@@ -43,11 +43,14 @@ interface IWindowWithGA extends Window {
 }
 
 export class UserAnalytics {
-  private gaTrackingCode: string;
-  gtag: TGTag;
+  private gaTrackingCode?: string;
+  gtag?: TGTag;
 
   constructor(gaCode?: string) {
     const gaTrackingCode = gaCode || process.env.REACT_APP_GA_TRACKING_CODE;
+    if (!gaTrackingCode) {
+      return;
+    }
     if (typeof gaTrackingCode !== 'string') {
       throw new Error('Missing `gaCode` parameter or `REACT_APP_GA_TRACKING_CODE` in .env file.');
     }
@@ -81,6 +84,7 @@ export class UserAnalytics {
 
   setUserId(oauthCredentials: string): void {
     this.executeInBrowserContext(() => {
+      if (!this.gtag) return;
       const userId = this.hashUserCredentials(oauthCredentials);
       this.gtag('config', this.gaTrackingCode, {
         user_id: userId,
@@ -90,6 +94,7 @@ export class UserAnalytics {
 
   unsetUserId(): void {
     this.executeInBrowserContext(() => {
+      if (!this.gtag) return;
       this.gtag('config', this.gaTrackingCode, {
         user_id: null,
       });
@@ -98,6 +103,8 @@ export class UserAnalytics {
 
   sendGAEvent(eventPayload: TEvent): void {
     this.executeInBrowserContext(() => {
+      if (!this.gtag) return;
+
       const cleanedEventPayload = Object.fromEntries(
         Object.entries(eventPayload).filter(([_, v]) => v != null),
       ) as TEvent;
@@ -112,6 +119,7 @@ export class UserAnalytics {
 
   pageView(currentPage: string): void {
     this.executeInBrowserContext(() => {
+      if (!this.gtag) return;
       this.gtag('config', this.gaTrackingCode, {
         page_path: currentPage,
       });

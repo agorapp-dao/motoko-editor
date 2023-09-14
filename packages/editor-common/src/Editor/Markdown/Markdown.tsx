@@ -4,6 +4,7 @@ import * as S from './Markdown.styled';
 import { MonacoCodeSnippet } from '../Monaco/MonacoCodeSnippet';
 import { MarkdownLink } from './MarkdownLink';
 import { EXERCISE_TITLE } from '../../constants/config';
+import remarkGfm from 'remark-gfm';
 
 type TProps = {
   children: string;
@@ -12,6 +13,7 @@ type TProps = {
 export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
   <S.Wrapper>
     <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
       components={{
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
@@ -35,6 +37,16 @@ export const Markdown: React.FC<TProps> = ({ children }: TProps) => (
         },
         a({ href, children }) {
           return <MarkdownLink href={href}>{children}</MarkdownLink>;
+        },
+        ol({ children, className }) {
+          return <ol className={className}>{children}</ol>;
+        },
+        li({ children, className }) {
+          return <li className={className}>{children}</li>;
+        },
+        // I don't want to show checkboxes in Exercise section
+        input(obj) {
+          return <></>;
         },
       }}
     >

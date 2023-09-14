@@ -10,6 +10,7 @@ import { useEditorStore } from '../EditorStore';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import LockIcon from '@mui/icons-material/Lock';
+import { useTheme } from '@mui/material/styles';
 
 interface TProps {
   item: TLesson;
@@ -24,20 +25,22 @@ export const ContentItem: React.FC<TProps> = ({
   handleSelectLesson,
   enableLessonsWithProgress,
 }: TProps) => {
-  const store = useEditorStore();
+  const theme = useTheme();
+  const course = courseService.useCourse();
   const [opened, setOpened] = useState(true);
   const router = useRouter();
+  const store = useEditorStore();
   const { progress } = courseService.useCourseProgress();
 
-  const status = progress[item.slug]?.status;
+  const status = progress[item.slug!]?.status;
   const linkEnabled =
     !enableLessonsWithProgress ||
     (enableLessonsWithProgress && (status === 'FINISHED' || status === 'STARTED'));
 
   const handleClick = (lesson: TLesson) => {
     if (lesson.content && linkEnabled) {
-      router.push(courseService.getCoursePath(store.courseSlug!, lesson.slug));
-      handleSelectLesson(lesson.slug);
+      router.push(courseService.getCoursePath(course.data!, lesson.slug));
+      handleSelectLesson(lesson.slug!);
     } else if (lesson.children?.length) {
       setOpened(!opened);
     }
@@ -48,11 +51,14 @@ export const ContentItem: React.FC<TProps> = ({
       const clickEnabled = status === 'FINISHED' || status === 'STARTED';
       return {
         cursor: clickEnabled ? 'pointer' : 'default',
-        color: clickEnabled ? '#fff' : 'inherit',
+        color: clickEnabled ? theme.custom.textPrimary : 'inherit',
+        fontWeight: clickEnabled ? 900 : 'inherit',
       };
     }
-    return {};
-  }, [status, enableLessonsWithProgress]);
+    return {
+      color: store.activeLessonSlug === item.slug ? theme.palette.primary.main : 'inherit',
+    };
+  }, [status, enableLessonsWithProgress, theme, store.activeLessonSlug, item.slug]);
 
   return (
     <>

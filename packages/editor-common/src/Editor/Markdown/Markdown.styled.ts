@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { darken } from '@mui/material';
 
 export const Wrapper = styled.div`
   ul {
@@ -14,7 +13,7 @@ export const Wrapper = styled.div`
 
   hr {
     margin: 16px 0;
-    color: ${p => p.theme.secondary};
+    color: ${p => p.theme.custom.secondary};
   }
 
   h3 {
@@ -22,11 +21,26 @@ export const Wrapper = styled.div`
     display: block;
     padding-top: 1rem;
     font-size: 1.1rem;
-    color: ${p => p.theme.intenseText};
+    color: ${p => p.theme.custom.textPrimary};
   }
 
   strong {
-    color: ${p => darken(p.theme.intenseText, 0.2)};
+    color: ${p => p.theme.custom.textPrimary};
+  }
+
+  ol.contains-task-list {
+    padding-left: 33px;
+    margin-left: 0;
+  }
+
+  li.task-list-item::marker {
+    color: ${p => p.theme.custom.primary};
+    font-weight: 500;
+  }
+
+  li.task-list-item {
+    padding-left: 10px;
+    margin-bottom: 16px;
   }
 `;
 
@@ -39,12 +53,12 @@ export const H2 = styled.h2<IH2Props>`
   display: block;
   padding-top: 1rem;
   font-size: 1.3rem;
-  color: ${p => p.theme.intenseText};
+  color: ${p => p.theme.custom.textPrimary};
   ${({ $exercise }) =>
     $exercise &&
     css`
-      color: ${p => p.theme.primary};
-      border-bottom: 1px solid #363445;
+      color: ${p => p.theme.palette.primary.main};
+      border-bottom: 1px solid ${p => p.theme.custom.splitPaneLine};
     `}
 `;
 

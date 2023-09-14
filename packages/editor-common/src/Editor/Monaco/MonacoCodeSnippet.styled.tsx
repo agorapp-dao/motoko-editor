@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Block = styled.div`
   display: block;
   position: relative;
-  background: #24232e;
+  background: ${p => p.theme.custom.cardBg};
   border-radius: 5px;
   margin: 1rem 0;
   padding: 1rem;
@@ -13,7 +13,7 @@ export const Block = styled.div`
 
 export const Inline = styled.code`
   position: relative;
-  background: #24232e;
+  background: ${p => p.theme.custom.cardBg};
   border-radius: 5px;
   padding: 0.1rem 0.3rem;
   display: inline-block;

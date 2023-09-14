@@ -3,8 +3,11 @@ import * as S from '@/src/styles/global.styled';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { courseService, Editor, editorService } from '@agorapp-dao/editor-common';
 import { contentService } from '@agorapp-dao/content-common';
+import { ETopic, parseTopic } from '@agorapp-dao/content-common/src/types/ETopic';
+import { EColorMode } from '@agorapp-dao/react-common/src/types/misc';
 
 type TEditorPageProps = {
+  topic: ETopic;
   lessonSlug: string;
   courseSlug: string;
   fallback: { [key: string]: any };
@@ -25,17 +28,23 @@ editorService.pluginLoader = async (pluginName: string) => {
   return pluginModule.default;
 };
 
-export default function EditorPage({ courseSlug, lessonSlug, fallback }: TEditorPageProps) {
+export default function EditorPage({ topic, courseSlug, lessonSlug, fallback }: TEditorPageProps) {
   return (
     <SWRConfig value={{ fallback }}>
       <S.Main>
-        <Editor courseSlug={courseSlug} activeLessonSlug={lessonSlug} />
+        <Editor
+          topic={topic}
+          courseSlug={courseSlug}
+          activeLessonSlug={lessonSlug}
+          colorMode={EColorMode.light}
+        />
       </S.Main>
     </SWRConfig>
   );
 }
 
 type TEditorPageParams = {
+  topic: string;
   courseSlug: string;
   lessonSlug: string[];
 };
@@ -47,11 +56,12 @@ export async function getServerSideProps(
     throw new Error('No params provided');
   }
 
+  const topic = parseTopic(ctx.params.topic);
   const { courseSlug } = ctx.params;
 
   const fallback: { [key: string]: any } = {};
 
-  const course = await contentService.getCourseFromFile(courseSlug);
+  const course = await contentService.getCourseFromFile(topic, courseSlug);
   if (!course) {
     throw new Error(`Course ${courseSlug} not found`);
   }
@@ -70,7 +80,7 @@ export async function getServerSideProps(
     return {
       redirect: {
         permanent: false,
-        destination: courseService.getCoursePath(courseSlug, firstLesson.slug),
+        destination: courseService.getCoursePath(course, firstLesson.slug),
       },
     };
   }
@@ -84,6 +94,6 @@ export async function getServerSideProps(
   }
 
   return {
-    props: { courseSlug: ctx.params.courseSlug, lessonSlug, fallback },
+    props: { topic, courseSlug: ctx.params.courseSlug, lessonSlug, fallback },
   };
 }

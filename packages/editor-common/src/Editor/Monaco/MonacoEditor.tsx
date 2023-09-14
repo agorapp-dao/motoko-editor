@@ -26,7 +26,7 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
     if (monaco && divEl.current) {
       editor = monaco.editor.create(divEl.current, {
         model: null,
-        theme: 'editorTheme',
+        theme: store.colorMode,
         automaticLayout: true,
         fontSize: store.fontSize,
         minimap: {
@@ -67,15 +67,24 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
       isMounted = false;
       editor?.dispose();
     };
-  }, [monaco, divEl, store.fontSize, store.tabs, store.actions]);
+  }, [monaco, divEl, store.fontSize, store.tabs, store.actions, store.colorMode]);
 
   useEffect(() => {
-    if (!editor || !model) {
+    if (editor) {
+      editor.updateOptions({ theme: store.colorMode });
+    }
+  }, [editor, store.colorMode]);
+
+  useEffect(() => {
+    if (!editor || !model || !plugin) {
       return;
     }
     // TODO: keep view state, see https://github.com/Microsoft/monaco-editor/issues/604#issuecomment-344214706
     editor.setModel(model);
-  }, [editor, model]);
+    if (plugin.onModelChange) {
+      plugin.onModelChange();
+    }
+  }, [editor, model, plugin]);
 
   useEffect(() => {
     if (!editor) {
@@ -122,5 +131,5 @@ export const MonacoEditor = ({ model }: MonacoEditorProps) => {
     checkModelDebounced();
   }, [store.activeTab, editor, store.files, store.tabs, course.data, plugin]);
 
-  return <S.Code ref={divEl} />;
+  return <S.Code ref={divEl} data-test="monaco-editor" />;
 };

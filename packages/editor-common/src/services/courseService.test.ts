@@ -1,9 +1,13 @@
 import { TCourse } from '@agorapp-dao/content-common';
 import { courseService } from './courseService';
+import { ETopic } from '@agorapp-dao/content-common/src/types/ETopic';
 
 const COURSE: TCourse = {
-  name: 'Motoko Tutorial',
+  topic: ETopic.MOTOKO,
   slug: 'motoko-tutorial',
+  name: 'Motoko Tutorial',
+  description: 'Learn Motoko',
+  type: 'tutorial',
   plugin: '@agorapp-dao/editor-plugin-motoko',
   config: {
     output: true,

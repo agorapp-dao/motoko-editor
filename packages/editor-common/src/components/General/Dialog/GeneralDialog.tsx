@@ -42,7 +42,7 @@ const sizeMap: { [key: string]: string } = {
 };
 
 const StyledPaper = styled(Paper)`
-  background-color: ${p => p.theme.background};
+  background-color: ${p => p.theme.custom.background};
   background-image: none;
 `;
 

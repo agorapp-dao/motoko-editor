@@ -2,16 +2,20 @@ import { createStore, StoreApi, useStore } from 'zustand';
 import { TEditorFile } from '../types/TEditorFile';
 import { TEditorTab } from '../types/TEditorTab';
 import { EEditorSectionType } from '../constants';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { TTestResponse } from '../types/TTestResponse';
 import { TEditorConfig } from '../types/TEditorConfig';
+import { ETopic } from '@agorapp-dao/content-common/src/types/ETopic';
+import { EColorMode } from '@agorapp-dao/react-common/src/types/misc';
 
 interface EditorState {
+  topic: ETopic;
   courseSlug: string;
   activeLessonSlug: string;
   config: TEditorConfig;
   apiUrl?: string;
   authenticated?: boolean;
+  colorMode: EColorMode;
 
   /**
    * All lesson files.
@@ -43,16 +47,19 @@ interface EditorState {
     setActiveTab: (index: number) => void;
     setCurrentSection: (section: EEditorSectionType) => void;
     setFontSize: (size: number) => void;
+    setColorMode: (mode: EColorMode) => void;
   };
 }
 
 function createEditorStore(props: EditorStoreProviderProps) {
   return createStore<EditorState>()(set => ({
+    topic: props.topic,
     courseSlug: props.courseSlug,
     activeLessonSlug: props.activeLessonSlug,
     apiUrl: props.apiUrl,
     config: props.config,
     authenticated: props.authenticated,
+    colorMode: props.colorMode || EColorMode.light,
 
     files: [],
     tabs: [],
@@ -96,6 +103,9 @@ function createEditorStore(props: EditorStoreProviderProps) {
       setActiveLessonSlug(slug: string) {
         set({ activeLessonSlug: slug });
       },
+      setColorMode(mode: EColorMode) {
+        set({ colorMode: mode });
+      },
     },
   }));
 }
@@ -103,20 +113,25 @@ function createEditorStore(props: EditorStoreProviderProps) {
 const EditorStoreContext = createContext<StoreApi<EditorState> | null>(null);
 
 interface EditorStoreProviderProps {
+  topic: ETopic;
   courseSlug: string;
   activeLessonSlug: string;
   children: JSX.Element | JSX.Element[];
   config: TEditorConfig;
   apiUrl?: string;
   authenticated?: boolean;
+  colorMode?: EColorMode;
 }
 
 export function EditorStoreProvider(props: EditorStoreProviderProps) {
-  return (
-    <EditorStoreContext.Provider value={createEditorStore(props)}>
-      {props.children}
-    </EditorStoreContext.Provider>
-  );
+  const [store, setStore] = useState(createEditorStore(props));
+
+  useEffect(() => {
+    // recreate the store when the lesson changes to start with a fresh state
+    setStore(createEditorStore(props));
+  }, [props.activeLessonSlug]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return <EditorStoreContext.Provider value={store}>{props.children}</EditorStoreContext.Provider>;
 }
 
 export function useEditorStore() {

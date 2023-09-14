@@ -23,7 +23,7 @@ export const LessonHeader: React.FC<TProps> = ({
   return (
     <Box
       sx={{
-        borderBottom: theme => `1px solid ${theme.palette.secondary.main}`,
+        borderBottom: theme => `1px solid ${theme.custom.splitPaneLine}`,
       }}
     >
       <Box
@@ -33,12 +33,12 @@ export const LessonHeader: React.FC<TProps> = ({
           m: { xs: '0.5rem', sm: '1rem' },
           p: { xs: '0.5rem', sm: '0.5rem 1rem' },
           gap: 2,
-          color: '#fff',
+          color: theme => theme.palette.text.primary,
           cursor: 'pointer',
           borderRadius: '10px',
           transition: 'background-color 0.5s ease',
           '&:hover': {
-            backgroundColor: theme => rgba(theme.palette.secondary.main, 0.5),
+            backgroundColor: theme => rgba(theme.palette.secondary.light, 0.3),
           },
         }}
       >
@@ -59,11 +59,16 @@ export const LessonHeader: React.FC<TProps> = ({
                   fontSize: '20px',
                   margin: 0,
                   lineHeight: '1.4rem',
-                  color: '#00c172',
                 }}
               >
-                <Box sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}>
-                  <span style={{ fontWeight: 'normal' }}>{lessonNumber}</span> {lessonTitle}
+                <Box
+                  sx={{
+                    fontSize: { xs: '1rem', sm: '1.2rem' },
+                    color: theme => theme.palette.primary.main,
+                  }}
+                >
+                  {lessonNumber && <span style={{ fontWeight: 'normal' }}>{lessonNumber}</span>}{' '}
+                  {lessonTitle}
                 </Box>
               </h2>
             </Box>

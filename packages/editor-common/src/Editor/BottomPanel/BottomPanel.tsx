@@ -1,4 +1,3 @@
-import { Pane } from 'split-pane-react';
 import { useEffect, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
 import * as S from './BottomPanel.styled';
@@ -35,7 +34,7 @@ export const BottomPanel = () => {
   return (
     // <Pane style={{ display: 'flex', height: '100%' }}>
     <Box sx={{ width: '100%', flex: '1 1 auto', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ borderBottom: 1, borderColor: theme => theme.palette.secondary.main }}>
+      <Box sx={{ borderBottom: 1, borderColor: theme => theme.custom.splitPaneLine }}>
         <Tabs value={activeTab} onChange={changeActiveTab}>
           {tabs.map((tab, index) => (
             <Tab label={tab} key={index} value={index} />

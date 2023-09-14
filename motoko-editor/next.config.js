@@ -24,6 +24,20 @@ const nextConfig = {
 
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/course/motoko/motoko-tutorial/introduction',
+        permanent: false,
+      },
+      {
+        source: '/course/motoko-tutorial/introduction',
+        destination: '/course/motoko/motoko-tutorial/introduction',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

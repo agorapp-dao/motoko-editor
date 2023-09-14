@@ -1,6 +1,9 @@
 {
-  "name": "Motoko Tutorial",
+  "topic": "motoko",
   "slug": "motoko-tutorial",
+  "name": "Motoko Tutorial",
+  "description": "Motoko is the language of choice for writing smart contracts for the Internet Computer. This comprehensive tutorial covers most of the language you will need to write your appications.",
+  "type": "tutorial",
   "plugin": "@agorapp-dao/editor-plugin-motoko",
   "config": {
     "output": true

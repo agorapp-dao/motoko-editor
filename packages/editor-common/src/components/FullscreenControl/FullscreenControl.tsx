@@ -48,7 +48,7 @@ export const FullscreenControl = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         borderBottom: 1,
-        borderColor: theme => theme.palette.secondary.main,
+        borderColor: theme => theme.custom.splitPaneLine,
       }}
     >
       <IconButton aria-label="fullscreen" onClick={toggleFullscreen}>

@@ -39,7 +39,7 @@ ${userCode}
     <S.Wrapper>
       <S.Rotate>
         <S.InnerWrapper>
-          <Button onClick={openFeedback} startIcon={<ChatIcon />} sx={{ color: '#fff' }}>
+          <Button onClick={openFeedback} startIcon={<ChatIcon />}>
             Feedback
           </Button>
         </S.InnerWrapper>

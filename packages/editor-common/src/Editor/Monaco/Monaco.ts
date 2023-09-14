@@ -25,12 +25,16 @@ export function useMonaco(): Monaco | null {
   return monaco;
 }
 
-export async function monacoDefineTheme(themeData: editor.IStandaloneThemeData) {
+export async function monacoDefineTheme(
+  dark: editor.IStandaloneThemeData,
+  light: editor.IStandaloneThemeData,
+) {
   if (typeof window === 'undefined') {
     // do nothing on server-side
     return;
   }
 
   const monaco = await getMonaco();
-  monaco.editor.defineTheme('editorTheme', themeData);
+  monaco.editor.defineTheme('dark', dark);
+  monaco.editor.defineTheme('light', light);
 }
