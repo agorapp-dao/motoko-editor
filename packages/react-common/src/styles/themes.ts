@@ -1,7 +1,10 @@
-import { createTheme, responsiveFontSizes, ThemeOptions } from '@mui/material';
+import { alpha, createTheme, PaletteMode, responsiveFontSizes } from '@mui/material';
 import rgba from 'polished/lib/color/rgba';
 import { Poppins, Roboto } from 'next/font/google';
 import { Theme } from '@mui/material/styles';
+import { blueGrey } from '@mui/material/colors';
+import { EColorBrand } from '../types/misc';
+import { agorAppBrandColors, motokoBrandColors } from './brandColors';
 
 export const poppins = Poppins({
   weight: ['400', '500'],
@@ -18,6 +21,22 @@ export const roboto = Roboto({
   fallback: ['sans-serif'],
   preload: false,
 });
+
+export const darkColors = {
+  bg: '#191820',
+  cardBg: '#24232E',
+  dialogBg: '#24232E',
+  textPrimary: '#ffffff',
+  textSecondary: '#a2a2a2',
+};
+
+export const lightColors = {
+  bg: '#f4f3f5',
+  cardBg: '#e2e2e5',
+  dialogBg: '#ffffff',
+  textPrimary: '#343434',
+  textSecondary: '#6b6b6b',
+};
 
 export const palette = {
   darkBg: '#191820', // editor tabs, background
@@ -90,40 +109,86 @@ export const darkTheme = {
   rareSkillsGradientHover: '#974fa9',
 };
 
-const makeTheme = (variant?: ThemeOptions): Theme => {
+//455f73
+export const getDesignTokens = (mode: PaletteMode, brand: EColorBrand) => {
+  const primaryColors = selectPrimaryColors(brand);
+  const colors = mode === 'light' ? lightColors : darkColors;
+
+  return {
+    mode,
+    ...(mode === 'light'
+      ? {
+          primary: {
+            light: primaryColors[300],
+            main: primaryColors[500],
+            dark: primaryColors[900],
+            contrastText: '#fff',
+          },
+          secondary: blueGrey,
+          // text: {
+          //   primary: lightColors.textSecondary,
+          //   secondary: lighten(lightColors.textSecondary, 0.2),
+          // },
+          background: {
+            default: colors.bg,
+          },
+        }
+      : {
+          primary: {
+            light: primaryColors[100],
+            main: primaryColors[300],
+            dark: primaryColors[700],
+            contrastText: '#fff',
+          },
+          secondary: {
+            // https://m2.material.io/inline-tools/color/
+            light: '#686578',
+            main: '#363445',
+            dark: '#292835',
+            contrastText: '#fff',
+          },
+          background: {
+            default: colors.bg,
+          },
+          error: {
+            light: '#E33333',
+            main: '#dd0000',
+            dark: '#9A0000',
+            contrastText: '#fff',
+          },
+          success: {
+            light: '#33A777',
+            main: '#019156',
+            dark: '#00653C',
+            contrastText: '#fff',
+          },
+          // text: {
+          //   primary: darkColors.textSecondary,
+          //   secondary: darken(darkColors.textSecondary, 0.2),
+          // },
+        }),
+  };
+};
+
+function selectPrimaryColors(brand: EColorBrand) {
+  switch (brand) {
+    case EColorBrand.agorApp:
+      return agorAppBrandColors;
+    case EColorBrand.motoko:
+      return motokoBrandColors;
+    default:
+      return agorAppBrandColors;
+  }
+}
+
+export const makeTheme = (mode: PaletteMode, brand: EColorBrand): Theme => {
+  const primaryColors = selectPrimaryColors(brand);
+  const customColors = mode === 'light' ? lightColors : darkColors;
+
+  const palette = getDesignTokens(mode, brand);
   let theme = createTheme({
-    palette: {
-      mode: 'dark',
-      primary: {
-        // https://m2.material.io/inline-tools/color/
-        light: '#33CD8E',
-        main: '#00c172', //'#019156',
-        dark: '#00874F',
-        contrastText: '#fff',
-      },
-      secondary: {
-        // https://m2.material.io/inline-tools/color/
-        light: '#686578',
-        main: '#363445',
-        dark: '#292835',
-        contrastText: '#fff',
-      },
-      background: {
-        default: palette.darkBg,
-      },
-      error: {
-        light: '#E33333',
-        main: '#dd0000',
-        dark: '#9A0000',
-        contrastText: '#fff',
-      },
-      success: {
-        light: '#33A777',
-        main: '#019156',
-        dark: '#00653C',
-        contrastText: '#fff',
-      },
-    },
+    palette,
+    custom: {}, // we will define it later
     typography: {
       fontFamily: [
         poppins.style.fontFamily,
@@ -164,9 +229,24 @@ const makeTheme = (variant?: ThemeOptions): Theme => {
       MuiDialog: {
         styleOverrides: {
           paper: ({ ownerState, theme }) => ({
-            background: theme.mixins.toolbar.background,
-            boxShadow: 'rgba(0, 0, 0, 0.5) 2px 2px 4px, rgba(0, 0, 0, 0.5) -2px -2px 4px',
+            background: theme.palette.background.default,
           }),
+        },
+      },
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            color: customColors.textSecondary,
+          },
+          h1: {
+            color: customColors.textPrimary,
+          },
+          h2: {
+            color: customColors.textPrimary,
+          },
+          h3: {
+            color: customColors.textPrimary,
+          },
         },
       },
     },
@@ -190,9 +270,14 @@ const makeTheme = (variant?: ThemeOptions): Theme => {
         btnBgHover: '#93009F',
       },
       primary: {
-        btnBg: `linear-gradient(268.04deg, #019156 3.72%, #00B7A1 98.35%)`,
-        btnBgHover: theme.palette.primary.main,
+        btnBg: `linear-gradient(268.04deg, ${primaryColors[900]} 3.72%, ${primaryColors[300]} 98.35%)`,
+        btnBgHover: `linear-gradient(40.04deg, ${primaryColors[300]} 3.72%, ${primaryColors[900]} 98.35%)`,
       },
+    },
+    custom: {
+      ...darkTheme,
+      ...customColors,
+      splitPaneLine: alpha(theme.palette.secondary.light, 0.35),
     },
     mixins: {
       toolbar: darkTheme,
@@ -202,4 +287,4 @@ const makeTheme = (variant?: ThemeOptions): Theme => {
   return responsiveFontSizes(theme);
 };
 
-export const muiDarkTheme = makeTheme();
+export const muiTheme = makeTheme('light', EColorBrand.agorApp);

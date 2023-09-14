@@ -25,10 +25,10 @@ export const ActiveLink = styled.button`
   cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  color: #fff;
+  color: ${p => p.theme.custom.textSecondary};
 
   &:hover {
-    background: ${p => p.theme.lessonLinkHover};
+    background: ${p => p.theme.custom.cardBg};
   }
 
   strong {
@@ -37,7 +37,7 @@ export const ActiveLink = styled.button`
 
   :hover {
     strong {
-      color: ${p => p.theme.linkHover};
+      color: ${p => p.theme.custom.cardBg};
     }
   }
 `;

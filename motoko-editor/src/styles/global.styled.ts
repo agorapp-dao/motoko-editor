@@ -1,12 +1,12 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import rgba from 'polished/lib/color/rgba';
+import { alpha } from '@mui/system';
 
 export const GlobalStyle = createGlobalStyle`
   html, body {
     max-width: 100vw;
     overflow: hidden;
     height: 100%;
-    color: ${p => p.theme.text};
+    color: ${({ theme }) => theme.custom.textSecondary};
   }
 
   a {
@@ -14,10 +14,31 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 
-  .split-sash-content.split-sash-content-vscode.split-sash-content-active {
-    background-color: ${p => p.theme.sashHover} !important;
+  button, input {
+    border: 0;
+    background: transparent;
+    color: ${({ theme }) => theme.custom.textPrimary};
   }
-  
+
+  .sash-wrap-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    .line {
+      display: block;
+      height: 100%;
+      width: 1px;
+      background-color: ${({ theme }) => theme.custom.splitPaneLine};
+    }
+    &.active {
+      background-color: ${({ theme }) => theme.palette.primary.main} !important;
+    }
+    &.inactive {
+      transition: none;
+    }
+  }
+
   .fullscreen {
     height: 100%;
     width: 100%;
@@ -30,53 +51,34 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   /** Global definition of scrollbars */
-  *::-webkit-scrollbar {
-    width: 0.75rem;
-    height: 0.75rem;
+  &::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
   }
 
   ::-webkit-scrollbar-corner {
     background-color: transparent;
   }
 
-  *::-webkit-scrollbar-thumb {
-    background: ${p => rgba(p.theme.scrollbar, 0.5)};
+  &::-webkit-scrollbar-thumb {
+    background: ${p => alpha(p.theme.palette.secondary.light, 0.5)};
     border-radius: 5px;
-    border: 3px solid transparent;
-    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    background-clip: padding-box;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: ${p => p.theme.scrollbar};
+    background: ${({ theme }) => theme.palette.secondary.light};
     border-radius: 5px;
-    border: 3px solid transparent;
     background-clip: content-box;
   }
 
   *::-webkit-scrollbar-track {
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
-  }
-
-  *::-moz-scrollbar {
-    width: 0.75rem;
-  }
-
-  *::-moz-scrollbar-thumb {
-    background: ${p => rgba(p.theme.scrollbar, 0.5)};
-    border-radius: 5px;
-    border: 3px solid transparent;
-    background-clip: content-box;
-  }
-
-  *::-moz-scrollbar-thumb:hover {
-    background: ${p => p.theme.scrollbar};
-    border-radius: 5px;
-    border: 3px solid transparent;
-    background-clip: content-box;
-  }
-
-  *::-moz-scrollbar-track {
     border-left: 2px solid transparent;
     border-right: 2px solid transparent;
   }

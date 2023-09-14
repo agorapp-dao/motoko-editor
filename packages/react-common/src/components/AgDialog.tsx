@@ -10,6 +10,7 @@ import {
   IconButton,
   PaperProps,
   Paper,
+  alpha,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import styled from 'styled-components';
@@ -71,20 +72,20 @@ const AgDialog: React.FC<TAgDialogProps> = ({
   actions = (showClose || showConfirm || !hideIconClose) && (
     <>
       {!hideIconClose && (
-        <div
-          style={{
+        <Box
+          sx={{
             position: 'absolute',
             right: '-20px',
             top: '-20px',
-            backgroundColor: '#292736',
-            border: '1px solid #0c0c10',
+            backgroundColor: theme => theme.custom.dialogBg,
+            border: theme => `1px solid ${theme.palette.background.default}`,
             borderRadius: '50%',
           }}
         >
           <IconButton aria-label="Close dialog" disabled={isFetching} onClick={onClose}>
             <CloseIcon />
           </IconButton>
-        </div>
+        </Box>
       )}
       {showClose && (
         <AgButton disabled={isFetching} onClick={onCancel} color="secondary">
@@ -123,10 +124,10 @@ const AgDialog: React.FC<TAgDialogProps> = ({
       transitionDuration={{ enter: 225, exit: 0 }}
       sx={{
         '& .MuiPaper-root': {
-          backgroundColor: 'rgb(41, 39, 54)',
+          backgroundColor: theme => theme.custom.dialogBg,
         },
         '& .MuiModal-backdrop': {
-          backgroundColor: 'rgb(0 0 0 / 50%)',
+          backgroundColor: theme => alpha(theme.palette.background.default, 0.7),
         },
       }}
       {...rest}

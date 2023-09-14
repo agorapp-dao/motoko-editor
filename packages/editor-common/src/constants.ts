@@ -1,7 +1,7 @@
 export enum EEditorSectionType {
   TABLE_OF_CONTENTS = 'table-of-contents',
   LESSON = 'lesson',
-  SHARE = 'share',
+  TREE = 'tree',
   CODE = 'code',
 }
 

@@ -1,6 +1,13 @@
+import { ETopic } from './ETopic';
+
+export type TCourseType = 'course' | 'challenge' | 'tutorial';
+
 export type TCourse = {
-  name: string;
+  topic: ETopic;
   slug: string;
+  name: string;
+  description: string;
+  type: TCourseType;
   plugin: string;
 
   config: TCourseConfig;
@@ -10,7 +17,7 @@ export type TCourse = {
 
 export type TLesson = {
   name: string;
-  slug: string;
+  slug?: string; // slug is optional for challenges, where there is only 1 lesson
 
   children?: TLesson[];
 

@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   height: 100%;
   padding-top: 1rem;
-  border-right: 1px solid ${p => p.theme.secondary};
+  border-right: 1px solid ${p => p.theme.custom.splitPaneLine};
 `;
 
 export const Logo = styled.div`

@@ -18,7 +18,7 @@ class CourseService {
     const store = useEditorStore();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return useJson<TCourse>(
-      `/content2/content-${store.courseSlug}/course.json`,
+      `/content2/content-${store.topic}-${store.courseSlug}/course.json`,
       (data: TCourse) => {
         data.lessons = this.assignLessonNumbers(data.lessons);
         return data;
@@ -27,6 +27,11 @@ class CourseService {
   }
 
   assignLessonNumbers(lessons: TLesson[], parentIndex?: string) {
+    if (lessons.length <= 1 && !parentIndex) {
+      // do not assign lesson numbers to challenges
+      return lessons;
+    }
+
     lessons.forEach((lesson, index) => {
       lesson.$lessonNumber = (parentIndex ? `${parentIndex}` : ``) + `${index + 1}.`;
       if (lesson.children) {
@@ -43,15 +48,16 @@ class CourseService {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const store = useEditorStore();
     const apiUrl = store.apiUrl || '/api';
+    const { data: course } = this.useCourse();
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, mutate } = useJson<any>(`${apiUrl}/course/${store.courseSlug}`);
+    const { data, mutate } = useJson<any>(`${apiUrl}/${course?.type}/${store.courseSlug}`);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (data) {
         const progress_: TCourseProgress = {};
         // TODO: types for Agora API
-        for (const lesson of data.lessons) {
+        for (const lesson of data.lessons || []) {
           progress_[lesson.slug] = {
             status: lesson.progress?.status,
           };
@@ -91,18 +97,18 @@ class CourseService {
       return undefined;
     }
 
-    return `/content2/content-${course.slug}/${contentPath}`;
+    return `/content2/content-${course.topic}-${course.slug}/${contentPath}`;
   }
 
-  getCoursePath(courseSlug: string, lessonSlug?: string) {
+  getCoursePath(course: TCourse, lessonSlug?: string) {
     if (!this.baseUrl) {
       throw new Error(`courseService.baseUrl not set!`);
     }
 
     if (!lessonSlug) {
-      return `${courseService.baseUrl}/${courseSlug}`;
+      return `${courseService.baseUrl}/${course.topic}/${course.slug}`;
     }
-    return `${courseService.baseUrl}/${courseSlug}/${lessonSlug}`;
+    return `${courseService.baseUrl}/${course.topic}/${course.slug}/${lessonSlug}`;
   }
 
   findLessonBySlug(course: TCourse | undefined, lessonSlug: string | undefined) {

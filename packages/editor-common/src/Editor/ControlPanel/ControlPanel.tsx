@@ -98,8 +98,7 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
         category: EAnalyticsCategories.EDITOR,
         action: EAnalyticsActions.GO_TO_NEXT_LESSON,
       });
-      router.push(courseService.getCoursePath(course.data.slug, nextLesson.slug));
-      actions.setOutput('');
+      router.push(courseService.getCoursePath(course.data, nextLesson.slug));
     }
   };
 
@@ -110,8 +109,7 @@ export const ControlPanel = ({ handleResetCode }: IControlPanelProps) => {
         category: EAnalyticsCategories.EDITOR,
         action: EAnalyticsActions.GO_TO_PREVIOUS_LESSON,
       });
-      router.push(courseService.getCoursePath(course.data.slug, prevLesson.slug));
-      actions.setOutput('');
+      router.push(courseService.getCoursePath(course.data, prevLesson.slug));
     }
   };
 

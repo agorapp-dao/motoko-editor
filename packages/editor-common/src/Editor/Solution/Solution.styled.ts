@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   margin-top: 40px;
@@ -9,7 +9,6 @@ export const H2 = styled.h2`
   display: block;
   padding-top: 1rem;
   font-size: 1.3rem;
-  color: ${p => p.theme.intenseText};
-  color: ${p => p.theme.primary};
-  border-bottom: 1px solid #363445;
+  color: ${p => p.theme.palette.primary.main};
+  border-bottom: 1px solid ${p => p.theme.custom.splitPaneLine};
 `;

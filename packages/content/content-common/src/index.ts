@@ -1,2 +1,2 @@
-export * from './types/course';
+export * from './types/TCourse';
 export * from './services/contentService';

@@ -54,17 +54,15 @@ export const AgButton: React.FC<IAppButtonProps> = ({
 }) => {
   const styles = useMemo(() => {
     const capitalizeProp = capitalize ? 'capitalize' : 'initial';
-    const boxShadowStyle =
-      '2px 2px 4px rgba(0,0,0,0.5), -2px -2px 4px rgba(55,58,74,0.5), inset 1px 1px 2px rgba(255,255,255,0.2)';
     const style: SxProps<Theme> = {
       textTransform: capitalizeProp,
       whiteSpace: 'nowrap',
       fontWeight: 900,
-      boxShadow: boxShadowStyle,
       background: theme => getBtnColor(theme, color, brand),
       // underlay color must be defined otherwise hover effect will not work (will blink)
       backgroundColor: theme => getBtnColor(theme, color, brand, true),
       '&:hover': {
+        backgroundColor: theme => getBtnColor(theme, color, brand, true),
         background: theme => getBtnColor(theme, color, brand, true),
       },
     };

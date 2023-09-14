@@ -1,4 +1,4 @@
-import { TLesson } from './course';
+import { TLesson } from './TCourse';
 
 export type TCourseProgress = { [lessonSlug: string]: TLessonProgress };
 

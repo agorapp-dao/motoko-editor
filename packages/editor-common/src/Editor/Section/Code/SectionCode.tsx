@@ -26,7 +26,7 @@ export const SectionCode = () => {
         <Box
           sx={{
             borderBottom: 1,
-            borderColor: theme => theme.palette.secondary.main,
+            borderColor: theme => theme.custom.splitPaneLine,
             flex: '1 1 auto',
           }}
         >

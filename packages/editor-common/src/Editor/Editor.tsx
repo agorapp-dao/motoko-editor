@@ -22,43 +22,70 @@ import { useMobile } from '../hooks/useMobile';
 import { EditorStoreProvider, useEditorActions, useEditorStore } from './EditorStore';
 import { useEditorPlugin } from './Monaco/useEditorPlugin';
 import { TEditorConfig } from '../types/TEditorConfig';
-import { darkTheme } from '@agorapp-dao/react-common';
-import { EAnalyticsActions, EAnalyticsCategories, UserAnalytics } from '@agorapp-dao/react-common';
+import {
+  darkColors,
+  EAnalyticsActions,
+  EAnalyticsCategories,
+  lightColors,
+  UserAnalytics,
+} from '@agorapp-dao/react-common';
 import { OverlayWithLessonHeader } from './OverlayWithLessonHeader/OverlayWithLessonHeader';
 import AgDialogProvider from '@agorapp-dao/react-common/src/components/AgDialogProvider';
+import { Tree } from './Tree/Tree';
+import { EColorMode } from '@agorapp-dao/react-common/src/types/misc';
+import { ETopic } from '@agorapp-dao/content-common/src/types/ETopic';
 
 type EditorProps = {
+  topic: ETopic;
   courseSlug: string;
   activeLessonSlug: string;
   apiUrl?: string;
   config?: TEditorConfig;
   authenticated?: boolean;
+  colorMode?: EColorMode;
 };
 
 const THEORY_DEFAULT_WIDTH = 600;
 
-monacoDefineTheme({
-  base: 'vs-dark',
-  inherit: true,
-  // TODO polish color scheme
-  rules: [
-    { token: 'custom-info', foreground: 'a3a7a9', background: 'ffffff' },
-    { token: 'custom-error', foreground: 'ee4444' },
-    { token: 'custom-notice', foreground: '1055af' },
-    { token: 'custom-date', foreground: '20aa20' },
-  ],
-  colors: {
-    'editor.foreground': '#FFFFFF',
-    'editor.background': darkTheme.background,
+monacoDefineTheme(
+  {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+      { token: 'custom-info', foreground: 'a3a7a9', background: 'ffffff' },
+      { token: 'custom-error', foreground: 'ee4444' },
+      { token: 'custom-notice', foreground: '1055af' },
+      { token: 'custom-date', foreground: '20aa20' },
+    ],
+    colors: {
+      'editor.foreground': darkColors.textPrimary,
+      'editor.background': darkColors.bg,
+    },
   },
-});
+  {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      { token: 'custom-info', foreground: 'a3a7a9', background: 'ffffff' },
+      { token: 'custom-error', foreground: 'ee4444' },
+      { token: 'custom-notice', foreground: '1055af' },
+      { token: 'custom-date', foreground: '20aa20' },
+    ],
+    colors: {
+      'editor.foreground': lightColors.textPrimary,
+      'editor.background': lightColors.bg,
+    },
+  },
+);
 
 export function Editor({
+  topic,
   courseSlug,
   activeLessonSlug,
   apiUrl,
   config,
   authenticated,
+  colorMode,
 }: EditorProps) {
   // inject missing config values
   let cfg = config || {};
@@ -71,13 +98,17 @@ export function Editor({
 
   return (
     <EditorStoreProvider
+      topic={topic}
       courseSlug={courseSlug}
       activeLessonSlug={activeLessonSlug}
       apiUrl={apiUrl}
       config={cfg}
     >
       <AgDialogProvider>
-        <EditorInner authenticated={authenticated} />
+        <EditorInner
+          authenticated={authenticated}
+          colorMode={colorMode === EColorMode.light ? EColorMode.light : EColorMode.dark}
+        />
       </AgDialogProvider>
     </EditorStoreProvider>
   );
@@ -85,9 +116,10 @@ export function Editor({
 
 type TEditorInner = {
   authenticated?: boolean;
+  colorMode: EColorMode;
 };
 
-function EditorInner({ authenticated }: TEditorInner) {
+function EditorInner({ authenticated, colorMode }: TEditorInner) {
   const monaco = useMonaco();
   const plugin = useEditorPlugin();
   const [showListOfContents, setShowListOfContents] = useState(true);
@@ -115,6 +147,10 @@ function EditorInner({ authenticated }: TEditorInner) {
   useEffect(() => {
     store.actions.setAuthenticated(!!authenticated);
   }, [store.actions, authenticated]);
+
+  useEffect(() => {
+    store.actions.setColorMode(colorMode);
+  }, [store.actions, colorMode]);
 
   useEffect(() => {
     if (mobile) {
@@ -211,7 +247,11 @@ function EditorInner({ authenticated }: TEditorInner) {
         opened={store.currentSection === EEditorSectionType.TABLE_OF_CONTENTS}
         handleClick={() => {
           if (store.currentSection === EEditorSectionType.TABLE_OF_CONTENTS) {
-            actions.setCurrentSection(EEditorSectionType.CODE);
+            if (mobile) {
+              actions.setCurrentSection(EEditorSectionType.CODE);
+            } else {
+              actions.setCurrentSection(EEditorSectionType.LESSON);
+            }
           } else {
             actions.setCurrentSection(EEditorSectionType.TABLE_OF_CONTENTS);
           }
@@ -223,9 +263,20 @@ function EditorInner({ authenticated }: TEditorInner) {
   const theorySection = (
     <S.Section>
       {!mobile && lessonHeader}
-      <S.SectionContent ref={lessonSectionRef}>
-        <div style={{ overflowY: 'auto' }}>
+      <S.SectionContent>
+        <div style={{ overflowY: 'auto' }} ref={lessonSectionRef}>
           <SectionLesson />
+        </div>
+      </S.SectionContent>
+    </S.Section>
+  );
+
+  const treeSection = store.tabs.length > 1 && (
+    <S.Section>
+      {!mobile && lessonHeader}
+      <S.SectionContent>
+        <div style={{ overflowY: 'auto' }}>
+          <Tree />
         </div>
       </S.SectionContent>
     </S.Section>
@@ -259,7 +310,7 @@ function EditorInner({ authenticated }: TEditorInner) {
           offsetLeft={leftPanelElementRef.current?.offsetWidth}
         />
       )}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <S.Wrapper style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {mobile && lessonHeader}
         <SplitPane
           split="vertical"
@@ -278,7 +329,12 @@ function EditorInner({ authenticated }: TEditorInner) {
         >
           <Pane minSize={500} maxSize="50%">
             <Box sx={{ display: 'flex', height: '100%' }} ref={leftPanelElementRef}>
-              {!mobile && theorySection}
+              {!mobile && (
+                <>
+                  {store.currentSection === EEditorSectionType.LESSON && theorySection}
+                  {store.currentSection === EEditorSectionType.TREE && treeSection}
+                </>
+              )}
             </Box>
           </Pane>
           <Pane>
@@ -293,7 +349,7 @@ function EditorInner({ authenticated }: TEditorInner) {
             </S.RightPane>
           </Pane>
         </SplitPane>
-      </div>
+      </S.Wrapper>
     </>
   );
 }

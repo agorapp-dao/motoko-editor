@@ -52,7 +52,7 @@ export const SectionTests: React.FC<TProps> = ({ testResults }: TProps) => {
                 <Grid item className="test-icon">
                   {t.passed ? <TaskAltIcon /> : <HighlightOffIcon />}
                 </Grid>
-                <Grid item xs direction="column">
+                <Grid item xs container direction="column">
                   <Grid item className="test-title">
                     {t.title}
                   </Grid>

@@ -1,6 +1,29 @@
 import { Box } from '@mui/material';
 import styled, { css } from 'styled-components';
 import { SECTION_TABS_WIDTH } from '../constants';
+import rgba from 'polished/lib/color/rgba';
+
+export const Wrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .monaco-scrollable-element > .scrollbar > .slider {
+    background: ${p => rgba(p.theme.custom.scrollbar, 0.7)} !important;
+    border-radius: 5px;
+  }
+  .monaco-editor .view-overlays .current-line {
+    border: 0 !important;
+    background: ${p => rgba(p.theme.custom.secondary, 0.5)} !important;
+  }
+  .decorationsOverviewRuler {
+    display: none !important;
+  }
+
+  .monaco-editor .view-overlays .current-line {
+    background: ${p => p.theme.custom.cardBg} !important;
+  }
+`;
 
 export const OverlayBox = styled.div`
   position: absolute;
@@ -42,7 +65,7 @@ export const OverlaySection = styled.div<IOverlaySectionProps>`
   bottom: 0;
   z-index: 1000;
   display: flex;
-  background-color: ${p => p.theme.background};
+  background-color: ${p => p.theme.custom.background};
   ${({ $top }) =>
     $top &&
     css`

@@ -26,4 +26,6 @@ export interface IEditorPlugin {
   ): Promise<TTestResponse>;
 
   check(filePath: string, files: TEditorFile[]): Promise<void>;
+
+  onModelChange?(): void;
 }

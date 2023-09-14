@@ -1,6 +1,7 @@
 import fsp from 'fs/promises';
 import path from 'path';
-import { TCourse } from '../types/course';
+import { TCourse } from '../types/TCourse';
+import { ETopic } from '../types/ETopic';
 
 // get public content dir
 const contentDir = path.join(process.cwd(), 'public/content2');
@@ -13,11 +14,10 @@ class ContentService {
    *
    * @param courseSlug
    */
-  async getCourseFromFile(courseSlug: string): Promise<TCourse | undefined> {
-    // any content is a sibling dependency of this package
+  async getCourseFromFile(topic: ETopic, courseSlug: string): Promise<TCourse | undefined> {
     const courseJsonPath = path.join(
       contentDir,
-      `content-${encodeURIComponent(courseSlug)}`,
+      `content-${encodeURIComponent(topic)}-${encodeURIComponent(courseSlug)}`,
       'course.json',
     );
 
@@ -40,10 +40,9 @@ class ContentService {
    * @param contentPath
    */
   async getContentFromFile(course: TCourse, contentPath: string): Promise<string> {
-    // any content is a sibling dependency of this package
     const fullPath = path.join(
       contentDir,
-      `content-${encodeURIComponent(course.slug)}`,
+      `content-${encodeURIComponent(course.topic)}-${encodeURIComponent(course.slug)}`,
       contentPath,
     );
 
@@ -56,9 +55,25 @@ class ContentService {
     }
   }
 
-  async listContentPackages(): Promise<string[]> {
-    let dirs = await fsp.readdir(contentDir);
-    return dirs;
+  async listContentPackages(): Promise<TCourse[]> {
+    const courses: TCourse[] = [];
+
+    const dirs = await fsp.readdir(contentDir);
+    for (const dir of dirs) {
+      if (dir === 'content-common') {
+        continue;
+      }
+
+      const jsonPath = path.join(contentDir, dir, 'course.json');
+      try {
+        const course = await fsp.readFile(jsonPath, 'utf-8');
+        courses.push(JSON.parse(course));
+      } catch (err: any) {
+        console.warn(`Error loading ${jsonPath}: ${err.code} ${err.message}`);
+      }
+    }
+
+    return courses;
   }
 }
 

@@ -7,7 +7,7 @@ export const Wrapper = styled.span`
 `;
 
 export const UnderlineText = styled.span`
-  border-bottom: 1px solid ${p => p.theme.border};
+  border-bottom: 1px solid ${p => p.theme.custom.border};
   margin: 1rem 0;
   width: 90%;
 `;
