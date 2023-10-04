@@ -105,8 +105,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
+            cd ${{ secrets.AGORAPP_INFRA_PATH }}/compose/motoko-editor
             echo ${{ secrets.GITHUB_TOKEN }}| docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
-            docker stop motoko-editor
-            docker rm motoko-editor
-            docker run -d --name motoko-editor -p 3010:3010 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            docker compose -f docker-compose.prod.yml up -d
