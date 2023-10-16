@@ -23,10 +23,6 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
         {/* Insertion point for client. This connects with createEmotionCache.ts */}
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="frame-src https://internetcomputer.org/"
-        />
       </Head>
       <body>
         <Main />
