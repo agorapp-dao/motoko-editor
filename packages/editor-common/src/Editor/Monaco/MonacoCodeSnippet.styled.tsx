@@ -9,6 +9,7 @@ export const Block = styled.div`
   margin: 1rem 0;
   padding: 1rem;
   overflow-y: scroll;
+  font-size: 0.9em;
 `;
 
 export const Inline = styled.code`
@@ -17,6 +18,7 @@ export const Inline = styled.code`
   border-radius: 5px;
   padding: 0.1rem 0.3rem;
   display: inline-block;
+  font-size: 0.9em;
 `;
 
 export const CopyToClipBoard = styled.span`
